@@ -1,6 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data.Seed;
 using Techies.Web.Domain;
-using Microsoft.EntityFrameworkCore;
 
 namespace Techies.Tests.Services;
 
