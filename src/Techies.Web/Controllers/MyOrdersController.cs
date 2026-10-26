@@ -8,7 +8,7 @@ namespace Techies.Web.Controllers;
 
 [Route("don-hang")]
 [Authorize(Policy = Policies.Customer)]
-public sealed class MyOrdersController(OrderQueries queries, OrderService orders) : Controller
+public sealed class MyOrdersController(OrderQueries queries, OrderService orders, ReviewService reviews) : Controller
 {
     [HttpGet("")]
     public async Task<IActionResult> Index(int page = 1) => View(await queries.ForCustomerAsync(User.UserId(), page));
@@ -17,7 +17,24 @@ public sealed class MyOrdersController(OrderQueries queries, OrderService orders
     public async Task<IActionResult> Details(Guid id)
     {
         var order = await queries.ForCustomerDetailAsync(User.UserId(), id);
-        return order is null ? NotFound() : View(order);
+        if (order is null) return NotFound();
+        ViewData["Reviews"] = await reviews.ForOrderAsync(id);
+        return View(order);
+    }
+
+    [HttpPost("{id:guid}/danh-gia")]
+    public async Task<IActionResult> Review(Guid id, Guid productId, short rating, string? comment)
+    {
+        try
+        {
+            await reviews.AddAsync(User.UserId(), id, productId, rating, comment);
+            TempData["Success"] = "Cảm ơn bạn đã đánh giá sản phẩm!";
+        }
+        catch (DomainException ex)
+        {
+            TempData["Error"] = ex.Message;
+        }
+        return RedirectToAction(nameof(Details), new { id });
     }
 
     [HttpPost("{id:guid}/huy")]

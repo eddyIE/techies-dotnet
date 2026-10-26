@@ -34,3 +34,9 @@ body {
 
 /* The validation summary is always rendered; hide it until it has errors. */
 .validation-summary-valid { display: none; }
+
+/* Star picker: radios laid out 5→1 and reversed, so hovering/choosing a star lights it and those before it. */
+.star-input { display: inline-flex; flex-direction: row-reverse; gap: .15rem; font-size: 1.4rem; }
+.star-input label { color: #ced4da; cursor: pointer; }
+.star-input input:checked ~ label, .star-input label:hover, .star-input label:hover ~ label { color: #ffc107; }
+.star-input input:focus-visible + label { outline: 2px solid #0d6efd; border-radius: .25rem; }

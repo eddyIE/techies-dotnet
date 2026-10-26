@@ -359,7 +359,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     cancel restores redemption; manual checkout with TECHIES50K.
   - Files: `Services/CheckoutService.cs`, `Controllers/CheckoutController.cs`, `Views/Checkout/Index.cshtml`, `ViewModels/Shop/CheckoutForm.cs`, tests
 
-- [ ] **Task 44: Reviews from completed orders** (M) · deps: 42
+- [x] **Task 44: Reviews from completed orders** (M) · deps: 42
   - Acceptance: unique (order_id, product_id) migration; `ReviewService.AddAsync` with ownership,
     COMPLETED and once-per-line rules; review forms / stars on my order detail.
   - Verify: service tests for each rule; manual: review shows on product page and admin grid.

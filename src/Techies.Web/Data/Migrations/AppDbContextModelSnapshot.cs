@@ -1093,11 +1093,12 @@ namespace Techies.Web.Data.Migrations
                     b.HasIndex("CustomerId")
                         .HasDatabaseName("ix_reviews_customer_id");
 
-                    b.HasIndex("OrderId")
-                        .HasDatabaseName("ix_reviews_order_id");
-
                     b.HasIndex("Rating")
                         .HasDatabaseName("ix_reviews_rating");
+
+                    b.HasIndex("OrderId", "ProductId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_reviews_order_id_product_id");
 
                     b.HasIndex("ProductId", "CreatedAt")
                         .HasDatabaseName("ix_reviews_product_id_created_at");

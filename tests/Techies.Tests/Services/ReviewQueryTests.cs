@@ -18,10 +18,9 @@ public class ReviewQueryTests(PostgresFixture fixture)
         TestData.Tiers(db);
         var customer = TestData.Customer(db);
         var product = TestData.Product(db, TestData.Category(db), "Loa");
-        var order = TestData.Order(db, customer, product);
         var now = DateTimeOffset.UtcNow;
         foreach (var (rating, daysAgo) in new (short, int)[] { (1, 3), (2, 1), (3, 2), (5, 0) })
-            db.Reviews.Add(new Review { Customer = customer, Product = product, OrderId = order.Id, Rating = rating, Comment = $"{rating} sao", CreatedAt = now.AddDays(-daysAgo) });
+            db.Reviews.Add(new Review { Customer = customer, Product = product, OrderId = TestData.Order(db, customer, product).Id, Rating = rating, Comment = $"{rating} sao", CreatedAt = now.AddDays(-daysAgo) });
         await db.SaveChangesAsync();
 
         var (rows, _) = await new ReviewQueries(db).GridAsync(Request("?rating_from=1&rating_to=2"));
@@ -38,11 +37,11 @@ public class ReviewQueryTests(PostgresFixture fixture)
         var category = TestData.Category(db);
         var speaker = TestData.Product(db, category, "Loa");
         var phone = TestData.Product(db, category, "Điện thoại");
-        var order = TestData.Order(db, customer, speaker);
+        Guid OrderOf(Product p) => TestData.Order(db, customer, p).Id;
         db.Reviews.AddRange(
-            new Review { Customer = customer, Product = speaker, OrderId = order.Id, Rating = 4, Comment = "Pin yếu", CreatedAt = DateTimeOffset.UtcNow },
-            new Review { Customer = customer, Product = phone, OrderId = order.Id, Rating = 4, Comment = "Pin yếu", CreatedAt = DateTimeOffset.UtcNow },
-            new Review { Customer = customer, Product = speaker, OrderId = order.Id, Rating = 5, Comment = "Âm thanh hay", CreatedAt = DateTimeOffset.UtcNow });
+            new Review { Customer = customer, Product = speaker, OrderId = OrderOf(speaker), Rating = 4, Comment = "Pin yếu", CreatedAt = DateTimeOffset.UtcNow },
+            new Review { Customer = customer, Product = phone, OrderId = OrderOf(phone), Rating = 4, Comment = "Pin yếu", CreatedAt = DateTimeOffset.UtcNow },
+            new Review { Customer = customer, Product = speaker, OrderId = OrderOf(speaker), Rating = 5, Comment = "Âm thanh hay", CreatedAt = DateTimeOffset.UtcNow });
         await db.SaveChangesAsync();
 
         var (rows, _) = await new ReviewQueries(db).GridAsync(Request($"?product={speaker.Id}&q=pin"));

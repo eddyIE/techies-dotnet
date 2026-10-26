@@ -79,6 +79,8 @@ internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
         b.HasOne<Order>().WithMany().HasForeignKey(r => r.OrderId).OnDelete(DeleteBehavior.Restrict);
         b.HasIndex(r => new { r.ProductId, r.CreatedAt });
         b.HasIndex(r => r.Rating);
+        // One review per order line.
+        b.HasIndex(r => new { r.OrderId, r.ProductId }).IsUnique();
         b.ToTable(t => t.HasCheckConstraint("ck_reviews_rating", "rating BETWEEN 1 AND 5"));
     }
 }

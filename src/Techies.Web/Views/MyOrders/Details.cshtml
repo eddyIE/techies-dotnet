@@ -2,6 +2,8 @@
 @{
     ViewData["Title"] = "Đơn hàng " + Model.OrderRef;
     var (text, badge) = Labels.For(Model.Status);
+    var reviews = (Dictionary<Guid, Review>)ViewData["Reviews"]!;
+    var canReview = Model.Status == OrderStatus.Completed;
 }
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h4 mb-0">Đơn hàng <span class="font-monospace">@Model.OrderRef</span> <span class="badge @badge fs-6 align-middle">@text</span></h1>
@@ -18,10 +20,35 @@
             <ul class="list-group list-group-flush">
             @foreach (var i in Model.Items)
             {
-                <li class="list-group-item d-flex gap-3 align-items-center">
-                    <img src="@i.ThumbnailUrl" alt="" width="56" height="56" style="object-fit:contain" onerror="this.src='/img/placeholder.svg'" />
-                    <div class="flex-grow-1">@i.ProductName<div class="small text-muted">@Format.Money(i.UnitPrice) × @i.Quantity</div></div>
-                    <div class="fw-semibold">@Format.Money(i.LineTotal)</div>
+                <li class="list-group-item">
+                    <div class="d-flex gap-3 align-items-center">
+                        <img src="@i.ThumbnailUrl" alt="" width="56" height="56" style="object-fit:contain" onerror="this.src='/img/placeholder.svg'" />
+                        <div class="flex-grow-1">@i.ProductName<div class="small text-muted">@Format.Money(i.UnitPrice) × @i.Quantity</div></div>
+                        <div class="fw-semibold">@Format.Money(i.LineTotal)</div>
+                    </div>
+                    @if (reviews.TryGetValue(i.ProductId, out var review))
+                    {
+                        <div class="mt-2 small bg-light rounded p-2">
+                            <span class="text-warning">@for (var s = 1; s <= 5; s++) { <i class="bi @(s <= review.Rating ? "bi-star-fill" : "bi-star")"></i> }</span>
+                            <span class="text-muted ms-1">Bạn đã đánh giá ngày @Format.LocalDate(review.CreatedAt)</span>
+                            @if (review.Comment is not null) { <div>@review.Comment</div> }
+                        </div>
+                    }
+                    else if (canReview)
+                    {
+                        <form asp-action="Review" asp-route-id="@Model.Id" method="post" class="mt-2 border rounded p-2">
+                            <input type="hidden" name="productId" value="@i.ProductId" />
+                            <div class="star-input mb-2" role="radiogroup" aria-label="Số sao">
+                                @for (var s = 5; s >= 1; s--)
+                                {
+                                    <input type="radio" class="btn-check" name="rating" value="@s" id="r-@i.Id-@s" required />
+                                    <label for="r-@i.Id-@s" title="@s sao"><i class="bi bi-star-fill"></i></label>
+                                }
+                            </div>
+                            <textarea name="comment" maxlength="@Techies.Web.Services.ReviewService.MaxCommentLength" rows="2" class="form-control form-control-sm mb-2" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm (không bắt buộc)"></textarea>
+                            <button class="btn btn-sm btn-primary">Gửi đánh giá</button>
+                        </form>
+                    }
                 </li>
             }
             </ul>

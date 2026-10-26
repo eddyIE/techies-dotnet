@@ -36,10 +36,10 @@ public class ShopQueryTests(PostgresFixture fixture)
         TestData.Tiers(db);
         var customer = TestData.Customer(db);
         var product = TestData.Product(db, TestData.Category(db), "Loa");
-        var order = TestData.Order(db, customer, product);
+        // One review per order line, so each review comes from its own order.
         db.Reviews.AddRange(
-            new Web.Domain.Review { Customer = customer, Product = product, OrderId = order.Id, Rating = 5, CreatedAt = DateTimeOffset.UtcNow },
-            new Web.Domain.Review { Customer = customer, Product = product, OrderId = order.Id, Rating = 2, CreatedAt = DateTimeOffset.UtcNow });
+            new Web.Domain.Review { Customer = customer, Product = product, OrderId = TestData.Order(db, customer, product).Id, Rating = 5, CreatedAt = DateTimeOffset.UtcNow },
+            new Web.Domain.Review { Customer = customer, Product = product, OrderId = TestData.Order(db, customer, product).Id, Rating = 2, CreatedAt = DateTimeOffset.UtcNow });
         await db.SaveChangesAsync();
 
         var detail = await new ShopQueries(db).DetailAsync(product.Slug);
