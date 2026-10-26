@@ -84,7 +84,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: seed test asserts counts match the source SQL and every product has a stock row.
   - Files: `Data/Seed/*.json`, `Data/Seed/CatalogSeed.cs`, tests
 
-- [ ] **Task 10: Product list, search and filters** (S) · deps: 9
+- [x] **Task 10: Product list, search and filters** (S) · deps: 9
   - Acceptance: admin product list — name search, category filter, out-of-stock filter,
     active filter, 20/page; shows price, stock, active badge.
   - Verify: service test for the combined query filters; manual.

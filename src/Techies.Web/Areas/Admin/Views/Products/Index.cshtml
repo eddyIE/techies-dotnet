@@ -1,0 +1,63 @@
+@model Paged<Techies.Web.ViewModels.Catalog.ProductRow>
+@{
+    ViewData["Title"] = "Sản phẩm";
+    var filter = (Techies.Web.ViewModels.Catalog.ProductFilter)ViewData["Filter"]!;
+    var categories = (List<Category>)ViewData["Categories"]!;
+}
+<form method="get" class="row g-2 align-items-end mb-3">
+    <div class="col-md-4">
+        <label class="form-label small">Tên sản phẩm</label>
+        <input name="q" value="@filter.Q" class="form-control" placeholder="Tìm theo tên..." />
+    </div>
+    <div class="col-md-3">
+        <label class="form-label small">Danh mục</label>
+        <select name="categoryId" class="form-select">
+            <option value="">Tất cả</option>
+            @foreach (var c in categories)
+            {
+                <option value="@c.Id" selected="@(filter.CategoryId == c.Id)">@c.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2">
+        <label class="form-label small">Trạng thái</label>
+        <select name="active" class="form-select">
+            <option value="">Tất cả</option>
+            <option value="true" selected="@(filter.Active == true)">Đang bán</option>
+            <option value="false" selected="@(filter.Active == false)">Ngừng bán</option>
+        </select>
+    </div>
+    <div class="col-md-auto form-check ms-2 mb-2">
+        <input class="form-check-input" type="checkbox" name="outOfStock" value="true" id="oos" checked="@filter.OutOfStock" />
+        <label class="form-check-label" for="oos">Chỉ hàng hết</label>
+    </div>
+    <div class="col-md-auto"><button class="btn btn-outline-primary">Lọc</button></div>
+    <div class="col text-end"><a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm sản phẩm</a></div>
+</form>
+<div class="card">
+    <table class="table mb-0">
+        <thead><tr><th style="width:64px"></th><th>Sản phẩm</th><th>Danh mục</th><th class="text-end">Giá bán</th><th class="text-end">Tồn kho</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var p in Model.Items)
+        {
+            <tr>
+                <td><img src="@p.ThumbnailUrl" alt="" width="48" height="48" class="rounded" style="object-fit:cover" onerror="this.style.visibility='hidden'" /></td>
+                <td>@p.Name</td>
+                <td class="text-muted">@p.CategoryName</td>
+                <td class="text-end">@Format.Money(p.Price)</td>
+                <td class="text-end">
+                    @if (p.Available == 0) { <span class="badge text-bg-danger">Hết hàng</span> }
+                    else { @p.Available }
+                </td>
+                <td>@if (p.Active) { <span class="badge text-bg-success">Đang bán</span> } else { <span class="badge text-bg-secondary">Ngừng bán</span> }</td>
+                <td class="text-end"><a asp-action="Edit" asp-route-id="@p.Id" class="btn btn-sm btn-outline-primary">Sửa</a></td>
+            </tr>
+        }
+        @if (Model.Items.Count == 0)
+        {
+            <tr><td colspan="7" class="text-center text-muted py-4">Không có sản phẩm phù hợp.</td></tr>
+        }
+        </tbody>
+    </table>
+</div>
+<partial name="_Pager" model="Model.TotalPages" />
