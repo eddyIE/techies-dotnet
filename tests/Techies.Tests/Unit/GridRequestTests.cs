@@ -54,4 +54,17 @@ public class GridRequestTests
         Assert.Equal("/admin/products?q=iphone&page=2&sort=price", r.WithPage(2));
         Assert.Equal("/admin/products?sort=price", r.Without("q")); // a filter change goes back to page 1
     }
+
+    [Theory]
+    [InlineData("?page=2147483647")]
+    [InlineData("?page=999999999")]
+    public void Absurd_page_numbers_are_clamped(string query) =>
+        Assert.Equal(GridRequest.MaxPage, Parse(query).Page);
+
+    [Theory]
+    [InlineData("9999-12-31")]
+    [InlineData("0001-01-01")]
+    [InlineData("1899-05-01")]
+    public void Dates_outside_a_sane_range_are_ignored(string date) =>
+        Assert.Null(Parse("?created_to=" + date).Date("created_to"));
 }

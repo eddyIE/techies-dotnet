@@ -63,12 +63,25 @@ public class RoleServiceTests(PostgresFixture fixture)
     }
 
     [Fact]
-    public async Task System_role_cannot_be_deleted_or_have_permissions_changed()
+    public async Task System_role_cannot_be_deleted()
+    {
+        await using var db = await fixture.CreateContextAsync();
+
+        await Assert.ThrowsAsync<DomainException>(() => new RoleService(db).DeleteAsync(SeededRoles.SuperAdmin));
+    }
+
+    [Fact]
+    public async Task System_role_can_be_renamed_but_keeps_implicit_full_access()
     {
         await using var db = await fixture.CreateContextAsync();
         var service = new RoleService(db);
 
-        await Assert.ThrowsAsync<DomainException>(() => service.DeleteAsync(SeededRoles.SuperAdmin));
-        await Assert.ThrowsAsync<DomainException>(() => service.UpdateAsync(SeededRoles.SuperAdmin, Form("Admin", Permissions.OrdersView)));
+        await service.UpdateAsync(SeededRoles.SuperAdmin, Form("Quản trị hệ thống", Permissions.OrdersView));
+
+        db.ChangeTracker.Clear();
+        var role = await db.Roles.Include(r => r.Permissions).SingleAsync(r => r.Id == SeededRoles.SuperAdmin);
+        Assert.Equal("Quản trị hệ thống", role.Name);
+        Assert.Empty(role.Permissions); // still implicit "everything"; submitted permissions are ignored
+        Assert.True(role.IsSystem);
     }
 }

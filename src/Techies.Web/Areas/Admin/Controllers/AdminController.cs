@@ -24,8 +24,13 @@ public abstract class AdminController : Controller
     }
 
     // A grid page: the full view, or just the grid when admin-grid.js asks for it.
-    protected IActionResult GridView(Infrastructure.Grid.GridModel grid) =>
-        Request.Headers.ContainsKey("X-Grid") ? PartialView("_Grid", grid) : View(grid);
+    // Same URL, two representations: tell caches so, or Back could show the bare fragment.
+    protected IActionResult GridView(Infrastructure.Grid.GridModel grid)
+    {
+        Response.Headers.Vary = "X-Grid";
+        Response.Headers.CacheControl = "no-store";
+        return Request.Headers.ContainsKey("X-Grid") ? PartialView("_Grid", grid) : View(grid);
+    }
 
     // Runs a mass action over the selected rows and returns to the grid with its filters.
     protected async Task<IActionResult> MassAsync<TId>(IReadOnlyCollection<TId> ids, Func<TId, Task> action, string verb, string? returnUrl)

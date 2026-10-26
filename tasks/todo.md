@@ -332,10 +332,10 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service tests for bulk actions incl. staff guards in bulk; manual.
   - Files: services, controllers, views for the four grids, tests
 
-- [ ] **Task 41: Change-set verification** (S) · deps: all above
+- [x] **Task 41: Change-set verification** (S) · deps: all above
   - Acceptance: README/SPEC updated; fresh-DB run-through of Success Criteria 1–6; reviewer
     sub-agent pass on the change set, fixes applied.
   - Verify: Success Criteria checked off.
 
 ### Checkpoint: Change set complete
-- [ ] All new acceptance criteria met; all **[test]** criteria covered.
+- [x] All new acceptance criteria met; all **[test]** criteria covered.

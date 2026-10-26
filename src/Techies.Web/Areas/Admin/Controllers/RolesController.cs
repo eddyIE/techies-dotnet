@@ -68,7 +68,7 @@ public sealed class RolesController(RoleService roles) : AdminController
     [HttpPost]
     public async Task<IActionResult> Edit(int id, RoleForm form)
     {
-        if (!ModelState.IsValid) return FormView(form, id, false);
+        if (!ModelState.IsValid) return FormView(form, id, (await roles.GetAsync(id)).IsSystem);
         try
         {
             await roles.UpdateAsync(id, form);
@@ -78,7 +78,7 @@ public sealed class RolesController(RoleService roles) : AdminController
         catch (DomainException ex)
         {
             ModelState.AddModelError("", ex.Message);
-            return FormView(form, id, false);
+            return FormView(form, id, (await roles.GetAsync(id)).IsSystem);
         }
     }
 

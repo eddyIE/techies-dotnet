@@ -17,8 +17,7 @@ namespace Techies.Web.Data.Migrations
                 name: "role_id",
                 table: "staff",
                 type: "integer",
-                nullable: false,
-                defaultValue: 0);
+                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "permissions",
@@ -139,8 +138,11 @@ namespace Techies.Web.Data.Migrations
             // Existing staff keep their access: the old fixed role becomes the matching seeded role.
             migrationBuilder.Sql("""
                 UPDATE staff SET role_id = CASE role
-                    WHEN 'SUPER_ADMIN' THEN 1 WHEN 'CATALOG_STAFF' THEN 2 ELSE 3 END;
+                    WHEN 'SUPER_ADMIN' THEN 1 WHEN 'CATALOG_STAFF' THEN 2 WHEN 'ORDER_STAFF' THEN 3 END;
                 """);
+            // An unexpected old value leaves role_id NULL, which the NOT NULL below rejects — the
+            // migration fails loudly instead of silently handing someone the wrong access.
+            migrationBuilder.Sql("ALTER TABLE staff ALTER COLUMN role_id SET NOT NULL;");
             // Roles were inserted with explicit ids; move the identity past them.
             migrationBuilder.Sql("SELECT setval(pg_get_serial_sequence('roles', 'id'), (SELECT max(id) FROM roles));");
 

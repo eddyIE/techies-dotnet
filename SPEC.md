@@ -426,8 +426,8 @@ Acceptance:
   description, number of staff, number of permissions. Create/edit: name (unique), description,
   permission checkboxes grouped by module with "chọn cả nhóm". Delete is **blocked** while any
   staff has the role ("Vai trò đang được gán cho N nhân viên"). **[test]**
-- The system **Super Admin** role always has every permission; it cannot be edited (permissions),
-  renamed to empty or deleted. **[test]**
+- The system **Super Admin** role always has every permission; its name/description can be edited,
+  its permissions cannot, and it cannot be deleted. **[test]**
 - Migration: existing staff keep their access — SUPER_ADMIN → the system role; CATALOG_STAFF and
   ORDER_STAFF become editable seeded roles "Nhân viên Kho & Sản phẩm" / "Nhân viên Điều phối &
   Quầy" with the permissions matching the previous role table. **[test]** (seed/migration)

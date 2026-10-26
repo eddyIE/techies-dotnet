@@ -61,7 +61,10 @@
             <h2 class="h6">Người nhận</h2>
             <div>@Model.ShipRecipient — @Model.ShipPhone</div>
             <div class="small text-muted">@Model.ShipLine1, @Model.ShipWard, @Model.ShipDistrict, @Model.ShipProvince</div>
-            <div class="small mt-2">Tài khoản: <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.UserId">@Model.User.FullName</a> (@Model.User.Email)</div>
+            <div class="small mt-2">Tài khoản:
+                @if (await Staff.HasAsync(Permissions.CustomersView)) { <a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@Model.UserId">@Model.User.FullName</a> }
+                else { @Model.User.FullName }
+                (@Model.User.Email)</div>
         </div></div>
         <div class="card"><div class="card-body small">
             <h2 class="h6">Thanh toán</h2>

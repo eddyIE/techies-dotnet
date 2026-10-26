@@ -9,13 +9,13 @@
     <div asp-validation-summary="All" class="alert alert-danger py-2"></div>
     @if (isSystem)
     {
-        <div class="alert alert-info">Quản trị viên cao cấp là vai trò hệ thống: luôn có toàn quyền, quản lý nhân sự và phân quyền; không thể sửa hoặc xóa.</div>
+        <div class="alert alert-info">Quản trị viên cao cấp là vai trò hệ thống: luôn có toàn quyền, quản lý nhân sự và phân quyền. Có thể đổi tên và mô tả; không thể đổi quyền hoặc xóa.</div>
     }
+    <div class="card mb-4" style="max-width: 720px"><div class="card-body">
+        <div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /></div>
+        <div><label asp-for="Description" class="form-label"></label><input asp-for="Description" class="form-control" /></div>
+    </div></div>
     <fieldset disabled="@isSystem">
-        <div class="card mb-4" style="max-width: 720px"><div class="card-body">
-            <div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /></div>
-            <div><label asp-for="Description" class="form-label"></label><input asp-for="Description" class="form-control" /></div>
-        </div></div>
         <h2 class="h6">Quyền được phép</h2>
         <div class="row g-3 mb-4">
             @foreach (var group in Permissions.All.GroupBy(p => p.Module))
@@ -43,7 +43,7 @@
         </div>
     </fieldset>
     <div class="d-flex gap-2">
-        @if (!isSystem) { <button class="btn btn-primary">Lưu vai trò</button> }
+        <button class="btn btn-primary">Lưu vai trò</button>
         <a asp-action="Index" class="btn btn-link">Quay lại</a>
     </div>
 </form>

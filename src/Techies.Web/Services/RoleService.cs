@@ -52,7 +52,13 @@ public sealed class RoleService(AppDbContext db)
     public async Task UpdateAsync(int id, RoleForm form, CancellationToken ct = default)
     {
         var role = await GetAsync(id, ct);
-        if (role.IsSystem) throw new DomainException("Vai trò Quản trị viên cao cấp là vai trò hệ thống, không thể chỉnh sửa.");
+        if (role.IsSystem)
+        {
+            // Name and description only: the system role's access is implicit and fixed.
+            await ApplyAsync(role, new RoleForm { Name = form.Name, Description = form.Description }, ct);
+            await db.SaveChangesAsync(ct);
+            return;
+        }
         db.RolePermissions.RemoveRange(role.Permissions);
         await ApplyAsync(role, form, ct);
         await db.SaveChangesAsync(ct);

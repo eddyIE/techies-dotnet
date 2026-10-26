@@ -33,6 +33,14 @@ public sealed class PostgresFixture : IAsyncLifetime
         return new AppDbContext(Options(name));
     }
 
+    // A brand-new database with no migrations applied (for migration tests).
+    public async Task<AppDbContext> CreateEmptyContextAsync()
+    {
+        var name = $"empty_{Interlocked.Increment(ref _counter)}";
+        await ExecuteAsync($"CREATE DATABASE {name}");
+        return new AppDbContext(Options(name));
+    }
+
     // A second context on the same database, e.g. to simulate a concurrent request.
     public static AppDbContext CreateSibling(AppDbContext db) =>
         new(new DbContextOptionsBuilder<AppDbContext>()

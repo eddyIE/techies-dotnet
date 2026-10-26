@@ -8,6 +8,10 @@ namespace Techies.Web.Infrastructure.Grid;
 public sealed class GridRequest
 {
     public static readonly int[] PageSizes = [20, 50, 100];
+    // Bounds for values that come straight from the URL, so a hand-edited query string can't
+    // overflow OFFSET or date arithmetic into a server error.
+    public const int MaxPage = 100_000;
+    private static readonly DateOnly MinDate = new(2000, 1, 1), MaxDate = new(2100, 12, 31);
 
     private readonly PathString _path;
     private readonly List<KeyValuePair<string, string>> _query;
@@ -42,7 +46,7 @@ public sealed class GridRequest
         var sort = Get("sort");
         var known = sort is not null && sortable.Contains(sort);
         var desc = known ? Get("dir") == "desc" : defaultDesc;
-        var page = int.TryParse(Get("page"), out var p) && p > 0 ? p : 1;
+        var page = int.TryParse(Get("page"), out var p) && p > 0 ? Math.Min(p, MaxPage) : long.TryParse(Get("page"), out var big) && big > 0 ? MaxPage : 1;
         var size = int.TryParse(Get("size"), out var s) && PageSizes.Contains(s) ? s : PageSizes[0];
         return new GridRequest(path, query, known ? sort! : defaultSort, desc, page, size);
     }
@@ -64,7 +68,8 @@ public sealed class GridRequest
     public bool? Bool(string key) => bool.TryParse(Text(key), out var b) ? b : null;
 
     public DateOnly? Date(string key) =>
-        DateOnly.TryParseExact(Text(key), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d) ? d : null;
+        DateOnly.TryParseExact(Text(key), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)
+            && d >= MinDate && d <= MaxDate ? d : null;
 
     public TEnum? Enum<TEnum>(string key) where TEnum : struct, System.Enum =>
         System.Enum.TryParse<TEnum>(Text(key), ignoreCase: true, out var e) && System.Enum.IsDefined(e) ? e : null;

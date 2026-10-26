@@ -30,7 +30,7 @@ public sealed class InventoryController(ProductService products, CategoryService
             Rows = rows.Select(p => (p, new List<GridRowAction>
             {
                 new(canChange ? "Nhập hàng / Kiểm kê" : "Lịch sử kho", Url.Action(nameof(Details), new { id = p.Id })!),
-            }.Concat(access.Has(Permissions.ProductsEdit) ? [new GridRowAction("Sửa sản phẩm", Url.Action("Edit", "Products", new { id = p.Id })!)] : [])
+            }.Concat(access.Has(Permissions.ProductsView) && access.Has(Permissions.ProductsEdit) ? [new GridRowAction("Sửa sản phẩm", Url.Action("Edit", "Products", new { id = p.Id })!)] : [])
              .ToList())).ToList(),
         });
     }
