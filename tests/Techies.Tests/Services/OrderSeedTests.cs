@@ -76,4 +76,15 @@ public class OrderSeedTests(PostgresFixture fixture)
         Assert.True(await db.GiftRedemptions.AnyAsync(r => r.Status == GiftRedemptionStatus.Claimed && r.ClaimedBy != null));
         Assert.True(await db.GiftRedemptions.AnyAsync(r => r.Code == "GIFT-G53Y-ZDS3" && r.Status == GiftRedemptionStatus.Issued));
     }
+
+    [Fact]
+    public async Task Nothing_is_dated_in_the_future()
+    {
+        await using var db = await SeededAsync();
+        var now = DateTimeOffset.UtcNow;
+
+        Assert.False(await db.Orders.AnyAsync(o => o.CreatedAt > now || o.CompletedAt > now));
+        Assert.False(await db.Reviews.AnyAsync(r => r.CreatedAt > now));
+        Assert.False(await db.GiftRedemptions.AnyAsync(r => r.RedeemedAt > now || r.ClaimedAt > now));
+    }
 }

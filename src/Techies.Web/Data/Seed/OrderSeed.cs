@@ -4,8 +4,8 @@ using Techies.Web.Services;
 
 namespace Techies.Web.Data.Seed;
 
-// Generated order history for the demo, anchored on today's date so the dashboard always
-// has recent data. A fixed Random seed makes it identical on every machine on a given day.
+// Generated order history for the demo, anchored on the seeding time so the dashboard always
+// has recent data. A fixed Random seed keeps it reproducible; nothing is dated in the future.
 //
 // - One COMPLETED order per ported review (reviews.json, from ../techies order-service V7/V12),
 //   so every review belongs to a real purchase of that product.
@@ -51,7 +51,7 @@ internal static class OrderSeed
         for (var i = 0; i < ExtraOrders; i++)
         {
             var ageDays = i < 25 ? random.Next(0, 6) : random.Next(6, HistoryDays);
-            var created = today.AddDays(-ageDays).AddMinutes(random.Next(8 * 60, 22 * 60));
+            var created = Min(today.AddDays(-ageDays).AddMinutes(random.Next(8 * 60, 22 * 60)), now.AddMinutes(-30 - i));
             var order = NewOrder(random, PickCustomer(), created, Products(random, products));
             var method = PaymentMethodFor(random);
             var status = ageDays < 6

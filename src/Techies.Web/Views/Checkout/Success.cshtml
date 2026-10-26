@@ -1,0 +1,10 @@
+@model string
+@{ ViewData["Title"] = "Đặt hàng thành công"; }
+<div class="text-center py-5">
+    <i class="bi bi-check-circle-fill text-success display-3"></i>
+    <h1 class="h3 mt-3">Đặt hàng thành công!</h1>
+    <p>Mã đơn hàng của bạn: <strong class="font-monospace">@Model.ToUpperInvariant()</strong></p>
+    <p class="text-muted">Chúng tôi sẽ giao hàng sớm nhất. Vui lòng chuẩn bị tiền mặt khi nhận hàng.</p>
+    <a href="/don-hang" class="btn btn-primary">Xem đơn hàng của tôi</a>
+    <a asp-controller="Home" asp-action="Index" class="btn btn-link">Tiếp tục mua sắm</a>
+</div>

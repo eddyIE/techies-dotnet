@@ -202,7 +202,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     checkouts for the last unit → exactly one succeeds, stock never < 0.
   - Files: `Services/CheckoutService.cs`, tests
 
-- [ ] **Task 25: Checkout page and addresses** (S) · deps: 24, 7
+- [x] **Task 25: Checkout page and addresses** (S) · deps: 24, 7
   - Acceptance: login-required checkout; pick saved address or add new (optionally default);
     COD only; success page with the order ref; cart cleared.
   - Verify: manual end-to-end as a seeded customer.
