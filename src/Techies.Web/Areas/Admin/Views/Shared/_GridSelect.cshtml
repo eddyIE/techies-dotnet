@@ -1,0 +1,7 @@
+@model string
+@* Row checkbox cell; rendered only when the grid has mass actions the user may run. *@
+@{ var grid = (Techies.Web.Infrastructure.Grid.GridModel)ViewData["Grid"]!; }
+@if (grid.Selectable)
+{
+    <td><input type="checkbox" class="form-check-input" name="ids" value="@Model" form="@(grid.Id)-mass" data-grid-row aria-label="Chọn dòng" /></td>
+}

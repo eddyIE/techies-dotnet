@@ -298,7 +298,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 10 — Admin grid
 
-- [ ] **Task 36: Grid framework on the products listing** (L→ split in code, one commit) · deps: 34
+- [x] **Task 36: Grid framework on the products listing** (L→ split in code, one commit) · deps: 34
   - Acceptance: `GridRequest` (sort whitelist, page size, typed filters from the query string),
     grid partial (header sort links, chips, pager, page size, checkboxes, mass-action dropdown,
     row "Chọn ▾"), `admin-grid.js` (fetch partial, pushState, popstate, filter panel apply/cancel,

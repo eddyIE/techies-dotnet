@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
 using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.ViewModels;
 using Techies.Web.ViewModels.Catalog;
 
@@ -25,6 +26,46 @@ public sealed class ProductService(AppDbContext db)
             .OrderBy(p => p.Name)
             .Select(p => new ProductRow(p.Id, p.Name, p.Category.Name, p.Price, p.Stock!.Available, p.Active, p.ThumbnailUrl))
             .ToPagedAsync(filter.Page, ct: ct);
+    }
+
+    public static readonly string[] GridSorts = ["name", "category", "price", "stock"];
+
+    // Products grid (SPEC catalog + admin-grid): keyword, category, price/stock ranges, active.
+    public async Task<(List<ProductRow> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
+    {
+        var query = db.Products.AsNoTracking();
+        if (r.Text("q") is { } q) query = query.Where(p => EF.Functions.ILike(p.Name, QueryExtensions.Contains(q)));
+        if (Guid.TryParse(r.Text("category"), out var categoryId)) query = query.Where(p => p.CategoryId == categoryId);
+        if (r.Decimal("price_from") is { } priceFrom) query = query.Where(p => p.Price >= priceFrom);
+        if (r.Decimal("price_to") is { } priceTo) query = query.Where(p => p.Price <= priceTo);
+        if (r.Int("stock_from") is { } stockFrom) query = query.Where(p => p.Stock!.Available >= stockFrom);
+        if (r.Int("stock_to") is { } stockTo) query = query.Where(p => p.Stock!.Available <= stockTo);
+        if (r.Bool("active") is { } active) query = query.Where(p => p.Active == active);
+
+        query = (r.Sort, r.Desc) switch
+        {
+            ("price", false) => query.OrderBy(p => p.Price).ThenBy(p => p.Name),
+            ("price", true) => query.OrderByDescending(p => p.Price).ThenBy(p => p.Name),
+            ("stock", false) => query.OrderBy(p => p.Stock!.Available).ThenBy(p => p.Name),
+            ("stock", true) => query.OrderByDescending(p => p.Stock!.Available).ThenBy(p => p.Name),
+            ("category", false) => query.OrderBy(p => p.Category.Name).ThenBy(p => p.Name),
+            ("category", true) => query.OrderByDescending(p => p.Category.Name).ThenBy(p => p.Name),
+            (_, true) => query.OrderByDescending(p => p.Name),
+            _ => query.OrderBy(p => p.Name),
+        };
+        var total = await query.CountAsync(ct);
+        var rows = await query.Skip((r.Page - 1) * r.PageSize).Take(r.PageSize)
+            .Select(p => new ProductRow(p.Id, p.Name, p.Category.Name, p.Price, p.Stock!.Available, p.Active, p.ThumbnailUrl, p.Slug))
+            .ToListAsync(ct);
+        return (rows, total);
+    }
+
+    // "Bật / Tắt kinh doanh" (BRD §2); one product per call so mass actions report per row.
+    public async Task SetActiveAsync(Guid id, bool active, CancellationToken ct = default)
+    {
+        var product = await db.Products.FindAsync([id], ct) ?? throw new DomainException("Không tìm thấy sản phẩm.");
+        product.Active = active;
+        await db.SaveChangesAsync(ct);
     }
 
     public async Task<Product> GetAsync(Guid id, CancellationToken ct = default) =>

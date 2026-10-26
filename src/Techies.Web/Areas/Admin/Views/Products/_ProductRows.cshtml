@@ -1,0 +1,18 @@
+@model List<(Techies.Web.ViewModels.Catalog.ProductRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@foreach (var (p, actions) in Model)
+{
+    <tr>
+        <partial name="_GridSelect" model="p.Id.ToString()" view-data="ViewData" />
+        <td style="width:56px"><img src="@p.ThumbnailUrl" alt="" width="44" height="44" class="rounded" style="object-fit:cover" loading="lazy" onerror="this.style.visibility='hidden'" /></td>
+        <td>@p.Name</td>
+        <td class="text-muted small">@p.CategoryName</td>
+        <td class="text-end">@Format.Money(p.Price)</td>
+        <td class="text-end">
+            @if (p.Available == 0) { <span class="badge text-bg-danger">Hết hàng</span> }
+            else if (p.Available <= DashboardQueries.LowStockThreshold) { <span class="badge text-bg-warning">@p.Available</span> }
+            else { @p.Available }
+        </td>
+        <td>@if (p.Active) { <span class="badge text-bg-success">Đang bán</span> } else { <span class="badge text-bg-secondary">Ngừng bán</span> }</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

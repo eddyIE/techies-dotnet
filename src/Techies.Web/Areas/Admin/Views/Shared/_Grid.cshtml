@@ -1,0 +1,152 @@
+@model Techies.Web.Infrastructure.Grid.GridModel
+@using Techies.Web.Infrastructure.Grid
+@{
+    var r = Model.Request;
+    var chips = Model.Chips().ToList();
+    var panelId = Model.Id + "-filters";
+    var massFormId = Model.Id + "-mass";
+    ViewData["Grid"] = Model;
+}
+<form method="get" action="@Context.Request.Path" data-grid-filter class="mb-2">
+    @* Carry sort and page size across filter changes, but keep defaults out of the URL. *@
+    @if (r.HasExplicitSort) { <input type="hidden" name="sort" value="@r.Sort" /> }
+    @if (r.HasExplicitSort && r.Desc) { <input type="hidden" name="dir" value="desc" /> }
+    @if (r.PageSize != GridRequest.PageSizes[0]) { <input type="hidden" name="size" value="@r.PageSize" /> }
+    <div class="d-flex flex-wrap gap-2 align-items-center">
+        <div class="input-group" style="max-width: 420px">
+            <input type="search" name="q" value="@r.Text("q")" class="form-control" placeholder="@Model.KeywordPlaceholder" aria-label="Tìm kiếm" />
+            <button class="btn btn-outline-secondary" aria-label="Tìm"><i class="bi bi-search"></i></button>
+        </div>
+        @if (Model.Filters.Count > 0)
+        {
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#@panelId" aria-expanded="false" aria-controls="@panelId">
+                <i class="bi bi-funnel"></i> Bộ lọc @if (chips.Count > 0) { <span class="badge text-bg-primary">@chips.Count</span> }
+            </button>
+        }
+        <span class="flex-grow-1"></span>
+        @if (Model.Selectable)
+        {
+            <div class="input-group input-group-sm" style="width: auto">
+                <select class="form-select form-select-sm" data-grid-mass-select aria-label="Thao tác hàng loạt" form="@massFormId">
+                    <option value="">Thao tác hàng loạt</option>
+                    @foreach (var a in Model.MassActions) { <option value="@a.Url" data-confirm="@a.Confirm">@a.Label</option> }
+                </select>
+                <button class="btn btn-sm btn-secondary" form="@massFormId" data-grid-mass-submit disabled>Thực hiện <span data-grid-selected-count></span></button>
+            </div>
+        }
+    </div>
+    @if (Model.Filters.Count > 0)
+    {
+        <div class="collapse" id="@panelId">
+            <div class="card card-body mt-2">
+                <div class="row g-3">
+                    @foreach (var f in Model.Filters)
+                    {
+                        <div class="col-md-6 col-xl-3">
+                            <label class="form-label small mb-1">@f.Label</label>
+                            @switch (f.Type)
+                            {
+                                case GridFilterType.Select:
+                                    <select name="@f.Key" class="form-select form-select-sm">
+                                        <option value="">Tất cả</option>
+                                        @foreach (var o in f.Options!) { <option value="@o.Value" selected="@(string.Equals(r.Text(f.Key), o.Value, StringComparison.OrdinalIgnoreCase))">@o.Label</option> }
+                                    </select>
+                                    break;
+                                case GridFilterType.NumberRange:
+                                case GridFilterType.DateRange:
+                                    var type = f.Type == GridFilterType.DateRange ? "date" : "number";
+                                    <div class="input-group input-group-sm">
+                                        <input type="@type" name="@(f.Key)_from" value="@r.Text(f.Key + "_from")" class="form-control" placeholder="từ" aria-label="@f.Label từ" step="any" />
+                                        <span class="input-group-text">–</span>
+                                        <input type="@type" name="@(f.Key)_to" value="@r.Text(f.Key + "_to")" class="form-control" placeholder="đến" aria-label="@f.Label đến" step="any" />
+                                    </div>
+                                    break;
+                                default:
+                                    <input name="@f.Key" value="@r.Text(f.Key)" class="form-control form-control-sm" />
+                                    break;
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="d-flex gap-2 justify-content-end mt-3">
+                    <button type="button" class="btn btn-sm btn-link" data-grid-filter-cancel data-bs-toggle="collapse" data-bs-target="#@panelId">Hủy</button>
+                    <button class="btn btn-sm btn-primary">Áp dụng bộ lọc</button>
+                </div>
+            </div>
+        </div>
+    }
+</form>
+@if (chips.Count > 0)
+{
+    <div class="d-flex flex-wrap gap-2 align-items-center mb-2 small">
+        <span class="text-muted">Đang lọc:</span>
+        @foreach (var c in chips)
+        {
+            <span class="badge rounded-pill text-bg-light border">@c.Text <a href="@c.RemoveUrl" data-grid-link class="text-reset ms-1 text-decoration-none" aria-label="Bỏ lọc">✕</a></span>
+        }
+        <a href="@r.Cleared()" data-grid-link>Xóa tất cả</a>
+    </div>
+}
+@if (Model.Selectable)
+{
+    <form id="@massFormId" method="post" data-grid-mass>
+        <input type="hidden" name="returnUrl" value="@r.Url" />
+    </form>
+}
+<div class="card">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    @if (Model.Selectable)
+                    {
+                        <th style="width: 36px"><input type="checkbox" class="form-check-input" data-grid-select-all aria-label="Chọn tất cả" /></th>
+                    }
+                    @foreach (var c in Model.Columns)
+                    {
+                        <th class="@c.CssClass text-nowrap">
+                            @if (c.SortKey is null) { @c.Label }
+                            else
+                            {
+                                <a href="@r.WithSort(c.SortKey)" data-grid-link class="text-reset text-decoration-none">
+                                    @c.Label
+                                    @if (r.Sort == c.SortKey) { <i class="bi @(r.Desc ? "bi-caret-down-fill" : "bi-caret-up-fill") small"></i> }
+                                    else { <i class="bi bi-chevron-expand small text-muted"></i> }
+                                </a>
+                            }
+                        </th>
+                    }
+                    <th class="text-end" style="width: 1%">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                <partial name="@Model.RowsPartial" model="Model.Rows" view-data="ViewData" />
+                @if (Model.Total == 0)
+                {
+                    <tr><td colspan="@Model.ColumnCount" class="text-center text-muted py-4">@Model.EmptyText</td></tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="d-flex flex-wrap justify-content-between align-items-center mt-2 gap-2 small">
+    <div class="text-muted">Tổng @Model.Total bản ghi</div>
+    <div class="d-flex align-items-center gap-2">
+        <select class="form-select form-select-sm" style="width: auto" data-grid-page-size aria-label="Số dòng mỗi trang">
+            @foreach (var size in GridRequest.PageSizes) { <option value="@r.WithPageSize(size)" selected="@(size == r.PageSize)">@size / trang</option> }
+        </select>
+        @if (Model.TotalPages > 1)
+        {
+            var first = Math.Max(1, r.Page - 3);
+            var last = Math.Min(Model.TotalPages, r.Page + 3);
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(r.Page <= 1 ? "disabled" : "")"><a class="page-link" href="@r.WithPage(Math.Max(1, r.Page - 1))" data-grid-link aria-label="Trang trước">‹</a></li>
+                @for (var i = first; i <= last; i++)
+                {
+                    <li class="page-item @(i == r.Page ? "active" : "")"><a class="page-link" href="@r.WithPage(i)" data-grid-link>@i</a></li>
+                }
+                <li class="page-item @(r.Page >= Model.TotalPages ? "disabled" : "")"><a class="page-link" href="@r.WithPage(Math.Min(Model.TotalPages, r.Page + 1))" data-grid-link aria-label="Trang sau">›</a></li>
+            </ul>
+        }
+    </div>
+</div>

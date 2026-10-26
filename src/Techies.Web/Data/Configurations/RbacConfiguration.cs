@@ -15,12 +15,21 @@ internal sealed class RoleConfiguration : IEntityTypeConfiguration<Role>
         b.HasIndex(r => r.Name).IsUnique();
         b.HasMany(r => r.Permissions).WithOne().HasForeignKey(rp => rp.RoleId).OnDelete(DeleteBehavior.Cascade);
         b.HasData(
-            new Role { Id = SeededRoles.SuperAdmin, Code = "SUPER_ADMIN", Name = "Quản trị viên cao cấp", IsSystem = true,
-                Description = "Toàn quyền, quản lý nhân sự và phân quyền." },
-            new Role { Id = SeededRoles.CatalogStaff, Code = "CATALOG_STAFF", Name = "Nhân viên Kho & Sản phẩm",
-                Description = "Thêm/sửa sản phẩm, thông số, nhập hàng và kiểm kê." },
-            new Role { Id = SeededRoles.OrderStaff, Code = "ORDER_STAFF", Name = "Nhân viên Điều phối & Quầy",
-                Description = "Xử lý đơn hàng, in phiếu giao, tra cứu quà tặng, hỗ trợ khách hàng." });
+            new Role
+            {
+                Id = SeededRoles.SuperAdmin, Code = "SUPER_ADMIN", Name = "Quản trị viên cao cấp", IsSystem = true,
+                Description = "Toàn quyền, quản lý nhân sự và phân quyền."
+            },
+            new Role
+            {
+                Id = SeededRoles.CatalogStaff, Code = "CATALOG_STAFF", Name = "Nhân viên Kho & Sản phẩm",
+                Description = "Thêm/sửa sản phẩm, thông số, nhập hàng và kiểm kê."
+            },
+            new Role
+            {
+                Id = SeededRoles.OrderStaff, Code = "ORDER_STAFF", Name = "Nhân viên Điều phối & Quầy",
+                Description = "Xử lý đơn hàng, in phiếu giao, tra cứu quà tặng, hỗ trợ khách hàng."
+            });
     }
 }
 
