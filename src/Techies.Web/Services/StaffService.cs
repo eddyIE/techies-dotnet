@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
 using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.ViewModels.Staff;
 
 namespace Techies.Web.Services;
@@ -10,8 +11,33 @@ namespace Techies.Web.Services;
 // orders, stock changes and gift hand-overs they handled keep pointing at them.
 public sealed class StaffService(AppDbContext db, TimeProvider clock)
 {
-    public Task<List<Staff>> ListAsync(CancellationToken ct = default) =>
-        db.Staff.AsNoTracking().Include(s => s.Role).OrderBy(s => s.RoleId).ThenBy(s => s.FullName).ToListAsync(ct);
+    public static readonly string[] GridSorts = ["name", "email", "role", "created"];
+
+    public async Task<(List<Staff> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
+    {
+        var query = db.Staff.AsNoTracking().Include(s => s.Role).AsQueryable();
+        if (r.Text("q") is { } q)
+        {
+            var pattern = QueryExtensions.Contains(q);
+            query = query.Where(s => EF.Functions.ILike(s.FullName, pattern) || EF.Functions.ILike(s.Email, pattern)
+                || (s.Phone != null && EF.Functions.ILike(s.Phone, pattern)));
+        }
+        if (r.Int("role") is { } roleId) query = query.Where(s => s.RoleId == roleId);
+        if (r.Enum<AccountStatus>("status") is { } status) query = query.Where(s => s.Status == status);
+
+        query = (r.Sort, r.Desc) switch
+        {
+            ("email", false) => query.OrderBy(s => s.Email),
+            ("email", true) => query.OrderByDescending(s => s.Email),
+            ("role", false) => query.OrderBy(s => s.Role.Name).ThenBy(s => s.FullName),
+            ("role", true) => query.OrderByDescending(s => s.Role.Name).ThenBy(s => s.FullName),
+            ("created", false) => query.OrderBy(s => s.CreatedAt),
+            ("created", true) => query.OrderByDescending(s => s.CreatedAt),
+            (_, true) => query.OrderByDescending(s => s.FullName),
+            _ => query.OrderBy(s => s.FullName),
+        };
+        return (await query.Skip((r.Page - 1) * r.PageSize).Take(r.PageSize).ToListAsync(ct), await query.CountAsync(ct));
+    }
 
     public async Task<Staff> GetAsync(Guid id, CancellationToken ct = default) =>
         await db.Staff.FindAsync([id], ct) ?? throw new DomainException("Không tìm thấy nhân viên.");
@@ -65,18 +91,27 @@ public sealed class StaffService(AppDbContext db, TimeProvider clock)
     // Locking takes effect on the person's next request (cookie re-validation).
     public async Task<AccountStatus> ToggleLockAsync(Guid id, Guid actingStaffId, CancellationToken ct = default)
     {
+        var current = await db.Staff.AsNoTracking().Where(s => s.Id == id).Select(s => (AccountStatus?)s.Status).SingleOrDefaultAsync(ct)
+            ?? throw new DomainException("Không tìm thấy nhân viên.");
+        var target = current == AccountStatus.Active ? AccountStatus.Locked : AccountStatus.Active;
+        await SetStatusAsync(id, target, actingStaffId, ct);
+        return target;
+    }
+
+    // Explicit target status, for mass actions over mixed rows.
+    public async Task SetStatusAsync(Guid id, AccountStatus target, Guid actingStaffId, CancellationToken ct = default)
+    {
         await using var tx = await BeginGuardedAsync(ct);
         var staff = await LockedAsync(id, ct);
-        if (staff.Status == AccountStatus.Active)
+        if (staff.Status == AccountStatus.Active && target == AccountStatus.Locked)
         {
             if (id == actingStaffId) throw new DomainException("Bạn không thể tự khóa tài khoản của chính mình.");
             if (staff.RoleId == SeededRoles.SuperAdmin) await EnsureAnotherActiveSuperAdminAsync(id, ct);
         }
-        staff.Status = staff.Status == AccountStatus.Active ? AccountStatus.Locked : AccountStatus.Active;
+        staff.Status = target;
         staff.UpdatedAt = clock.GetUtcNow();
         await db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);
-        return staff.Status;
     }
 
     // Lock every Super Admin row first, so two admins locking or demoting each other at the

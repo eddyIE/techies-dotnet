@@ -1,35 +1,9 @@
-@model List<Staff>
-@{
-    ViewData["Title"] = "Nhân sự & Phân quyền";
-    var me = User.UserId();
+@model Techies.Web.Infrastructure.Grid.GridModel
+@{ ViewData["Title"] = "Nhân sự"; }
+@if (true)
+{
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-area="Admin" asp-controller="Staff" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm nhân viên mới</a>
+    </div>
 }
-<div class="d-flex justify-content-end mb-3">
-    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-person-plus"></i> Thêm nhân viên mới</a>
-</div>
-<div class="card">
-    <table class="table mb-0">
-        <thead><tr><th>Nhân viên</th><th>Email</th><th>Điện thoại</th><th>Vai trò</th><th>Trạng thái</th><th></th></tr></thead>
-        <tbody>
-        @foreach (var s in Model)
-        {
-            var locked = s.Status == AccountStatus.Locked;
-            <tr class="@(locked ? "text-muted" : "")">
-                <td>@s.FullName @if (s.Id == me) { <span class="badge text-bg-light">Bạn</span> }</td>
-                <td class="small">@s.Email</td>
-                <td class="small">@s.Phone</td>
-                <td class="small">@s.Role.Name</td>
-                <td>@if (locked) { <span class="badge text-bg-danger">Đã khóa</span> } else { <span class="badge text-bg-success">Đang hoạt động</span> }</td>
-                <td class="text-end text-nowrap">
-                    @if (s.Id != me)
-                    {
-                        <form asp-action="ToggleLock" asp-route-id="@s.Id" method="post" class="d-inline" onsubmit="return confirm('@(locked ? "Mở khóa tài khoản này?" : "Khóa tài khoản này? Nhân viên sẽ bị đăng xuất ngay.")')">
-                            <button class="btn btn-sm @(locked ? "btn-outline-success" : "btn-outline-danger")">@(locked ? "Mở khóa" : "Khóa")</button>
-                        </form>
-                    }
-                    <a asp-action="Edit" asp-route-id="@s.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
-                </td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
+<div data-grid id="staff-grid"><partial name="_Grid" model="Model" /></div>

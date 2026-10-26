@@ -325,7 +325,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: manual.
   - Files: `InventoryController.cs`, `CategoriesController.cs`, views
 
-- [ ] **Task 40: Coupons, gifts, staff and roles grids** (M) · deps: 35, 36
+- [x] **Task 40: Coupons, gifts, staff and roles grids** (M) · deps: 35, 36
   - Acceptance: coupons (status filter computed from dates, mass Tạm dừng/Kích hoạt), gifts (tier,
     stock, active; mass Mở đổi/Tạm khóa), staff (role, status; mass Khóa/Mở khóa respecting guards),
     roles (row actions; delete blocked).

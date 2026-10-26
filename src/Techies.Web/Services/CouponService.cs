@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
 using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.ViewModels.Promotions;
 
 namespace Techies.Web.Services;
@@ -24,8 +25,48 @@ public sealed class CouponService(AppDbContext db, TimeProvider clock)
             ? new CouponEvaluation(true, Math.Min(coupon.DiscountAmount, subtotal), null)
             : new CouponEvaluation(false, 0, NotApplicable);
 
-    public Task<List<Coupon>> ListAsync(CancellationToken ct = default) =>
-        db.Coupons.AsNoTracking().OrderByDescending(c => c.CreatedAt).ToListAsync(ct);
+    public static readonly string[] GridSorts = ["code", "discount", "min", "starts", "expires", "created"];
+
+    public async Task<(List<Coupon> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
+    {
+        var now = clock.GetUtcNow();
+        var query = db.Coupons.AsNoTracking();
+        if (r.Text("q") is { } q)
+        {
+            var pattern = QueryExtensions.Contains(q);
+            query = query.Where(c => EF.Functions.ILike(c.Code, pattern) || (c.Description != null && EF.Functions.ILike(c.Description, pattern)));
+        }
+        // Same precedence as StatusAt: paused, then not started, then expired.
+        query = r.Enum<CouponStatus>("status") switch
+        {
+            CouponStatus.Paused => query.Where(c => !c.Active),
+            CouponStatus.NotStarted => query.Where(c => c.Active && c.StartsAt > now),
+            CouponStatus.Expired => query.Where(c => c.Active && !(c.StartsAt > now) && c.ExpiresAt <= now),
+            CouponStatus.Running => query.Where(c => c.Active && !(c.StartsAt > now) && !(c.ExpiresAt <= now)),
+            _ => query,
+        };
+        if (r.Decimal("discount_from") is { } dFrom) query = query.Where(c => c.DiscountAmount >= dFrom);
+        if (r.Decimal("discount_to") is { } dTo) query = query.Where(c => c.DiscountAmount <= dTo);
+        if (r.Date("expires_from") is { } eFrom) { var start = Format.StartOfLocalDay(eFrom); query = query.Where(c => c.ExpiresAt >= start); }
+        if (r.Date("expires_to") is { } eTo) { var end = Format.StartOfLocalDay(eTo.AddDays(1)); query = query.Where(c => c.ExpiresAt < end); }
+
+        query = (r.Sort, r.Desc) switch
+        {
+            ("discount", false) => query.OrderBy(c => c.DiscountAmount),
+            ("discount", true) => query.OrderByDescending(c => c.DiscountAmount),
+            ("min", false) => query.OrderBy(c => c.MinSubtotal),
+            ("min", true) => query.OrderByDescending(c => c.MinSubtotal),
+            ("starts", false) => query.OrderBy(c => c.StartsAt),
+            ("starts", true) => query.OrderByDescending(c => c.StartsAt),
+            ("expires", false) => query.OrderBy(c => c.ExpiresAt),
+            ("expires", true) => query.OrderByDescending(c => c.ExpiresAt),
+            ("created", false) => query.OrderBy(c => c.CreatedAt),
+            ("created", true) => query.OrderByDescending(c => c.CreatedAt),
+            (_, true) => query.OrderByDescending(c => c.Code),
+            _ => query.OrderBy(c => c.Code),
+        };
+        return (await query.Skip((r.Page - 1) * r.PageSize).Take(r.PageSize).ToListAsync(ct), await query.CountAsync(ct));
+    }
 
     public async Task<Coupon> GetAsync(Guid id, CancellationToken ct = default) =>
         await db.Coupons.FindAsync([id], ct) ?? throw new DomainException("Không tìm thấy mã giảm giá.");
@@ -47,12 +88,11 @@ public sealed class CouponService(AppDbContext db, TimeProvider clock)
     }
 
     // "Tạm dừng" / "Kích hoạt lại".
-    public async Task<bool> ToggleActiveAsync(Guid id, CancellationToken ct = default)
+    public async Task SetActiveAsync(Guid id, bool active, CancellationToken ct = default)
     {
         var coupon = await GetAsync(id, ct);
-        coupon.Active = !coupon.Active;
+        coupon.Active = active;
         await db.SaveChangesAsync(ct);
-        return coupon.Active;
     }
 
     private async Task ApplyAsync(Coupon coupon, CouponForm form, CancellationToken ct)

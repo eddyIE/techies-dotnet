@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
 using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.ViewModels.Staff;
 
 namespace Techies.Web.Services;
@@ -12,11 +13,28 @@ public sealed class RoleService(AppDbContext db)
     public Task<List<Role>> ListAsync(CancellationToken ct = default) =>
         db.Roles.AsNoTracking().OrderBy(r => r.Id).ToListAsync(ct);
 
-    public Task<List<RoleRow>> RowsAsync(CancellationToken ct = default) =>
-        db.Roles.AsNoTracking().OrderBy(r => r.Id)
-            .Select(r => new RoleRow(r.Id, r.Name, r.Description, r.IsSystem, db.Staff.Count(s => s.RoleId == r.Id),
-                r.IsSystem ? Permissions.All.Count : r.Permissions.Count))
+    public static readonly string[] GridSorts = ["name", "staff", "permissions"];
+
+    public async Task<(List<RoleRow> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
+    {
+        var query = db.Roles.AsNoTracking();
+        if (r.Text("q") is { } q) query = query.Where(x => EF.Functions.ILike(x.Name, QueryExtensions.Contains(q)));
+        query = (r.Sort, r.Desc) switch
+        {
+            ("staff", false) => query.OrderBy(x => db.Staff.Count(s => s.RoleId == x.Id)).ThenBy(x => x.Name),
+            ("staff", true) => query.OrderByDescending(x => db.Staff.Count(s => s.RoleId == x.Id)).ThenBy(x => x.Name),
+            ("permissions", false) => query.OrderBy(x => x.IsSystem).ThenBy(x => x.Permissions.Count),
+            ("permissions", true) => query.OrderByDescending(x => x.IsSystem).ThenByDescending(x => x.Permissions.Count),
+            ("name", true) => query.OrderByDescending(x => x.Name),
+            ("name", false) => query.OrderBy(x => x.Name),
+            _ => query.OrderBy(x => x.Id),
+        };
+        var rows = await query.Skip((r.Page - 1) * r.PageSize).Take(r.PageSize)
+            .Select(x => new RoleRow(x.Id, x.Name, x.Description, x.IsSystem, db.Staff.Count(s => s.RoleId == x.Id),
+                x.IsSystem ? Permissions.All.Count : x.Permissions.Count))
             .ToListAsync(ct);
+        return (rows, await query.CountAsync(ct));
+    }
 
     public async Task<Role> GetAsync(int id, CancellationToken ct = default) =>
         await db.Roles.Include(r => r.Permissions).SingleOrDefaultAsync(r => r.Id == id, ct)

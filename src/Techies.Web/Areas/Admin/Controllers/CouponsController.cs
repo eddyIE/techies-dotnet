@@ -2,19 +2,53 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Techies.Web.Domain;
 using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.Services;
 using Techies.Web.ViewModels.Promotions;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
 [RequirePermission(Permissions.CouponsView)]
-public sealed class CouponsController(CouponService coupons, TimeProvider clock) : AdminController
+public sealed class CouponsController(CouponService coupons, CurrentStaff staff, TimeProvider clock) : AdminController
 {
     public async Task<IActionResult> Index()
     {
-        ViewData["Now"] = clock.GetUtcNow();
-        return View(await coupons.ListAsync());
+        var request = GridRequest.From(Request.Path, Request.QueryString, CouponService.GridSorts, "code", false);
+        var (rows, total) = await coupons.GridAsync(request);
+        var canManage = await staff.HasAsync(Permissions.CouponsManage);
+        var now = clock.GetUtcNow();
+        ViewData["Now"] = now;
+        return GridView(new GridModel
+        {
+            Id = "coupons", Request = request, Total = total, RowsPartial = "_CouponRows",
+            KeywordPlaceholder = "Mã hoặc mô tả...",
+            Columns = [new("Mã", "code"), new("Mô tả"), new("Giảm", "discount", "text-end"), new("Đơn tối thiểu", "min", "text-end"),
+                new("Bắt đầu", "starts"), new("Hết hạn", "expires"), new("Trạng thái")],
+            Filters =
+            [
+                new("status", "Trạng thái", GridFilterType.Select, Enum.GetValues<CouponStatus>().Select(s => new GridOption(s.ToString(), Labels.For(s).Text)).ToList()),
+                new("discount", "Số tiền giảm (VNĐ)", GridFilterType.NumberRange, Money: true),
+                new("expires", "Ngày hết hạn", GridFilterType.DateRange),
+            ],
+            MassActions = canManage ? [new("Tạm dừng", Url.Action(nameof(MassPause))!), new("Kích hoạt", Url.Action(nameof(MassActivate))!)] : [],
+            Rows = rows.Select(c => (c, canManage
+                ? new List<GridRowAction>
+                {
+                    new("Sửa", Url.Action(nameof(Edit), new { id = c.Id })!),
+                    c.Active ? new("Tạm dừng", Url.Action(nameof(MassPause), new { ids = c.Id })!, Post: true)
+                             : new("Kích hoạt", Url.Action(nameof(MassActivate), new { ids = c.Id })!, Post: true),
+                }
+                : [])).ToList(),
+        });
     }
+
+    [HttpPost, RequirePermission(Permissions.CouponsManage)]
+    public Task<IActionResult> MassPause(List<Guid> ids, string? returnUrl) =>
+        MassAsync(ids, id => coupons.SetActiveAsync(id, false), "tạm dừng", returnUrl);
+
+    [HttpPost, RequirePermission(Permissions.CouponsManage)]
+    public Task<IActionResult> MassActivate(List<Guid> ids, string? returnUrl) =>
+        MassAsync(ids, id => coupons.SetActiveAsync(id, true), "kích hoạt", returnUrl);
 
     [HttpGet, RequirePermission(Permissions.CouponsManage)]
     public IActionResult Create() => FormView(new CouponForm(), null);
@@ -64,13 +98,6 @@ public sealed class CouponsController(CouponService coupons, TimeProvider clock)
         }
     }
 
-    [HttpPost, RequirePermission(Permissions.CouponsManage)]
-    public async Task<IActionResult> Toggle(Guid id)
-    {
-        var active = await coupons.ToggleActiveAsync(id);
-        TempData["Success"] = active ? "Đã kích hoạt lại mã." : "Đã tạm dừng mã.";
-        return RedirectToAction(nameof(Index));
-    }
 
     private ViewResult FormView(CouponForm form, Guid? id)
     {

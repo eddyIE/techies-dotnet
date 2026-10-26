@@ -1,27 +1,9 @@
-@model List<Gift>
-@{
-    ViewData["Title"] = "Quà tặng đổi điểm";
-    var tiers = ((List<MembershipTier>)ViewData["Tiers"]!).ToDictionary(t => t.Tier, t => t.Name);
+@model Techies.Web.Infrastructure.Grid.GridModel
+@{ ViewData["Title"] = "Quà tặng đổi điểm"; }
+@if (await Staff.HasAsync(Permissions.GiftsManage))
+{
+    <div class="d-flex justify-content-end mb-3">
+        <a asp-area="Admin" asp-controller="Gifts" asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm quà</a>
+    </div>
 }
-<div class="d-flex justify-content-end mb-3">
-    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm quà</a>
-</div>
-<div class="card">
-    <table class="table mb-0">
-        <thead><tr><th style="width:64px"></th><th>Quà tặng</th><th class="text-end">Điểm</th><th>Hạng tối thiểu</th><th class="text-end">Còn lại</th><th>Trạng thái</th><th></th></tr></thead>
-        <tbody>
-        @foreach (var g in Model)
-        {
-            <tr>
-                <td><img src="@g.ImageUrl" alt="" width="48" height="48" class="rounded" style="object-fit:cover" onerror="this.style.visibility='hidden'" /></td>
-                <td>@g.Name<div class="small text-muted">@g.Description</div></td>
-                <td class="text-end">@g.PointsCost.ToString("#,0", Format.Vietnamese)</td>
-                <td>@tiers.GetValueOrDefault(g.MinTier)</td>
-                <td class="text-end">@if (g.StockAvailable == 0) { <span class="badge text-bg-danger">Hết quà</span> } else { @g.StockAvailable }</td>
-                <td>@if (g.Active) { <span class="badge text-bg-success">Mở đổi</span> } else { <span class="badge text-bg-secondary">Tạm khóa</span> }</td>
-                <td class="text-end"><a asp-action="Edit" asp-route-id="@g.Id" class="btn btn-sm btn-outline-primary">Sửa</a></td>
-            </tr>
-        }
-        </tbody>
-    </table>
-</div>
+<div data-grid id="gifts-grid"><partial name="_Grid" model="Model" /></div>

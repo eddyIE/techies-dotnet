@@ -1,0 +1,17 @@
+@model List<(Coupon Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@{ var now = (DateTimeOffset)ViewData["Now"]!; }
+@foreach (var (c, actions) in Model)
+{
+    var (text, badge) = Labels.For(Techies.Web.Services.CouponService.StatusAt(c, now));
+    <tr>
+        <partial name="_GridSelect" model="c.Id.ToString()" view-data="ViewData" />
+        <td class="fw-semibold font-monospace">@c.Code</td>
+        <td class="small">@c.Description</td>
+        <td class="text-end">@Format.Money(c.DiscountAmount)</td>
+        <td class="text-end">@Format.Money(c.MinSubtotal)</td>
+        <td class="small">@(c.StartsAt is null ? "" : Format.LocalTime(c.StartsAt.Value))</td>
+        <td class="small">@(c.ExpiresAt is null ? "" : Format.LocalTime(c.ExpiresAt.Value))</td>
+        <td><span class="badge @badge">@text</span></td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

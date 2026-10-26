@@ -1,0 +1,20 @@
+@model List<(Techies.Web.ViewModels.Staff.RoleRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@foreach (var (r, actions) in Model)
+{
+    <tr>
+        @if (r.IsSystem)
+        {
+            var grid = (Techies.Web.Infrastructure.Grid.GridModel)ViewData["Grid"]!;
+            @if (grid.Selectable) { <td></td> }
+        }
+        else
+        {
+            <partial name="_GridSelect" model="r.Id.ToString()" view-data="ViewData" />
+        }
+        <td>@r.Name @if (r.IsSystem) { <span class="badge text-bg-dark">Hệ thống</span> }</td>
+        <td class="small text-muted">@r.Description</td>
+        <td class="text-end">@r.StaffCount</td>
+        <td class="text-end">@(r.IsSystem ? "Toàn quyền" : $"{r.PermissionCount}/{Permissions.All.Count}")</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

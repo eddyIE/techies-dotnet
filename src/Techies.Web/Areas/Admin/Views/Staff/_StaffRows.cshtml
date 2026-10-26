@@ -1,0 +1,15 @@
+@model List<(Staff Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@{ var me = User.UserId(); }
+@foreach (var (s, actions) in Model)
+{
+    var locked = s.Status == AccountStatus.Locked;
+    <tr class="@(locked ? "text-muted" : "")">
+        <partial name="_GridSelect" model="s.Id.ToString()" view-data="ViewData" />
+        <td>@s.FullName @if (s.Id == me) { <span class="badge text-bg-light">Bạn</span> }</td>
+        <td class="small">@s.Email</td>
+        <td class="small">@s.Phone</td>
+        <td class="small">@s.Role.Name</td>
+        <td>@if (locked) { <span class="badge text-bg-danger">Đã khóa</span> } else { <span class="badge text-bg-success">Đang hoạt động</span> }</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

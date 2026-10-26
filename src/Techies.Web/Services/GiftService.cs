@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
+using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.ViewModels.Loyalty;
 
 namespace Techies.Web.Services;
@@ -12,8 +14,41 @@ public sealed record RedemptionView(Guid Id, string Code, string GiftName, strin
 // BRD §5: gift catalogue and counter claims.
 public sealed class GiftService(AppDbContext db, TimeProvider clock)
 {
-    public Task<List<Gift>> ListAsync(CancellationToken ct = default) =>
-        db.Gifts.AsNoTracking().OrderBy(g => g.MinTier).ThenBy(g => g.PointsCost).ToListAsync(ct);
+    public static readonly string[] GridSorts = ["name", "points", "tier", "stock"];
+
+    public async Task<(List<Gift> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
+    {
+        var query = db.Gifts.AsNoTracking();
+        if (r.Text("q") is { } q) query = query.Where(g => EF.Functions.ILike(g.Name, QueryExtensions.Contains(q)));
+        if (r.Int("tier") is { } tier) query = query.Where(g => g.MinTier == tier);
+        if (r.Decimal("points_from") is { } pFrom) query = query.Where(g => g.PointsCost >= pFrom);
+        if (r.Decimal("points_to") is { } pTo) query = query.Where(g => g.PointsCost <= pTo);
+        if (r.Int("stock_from") is { } sFrom) query = query.Where(g => g.StockAvailable >= sFrom);
+        if (r.Int("stock_to") is { } sTo) query = query.Where(g => g.StockAvailable <= sTo);
+        if (r.Bool("active") is { } active) query = query.Where(g => g.Active == active);
+
+        query = (r.Sort, r.Desc) switch
+        {
+            ("name", false) => query.OrderBy(g => g.Name),
+            ("name", true) => query.OrderByDescending(g => g.Name),
+            ("tier", false) => query.OrderBy(g => g.MinTier).ThenBy(g => g.PointsCost),
+            ("tier", true) => query.OrderByDescending(g => g.MinTier).ThenBy(g => g.PointsCost),
+            ("stock", false) => query.OrderBy(g => g.StockAvailable).ThenBy(g => g.Name),
+            ("stock", true) => query.OrderByDescending(g => g.StockAvailable).ThenBy(g => g.Name),
+            (_, true) => query.OrderByDescending(g => g.PointsCost),
+            _ => query.OrderBy(g => g.PointsCost),
+        };
+        return (await query.Skip((r.Page - 1) * r.PageSize).Take(r.PageSize).ToListAsync(ct), await query.CountAsync(ct));
+    }
+
+    // "Mở đổi" / "Tạm khóa" a gift.
+    public async Task SetActiveAsync(Guid id, bool active, CancellationToken ct = default)
+    {
+        var gift = await GetAsync(id, ct);
+        gift.Active = active;
+        gift.UpdatedAt = clock.GetUtcNow();
+        await db.SaveChangesAsync(ct);
+    }
 
     public async Task<Gift> GetAsync(Guid id, CancellationToken ct = default) =>
         await db.Gifts.FindAsync([id], ct) ?? throw new DomainException("Không tìm thấy quà tặng.");
