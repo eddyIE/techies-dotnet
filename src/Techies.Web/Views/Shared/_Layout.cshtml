@@ -17,10 +17,13 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="shopNav">
-                    <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Trang chủ</a></li>
+                    <ul class="navbar-nav me-3">
+                        <li class="nav-item"><a class="nav-link" asp-area="" asp-controller="Products" asp-action="Index">Sản phẩm</a></li>
                     </ul>
-                    @await RenderSectionAsync("NavRight", required: false)
+                    <form class="d-flex flex-grow-1 me-3 my-2 my-md-0" role="search" method="get" action="/san-pham">
+                        <input class="form-control" type="search" name="q" value="@Context.Request.Query["q"]" placeholder="Bạn cần tìm gì?" aria-label="Tìm kiếm" />
+                    </form>
+                    <partial name="_CartLink" />
                     <partial name="_ShopUserNav" />
                 </div>
             </div>

@@ -1,2 +1,25 @@
+@model Techies.Web.ViewModels.Shop.HomeModel
 @{ ViewData["Title"] = "Trang chủ"; }
-<h1 class="h3">Chào mừng đến Techies</h1>
+<div class="p-4 p-md-5 mb-4 rounded-3 text-white" style="background: linear-gradient(120deg, #0d6efd, #6610f2)">
+    <h1 class="display-6 fw-bold">Đồ công nghệ chính hãng</h1>
+    <p class="lead mb-0">Điện thoại, laptop, tivi và phụ kiện — giao tận nơi, thanh toán khi nhận hàng.</p>
+</div>
+<h2 class="h5 mb-3">Danh mục</h2>
+<div class="row row-cols-3 row-cols-md-6 g-3 mb-5">
+    @foreach (var c in Model.Categories)
+    {
+        <div class="col">
+            <a asp-controller="Products" asp-action="Category" asp-route-slug="@c.Slug" class="card text-center text-decoration-none text-reset h-100">
+                <img src="@c.ImageUrl" alt="" class="card-img-top p-2" style="aspect-ratio:1;object-fit:cover" loading="lazy" onerror="this.src='/img/placeholder.svg'" />
+                <div class="card-body p-2 small fw-semibold">@c.Name</div>
+            </a>
+        </div>
+    }
+</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="h5 mb-0">Sản phẩm mới</h2>
+    <a asp-controller="Products" asp-action="Index">Xem tất cả <i class="bi bi-arrow-right"></i></a>
+</div>
+<div class="row row-cols-2 row-cols-md-4 g-3">
+    @foreach (var p in Model.Latest) { <div class="col"><partial name="_ProductCard" model="p" /></div> }
+</div>

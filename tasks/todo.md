@@ -182,7 +182,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 6 — Shop
 
-- [ ] **Task 22: Shop home, listing and product detail** (M) · deps: 21
+- [x] **Task 22: Shop home, listing and product detail** (M) · deps: 21
   - Acceptance: home (categories + latest), listing by category + search + paging, detail with
     gallery, specs, stock state, reviews + average; inactive products 404 / hidden.
   - Verify: service test — shop query excludes inactive products; manual.

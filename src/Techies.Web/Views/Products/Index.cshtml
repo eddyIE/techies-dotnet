@@ -1,0 +1,11 @@
+@model Paged<Techies.Web.ViewModels.Shop.ProductCard>
+@{ ViewData["Title"] = ViewData["Heading"]; }
+<h1 class="h4 mb-3">@ViewData["Heading"] <small class="text-muted fs-6">(@Model.Total sản phẩm)</small></h1>
+@if (Model.Items.Count == 0)
+{
+    <p class="text-muted">Không tìm thấy sản phẩm phù hợp.</p>
+}
+<div class="row row-cols-2 row-cols-md-4 g-3">
+    @foreach (var p in Model.Items) { <div class="col"><partial name="_ProductCard" model="p" /></div> }
+</div>
+<partial name="_Pager" model="Model.TotalPages" />
