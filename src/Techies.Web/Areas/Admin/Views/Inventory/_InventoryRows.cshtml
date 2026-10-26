@@ -1,0 +1,15 @@
+@model List<(Techies.Web.ViewModels.Catalog.ProductRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@foreach (var (p, actions) in Model)
+{
+    <tr>
+        <td><a asp-area="Admin" asp-controller="Inventory" asp-action="Details" asp-route-id="@p.Id">@p.Name</a></td>
+        <td class="text-muted small">@p.CategoryName</td>
+        <td class="text-end">
+            @if (p.Available == 0) { <span class="badge text-bg-danger">0</span> }
+            else if (p.Available <= DashboardQueries.LowStockThreshold) { <span class="badge text-bg-warning">@p.Available</span> }
+            else { @p.Available }
+        </td>
+        <td>@if (p.Active) { <span class="badge text-bg-success">Đang bán</span> } else { <span class="badge text-bg-secondary">Ngừng bán</span> }</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

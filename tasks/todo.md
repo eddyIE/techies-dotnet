@@ -320,7 +320,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service tests for rating-range filter and bulk lock; manual.
   - Files: `Services/CustomerQueries.cs`, `Services/ReviewQueries.cs`, controllers, views, tests
 
-- [ ] **Task 39: Inventory and categories grids** (S) · deps: 36
+- [x] **Task 39: Inventory and categories grids** (S) · deps: 36
   - Acceptance: both listings on the grid (filters, sorts, row actions; no mass actions).
   - Verify: manual.
   - Files: `InventoryController.cs`, `CategoriesController.cs`, views

@@ -2,12 +2,34 @@ using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
 using Techies.Web.Infrastructure;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.ViewModels.Catalog;
 
 namespace Techies.Web.Services;
 
+public sealed record CategoryRow(Guid Id, string Name, string Slug, string? ImageUrl, int DisplayOrder, int ProductCount);
+
 public sealed class CategoryService(AppDbContext db)
 {
+    public static readonly string[] GridSorts = ["order", "name", "products"];
+
+    public async Task<(List<CategoryRow> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
+    {
+        var query = db.Categories.AsNoTracking();
+        if (r.Text("q") is { } q) query = query.Where(c => EF.Functions.ILike(c.Name, QueryExtensions.Contains(q)));
+        query = (r.Sort, r.Desc) switch
+        {
+            ("name", false) => query.OrderBy(c => c.Name),
+            ("name", true) => query.OrderByDescending(c => c.Name),
+            ("products", false) => query.OrderBy(c => db.Products.Count(p => p.CategoryId == c.Id)).ThenBy(c => c.Name),
+            ("products", true) => query.OrderByDescending(c => db.Products.Count(p => p.CategoryId == c.Id)).ThenBy(c => c.Name),
+            (_, true) => query.OrderByDescending(c => c.DisplayOrder).ThenBy(c => c.Name),
+            _ => query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name),
+        };
+        var rows = query.Select(c => new CategoryRow(c.Id, c.Name, c.Slug, c.ImageUrl, c.DisplayOrder, db.Products.Count(p => p.CategoryId == c.Id)));
+        return (await rows.Skip((r.Page - 1) * r.PageSize).Take(r.PageSize).ToListAsync(ct), await query.CountAsync(ct));
+    }
+
     public Task<List<Category>> ListAsync(CancellationToken ct = default) =>
         db.Categories.AsNoTracking().OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name).ToListAsync(ct);
 

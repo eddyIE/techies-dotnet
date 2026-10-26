@@ -1,13 +1,17 @@
+using Microsoft.AspNetCore.Http;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.Services;
-using Techies.Web.ViewModels.Catalog;
 
 namespace Techies.Tests.Services;
 
 [Collection(PostgresCollection.Name)]
 public class ProductQueryTests(PostgresFixture fixture)
 {
+    private static GridRequest Request(string query) =>
+        GridRequest.From("/admin/products", new QueryString(query), ProductService.GridSorts, "name", false);
+
     [Fact]
-    public async Task Search_matches_name_case_insensitively()
+    public async Task Keyword_matches_name_case_insensitively()
     {
         await using var db = await fixture.CreateContextAsync();
         var phones = TestData.Category(db);
@@ -15,13 +19,13 @@ public class ProductQueryTests(PostgresFixture fixture)
         TestData.Product(db, phones, "Samsung Galaxy S24");
         await db.SaveChangesAsync();
 
-        var page = await new ProductService(db).SearchAsync(new ProductFilter { Q = "IPHONE" });
+        var (rows, _) = await new ProductService(db).GridAsync(Request("?q=IPHONE"));
 
-        Assert.Equal(["iPhone 15 Pro"], page.Items.Select(p => p.Name));
+        Assert.Equal(["iPhone 15 Pro"], rows.Select(p => p.Name));
     }
 
     [Fact]
-    public async Task Filters_combine_category_out_of_stock_and_active()
+    public async Task Category_out_of_stock_and_active_filters_combine()
     {
         await using var db = await fixture.CreateContextAsync();
         var phones = TestData.Category(db);
@@ -32,24 +36,22 @@ public class ProductQueryTests(PostgresFixture fixture)
         TestData.Product(db, laptops, "Laptop hết hàng", available: 0);
         await db.SaveChangesAsync();
 
-        var page = await new ProductService(db).SearchAsync(
-            new ProductFilter { CategoryId = phones.Id, OutOfStock = true, Active = true });
+        var (rows, _) = await new ProductService(db).GridAsync(Request($"?category={phones.Id}&stock_to=0&active=true"));
 
-        Assert.Equal(["Hết hàng, đang bán"], page.Items.Select(p => p.Name));
+        Assert.Equal(["Hết hàng, đang bán"], rows.Select(p => p.Name));
     }
 
     [Fact]
-    public async Task Results_are_paged_20_per_page()
+    public async Task Unknown_sort_key_falls_back_to_name()
     {
         await using var db = await fixture.CreateContextAsync();
         var phones = TestData.Category(db);
-        for (var i = 1; i <= 25; i++) TestData.Product(db, phones, $"Máy {i:00}");
+        TestData.Product(db, phones, "B", price: 1);
+        TestData.Product(db, phones, "A", price: 2);
         await db.SaveChangesAsync();
 
-        var page2 = await new ProductService(db).SearchAsync(new ProductFilter { Page = 2 });
+        var (rows, _) = await new ProductService(db).GridAsync(Request("?sort=password_hash&dir=desc"));
 
-        Assert.Equal(25, page2.Total);
-        Assert.Equal(5, page2.Items.Count);
-        Assert.Equal(2, page2.TotalPages);
+        Assert.Equal(["A", "B"], rows.Select(p => p.Name));
     }
 }

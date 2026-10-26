@@ -46,6 +46,26 @@ public class CategoryServiceTests(PostgresFixture fixture)
     }
 
     [Fact]
+    public async Task Grid_counts_products_and_sorts_by_display_order()
+    {
+        await using var db = await fixture.CreateContextAsync();
+        var laptops = TestData.Category(db, "Laptop");
+        laptops.DisplayOrder = 2;
+        var phones = TestData.Category(db, "Điện thoại");
+        phones.DisplayOrder = 1;
+        TestData.Product(db, laptops, "A");
+        TestData.Product(db, laptops, "B");
+        await db.SaveChangesAsync();
+        var request = Web.Infrastructure.Grid.GridRequest.From("/admin/categories", new Microsoft.AspNetCore.Http.QueryString(""),
+            CategoryService.GridSorts, "order", false);
+
+        var (rows, total) = await new CategoryService(db).GridAsync(request);
+
+        Assert.Equal(2, total);
+        Assert.Equal([("Điện thoại", 0), ("Laptop", 2)], rows.Select(r => (r.Name, r.ProductCount)));
+    }
+
+    [Fact]
     public async Task Get_unknown_category_throws()
     {
         await using var db = await fixture.CreateContextAsync();

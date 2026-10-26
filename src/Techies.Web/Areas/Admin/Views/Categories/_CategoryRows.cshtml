@@ -1,0 +1,12 @@
+@model List<(Techies.Web.Services.CategoryRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@foreach (var (c, actions) in Model)
+{
+    <tr>
+        <td style="width:56px"><img src="@c.ImageUrl" alt="" class="rounded" width="40" height="40" style="object-fit:cover" loading="lazy" onerror="this.style.visibility='hidden'" /></td>
+        <td>@c.Name</td>
+        <td class="text-muted small">@c.Slug</td>
+        <td class="text-end">@c.ProductCount</td>
+        <td class="text-end">@c.DisplayOrder</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}
