@@ -201,7 +201,8 @@ Acceptance:
   idempotent (seeder skips when data exists).
 - `/` renders the shop layout; `/admin` renders the admin layout (sidebar, top bar, flash
   messages from `TempData`).
-- Culture `vi-VN`; money and date helpers produce `1.234.000đ` and `26/10/2026 14:05`. **[test]**
+- Display uses vi-VN via explicit helpers (`Format.Money` → `1.234.000đ`, `Format.LocalTime` →
+  `26/10/2026 14:05`); the request culture stays invariant so numeric form fields bind reliably. **[test]**
 - `dotnet test` runs a Testcontainers Postgres fixture with migrations applied.
 - Image upload helper: accepts jpg/png/webp ≤ 2 MB, stores under `wwwroot/uploads/<yyyy>/<guid>.<ext>`,
   returns the URL; anything else is rejected with a Vietnamese message.

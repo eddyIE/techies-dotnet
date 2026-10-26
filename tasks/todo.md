@@ -22,7 +22,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     starts against `docker compose up -d db`.
   - Files: `Data/AppDbContext.cs`, `Data/Seed/DbSeeder.cs`, `Program.cs`, `tests/Techies.Tests/PostgresFixture.cs`
 
-- [ ] **Task 3: Layouts, culture and formatting** (M) · deps: 1
+- [x] **Task 3: Layouts, culture and formatting** (M) · deps: 1
   - Acceptance: shop `_Layout` and admin `_AdminLayout` (Bootstrap 5, Bootstrap Icons, sidebar
     placeholder, flash messages from `TempData`); vi-VN culture; `Format.Money` → `1.234.000đ`,
     `Format.LocalTime` → `26/10/2026 14:05` in Asia/Ho_Chi_Minh; `DomainException`.

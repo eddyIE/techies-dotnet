@@ -1,17 +1,12 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Techies.Web.Models;
+using Techies.Web.ViewModels;
 
 namespace Techies.Web.Controllers;
 
 public class HomeController : Controller
 {
     public IActionResult Index()
-    {
-        return View();
-    }
-
-    public IActionResult Privacy()
     {
         return View();
     }

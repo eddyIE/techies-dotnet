@@ -1,0 +1,5 @@
+.admin-sidebar { width: 240px; }
+.admin-sidebar .nav-link { color: rgba(255, 255, 255, .75); border-radius: .375rem; }
+.admin-sidebar .nav-link:hover, .admin-sidebar .nav-link.active { color: #fff; background: rgba(255, 255, 255, .1); }
+.admin-sidebar .nav-section { font-size: .75rem; text-transform: uppercase; color: rgba(255, 255, 255, .45); margin: 1rem 0 .25rem; }
+.table td, .table th { vertical-align: middle; }

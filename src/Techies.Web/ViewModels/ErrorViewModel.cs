@@ -1,4 +1,4 @@
-namespace Techies.Web.Models;
+namespace Techies.Web.ViewModels;
 
 public class ErrorViewModel
 {
