@@ -1,0 +1,106 @@
+@model Techies.Web.ViewModels.Catalog.ProductForm
+@{
+    var id = ViewData["Id"] as Guid?;
+    var categories = (List<Category>)ViewData["Categories"]!;
+    ViewData["Title"] = id is null ? "Thêm sản phẩm" : "Sửa sản phẩm";
+}
+<form method="post" enctype="multipart/form-data" asp-action="@(id is null ? "Create" : "Edit")" asp-route-id="@id" id="product-form">
+    <div asp-validation-summary="All" class="alert alert-danger py-2"></div>
+    <input type="hidden" asp-for="CurrentThumbnailUrl" />
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card mb-4"><div class="card-body">
+                <div class="mb-3">
+                    <label asp-for="Name" class="form-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="CategoryId" class="form-label"></label>
+                        <select asp-for="CategoryId" class="form-select">
+                            <option value="">-- Chọn danh mục --</option>
+                            @foreach (var c in categories) { <option value="@c.Id">@c.Name</option> }
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="Price" class="form-label"></label>
+                        <input asp-for="Price" type="number" min="1" step="1000" class="form-control"
+                               value="@Model.Price.ToString("0", System.Globalization.CultureInfo.InvariantCulture)" />
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" rows="6" class="form-control"></textarea>
+                </div>
+                <div class="form-check form-switch">
+                    <input asp-for="Active" class="form-check-input" role="switch" />
+                    <label asp-for="Active" class="form-check-label"></label>
+                    <div class="form-text">Tắt để ẩn sản phẩm khỏi cửa hàng; đơn hàng cũ không bị ảnh hưởng.</div>
+                </div>
+            </div></div>
+
+            <div class="card"><div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2 class="h6 mb-0">Thông số kỹ thuật</h2>
+                    <button type="button" class="btn btn-sm btn-outline-primary" data-add-spec><i class="bi bi-plus-lg"></i> Thêm dòng thông số</button>
+                </div>
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Tên thông số</th><th>Giá trị</th><th style="width:48px"></th></tr></thead>
+                    <tbody id="spec-rows">
+                    @foreach (var spec in Model.Specs)
+                    {
+                        <tr data-spec>
+                            <td><input data-field="Name" value="@spec.Name" class="form-control form-control-sm" placeholder="VD: Dung lượng RAM" /></td>
+                            <td><input data-field="Value" value="@spec.Value" class="form-control form-control-sm" placeholder="VD: 8GB" /></td>
+                            <td><button type="button" class="btn btn-sm btn-outline-danger" data-remove title="Xóa dòng"><i class="bi bi-trash"></i></button></td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+                <template id="spec-template">
+                    <tr data-spec>
+                        <td><input data-field="Name" class="form-control form-control-sm" placeholder="VD: Dung lượng RAM" /></td>
+                        <td><input data-field="Value" class="form-control form-control-sm" placeholder="VD: 8GB" /></td>
+                        <td><button type="button" class="btn btn-sm btn-outline-danger" data-remove title="Xóa dòng"><i class="bi bi-trash"></i></button></td>
+                    </tr>
+                </template>
+            </div></div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card mb-4"><div class="card-body">
+                <label asp-for="Thumbnail" class="form-label"></label>
+                @if (Model.CurrentThumbnailUrl is not null)
+                {
+                    <div class="mb-2"><img src="@Model.CurrentThumbnailUrl" alt="" class="rounded border" width="160" height="160" style="object-fit:cover" /></div>
+                }
+                <input asp-for="Thumbnail" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+            </div></div>
+
+            <div class="card"><div class="card-body">
+                <h2 class="h6">Thư viện ảnh</h2>
+                <ul class="list-group mb-3" id="gallery">
+                    @foreach (var url in Model.ExistingImages)
+                    {
+                        <li class="list-group-item d-flex align-items-center gap-2" data-image>
+                            <img src="@url" alt="" width="56" height="56" class="rounded" style="object-fit:cover" />
+                            <input type="hidden" data-field="url" value="@url" />
+                            <span class="flex-grow-1"></span>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-up title="Lên"><i class="bi bi-arrow-up"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary" data-down title="Xuống"><i class="bi bi-arrow-down"></i></button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-remove title="Bỏ ảnh"><i class="bi bi-x-lg"></i></button>
+                        </li>
+                    }
+                </ul>
+                <label asp-for="NewImages" class="form-label"></label>
+                <input asp-for="NewImages" type="file" multiple accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+                <div class="form-text">Có thể chọn nhiều ảnh; mỗi ảnh tối đa 2 MB.</div>
+            </div></div>
+        </div>
+    </div>
+    <div class="mt-4">
+        <button class="btn btn-primary"><i class="bi bi-save"></i> Lưu sản phẩm</button>
+        <a asp-action="Index" class="btn btn-link">Quay lại danh sách</a>
+    </div>
+</form>
+@section Scripts { <script src="~/js/product-form.js" asp-append-version="true"></script> }

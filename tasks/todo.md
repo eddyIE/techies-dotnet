@@ -90,7 +90,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test for the combined query filters; manual.
   - Files: `Services/ProductService.cs`, `Areas/Admin/Controllers/ProductsController.cs` + `Index.cshtml`, tests
 
-- [ ] **Task 11: Product create/edit with images and specs** (M) · deps: 10
+- [x] **Task 11: Product create/edit with images and specs** (M) · deps: 10
   - Acceptance: form with name, category, price > 0, description, thumbnail upload, gallery
     add/remove/reorder, spec rows add/delete (JS), active toggle; new product gets a stock row
     with 0; no delete.
