@@ -22,6 +22,7 @@ public static class AdminMenu
         new("Khuyến mãi & Thành viên", "Quà tặng đổi điểm", "bi-gift", "Gifts", Permissions.GiftsView),
         new("Khuyến mãi & Thành viên", "Hạng thành viên", "bi-award", "Tiers", Permissions.TiersManage),
         new("Hệ thống", "Nhân sự", "bi-person-badge", "Staff", null),
+        new("Hệ thống", "Vai trò & Phân quyền", "bi-shield-lock", "Roles", null),
     ];
 
     public static IEnumerable<AdminMenuItem> For(StaffAccess access) =>

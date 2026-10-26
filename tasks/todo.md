@@ -285,7 +285,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     takes effect next request); manual: each seeded role's menus unchanged.
   - Files: `Infrastructure/AuthSetup.cs`, `Infrastructure/PermissionAuthorization.cs`, `Infrastructure/AdminMenu.cs`, admin controllers/views, tests
 
-- [ ] **Task 35: Role management screen and staff role dropdown** (M) · deps: 34
+- [x] **Task 35: Role management screen and staff role dropdown** (M) · deps: 34
   - Acceptance: role list, create/edit with grouped permission checkboxes, delete blocked while
     assigned; system role read-only; staff form lists roles from the table; Super Admin guards
     use the system role.
@@ -294,7 +294,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Files: `Services/RoleService.cs`, `Areas/Admin/Controllers/RolesController.cs` + views, `Services/StaffService.cs`, tests
 
 ### Checkpoint: RBAC
-- [ ] Build + tests green; seeded staff unchanged; a custom role works end to end.
+- [x] Build + tests green; seeded staff unchanged; a custom role works end to end.
 
 ## Phase 10 — Admin grid
 

@@ -40,7 +40,9 @@ public sealed class PostgresFixture : IAsyncLifetime
 
     private DbContextOptions<AppDbContext> Options(string database)
     {
-        var cs = new NpgsqlConnectionStringBuilder(_container.GetConnectionString()) { Database = database };
+        // No pooling: every test has its own database, and one idle pool per database would
+        // exhaust the server's connection limit as the suite grows.
+        var cs = new NpgsqlConnectionStringBuilder(_container.GetConnectionString()) { Database = database, Pooling = false };
         var builder = new DbContextOptionsBuilder<AppDbContext>();
         DatabaseSetup.Configure(builder, cs.ConnectionString);
         return builder.Options;
