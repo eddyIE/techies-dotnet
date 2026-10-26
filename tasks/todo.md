@@ -230,14 +230,14 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test for the low-rating filter; manual.
   - Files: `Services/ReviewQueries.cs`, `Areas/Admin/Controllers/ReviewsController.cs` + view, tests
 
-- [ ] **Task 29: Staff management** (M) · deps: 6
+- [x] **Task 29: Staff management** (M) · deps: 6
   - Acceptance: list, add (role dropdown, ACTIVE), edit name/phone/role, reset password,
     lock/unlock (SuperAdmin); guards: no self lock/demote, last active Super Admin protected.
   - Verify: service tests for every guard and duplicate email; manual lock → staff signed out.
   - Files: `Services/StaffService.cs`, `Areas/Admin/Controllers/StaffController.cs` + views, tests
 
 ### Checkpoint: Customers & staff
-- [ ] Build + tests green; BRD §6 and §7 work by hand.
+- [x] Build + tests green; BRD §6 and §7 work by hand.
 
 ## Phase 8 — Dashboard & Wrap-up
 

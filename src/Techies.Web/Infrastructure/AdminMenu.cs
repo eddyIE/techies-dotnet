@@ -20,6 +20,7 @@ public static class AdminMenu
         new("Khuyến mãi & Thành viên", "Mã giảm giá", "bi-ticket-perforated", "Coupons", Policies.SuperAdmin),
         new("Khuyến mãi & Thành viên", "Quà tặng đổi điểm", "bi-gift", "Gifts", Policies.SuperAdmin),
         new("Khuyến mãi & Thành viên", "Hạng thành viên", "bi-award", "Tiers", Policies.SuperAdmin),
+        new("Hệ thống", "Nhân sự & Phân quyền", "bi-person-badge", "Staff", Policies.SuperAdmin),
     ];
 
     public static IEnumerable<AdminMenuItem> For(ClaimsPrincipal user) => Items.Where(i => user.Allows(i.Policy));

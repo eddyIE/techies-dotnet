@@ -1,0 +1,46 @@
+@model Techies.Web.ViewModels.Staff.StaffForm
+@{
+    var id = ViewData["Id"] as Guid?;
+    ViewData["Title"] = id is null ? "Thêm nhân viên mới" : "Sửa thông tin nhân viên";
+}
+<div class="row g-4">
+    <div class="col-lg-7">
+        <form method="post" asp-action="@(id is null ? "Create" : "Edit")" asp-route-id="@id" class="card">
+            <div class="card-body">
+                <div asp-validation-summary="All" class="alert alert-danger py-2"></div>
+                <div class="mb-3"><label asp-for="FullName" class="form-label"></label><input asp-for="FullName" class="form-control" /></div>
+                <div class="mb-3">
+                    <label asp-for="Email" class="form-label"></label>
+                    @if (id is null) { <input asp-for="Email" class="form-control" /> }
+                    else { <input asp-for="Email" class="form-control" readonly /> }
+                </div>
+                <div class="mb-3"><label asp-for="Phone" class="form-label"></label><input asp-for="Phone" class="form-control" /></div>
+                @if (id is null)
+                {
+                    <div class="mb-3"><label asp-for="Password" class="form-label"></label><input asp-for="Password" class="form-control" /><div class="form-text">Tối thiểu 8 ký tự.</div></div>
+                }
+                <div class="mb-3">
+                    <label asp-for="Role" class="form-label"></label>
+                    <select asp-for="Role" class="form-select">
+                        @foreach (var role in Enum.GetValues<StaffRole>()) { <option value="@role">@Labels.For(role)</option> }
+                    </select>
+                    <div class="form-text">Nhân viên chỉ thấy các menu thuộc vai trò được gán. Đổi vai trò sẽ đăng xuất phiên hiện tại của họ.</div>
+                </div>
+                <button class="btn btn-primary">Lưu</button>
+                <a asp-action="Index" class="btn btn-link">Quay lại</a>
+            </div>
+        </form>
+    </div>
+    @if (id is not null)
+    {
+        <div class="col-lg-5">
+            <form asp-action="ResetPassword" asp-route-id="@id" method="post" class="card">
+                <div class="card-body">
+                    <h2 class="h6">Cấp lại mật khẩu</h2>
+                    <input type="password" name="newPassword" minlength="8" required class="form-control mb-2" placeholder="Mật khẩu mới (tối thiểu 8 ký tự)" autocomplete="new-password" />
+                    <button class="btn btn-outline-primary">Đặt lại mật khẩu</button>
+                </div>
+            </form>
+        </div>
+    }
+</div>

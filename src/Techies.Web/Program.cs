@@ -31,6 +31,7 @@ builder.Services.AddScoped<CartService>();
 builder.Services.AddScoped<CheckoutService>();
 builder.Services.AddScoped<CustomerQueries>();
 builder.Services.AddScoped<ReviewQueries>();
+builder.Services.AddScoped<StaffService>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(o =>
 {
