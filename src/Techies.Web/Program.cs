@@ -7,6 +7,9 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute()));
 builder.Services.AddAppDatabase(builder.Configuration);
 builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddScoped(sp => new Techies.Web.Infrastructure.ImageStorage(
+    sp.GetRequiredService<IWebHostEnvironment>().WebRootPath,
+    sp.GetRequiredService<TimeProvider>().GetUtcNow()));
 
 var app = builder.Build();
 

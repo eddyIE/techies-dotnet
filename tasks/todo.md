@@ -29,7 +29,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: unit tests for both formatters; `/` and `/admin` render their layouts.
   - Files: `Views/Shared/_Layout.cshtml`, `Areas/Admin/Views/Shared/_AdminLayout.cshtml`, `Infrastructure/Format.cs`, `Domain/DomainException.cs`, `tests/.../Unit/FormatTests.cs`
 
-- [ ] **Task 4: Slug and image upload helpers** (S) · deps: 1
+- [x] **Task 4: Slug and image upload helpers** (S) · deps: 1
   - Acceptance: `Slug.From("Điện thoại Samsung")` → `dien-thoai-samsung`; `ImageStorage`
     accepts jpg/png/webp ≤ 2 MB into `wwwroot/uploads/<yyyy>/<guid>.<ext>`, rejects others
     with a Vietnamese message.
@@ -37,7 +37,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Files: `Infrastructure/Slug.cs`, `Infrastructure/ImageStorage.cs`, tests
 
 ### Checkpoint: Foundation
-- [ ] Build + tests green; fresh `docker compose down -v && up` then `dotnet run` works.
+- [x] Build + tests green; fresh `docker compose down -v && up` then `dotnet run` works.
 
 ## Phase 2 — Identity
 
