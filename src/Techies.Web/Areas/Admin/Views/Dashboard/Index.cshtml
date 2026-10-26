@@ -1,36 +1,101 @@
-@model Techies.Web.Services.RevenueSummary
+@model Techies.Web.Services.DashboardModel
 @using Techies.Web.Services
 @{
     ViewData["Title"] = "Bảng điều khiển";
+    var revenue = Model.Revenue;
+    var topPeriods = new (RevenuePeriod Value, string Label)[]
+    {
+        (RevenuePeriod.Last7Days, "Tuần"), (RevenuePeriod.ThisMonth, "Tháng"), (RevenuePeriod.ThisQuarter, "Quý"), (RevenuePeriod.ThisYear, "Năm"),
+    };
     var periods = new (RevenuePeriod Value, string Label)[]
     {
         (RevenuePeriod.Last7Days, "7 ngày qua"), (RevenuePeriod.ThisMonth, "Tháng này"),
         (RevenuePeriod.ThisQuarter, "Quý này"), (RevenuePeriod.ThisYear, "Năm nay"),
     };
 }
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <a asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.AwaitingPayment" class="card text-decoration-none border-warning h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <i class="bi bi-hourglass-split fs-1 text-warning"></i>
+                <div><div class="display-6 fw-bold text-body">@Model.AwaitingPayment</div><div class="text-muted">Đơn chờ thanh toán</div></div>
+            </div>
+        </a>
+    </div>
+    <div class="col-md-6">
+        <a asp-controller="Orders" asp-action="Index" asp-route-status="@OrderStatus.Confirmed" class="card text-decoration-none border-primary h-100">
+            <div class="card-body d-flex align-items-center gap-3">
+                <i class="bi bi-truck fs-1 text-primary"></i>
+                <div><div class="display-6 fw-bold text-body">@Model.Confirmed</div><div class="text-muted">Đơn đã xác nhận, chờ giao</div></div>
+            </div>
+        </a>
+    </div>
+</div>
 <div class="card mb-4">
     <div class="card-header bg-white d-flex flex-wrap justify-content-between align-items-center gap-2">
         <span class="fw-semibold">Doanh thu thực thu <span class="small text-muted fw-normal">(đơn đã hoàn tất)</span></span>
         <div class="btn-group btn-group-sm" role="group" aria-label="Khoảng thời gian">
             @foreach (var (value, label) in periods)
             {
-                <a asp-action="Index" asp-route-period="@value" class="btn @(Model.Period == value ? "btn-primary" : "btn-outline-primary")">@label</a>
+                <a asp-action="Index" asp-route-period="@value" asp-route-top="@Model.BestSellerPeriod" class="btn @(revenue.Period == value ? "btn-primary" : "btn-outline-primary")">@label</a>
             }
         </div>
     </div>
     <div class="card-body">
         <div class="d-flex align-items-baseline gap-3 mb-3">
-            <div class="fs-2 fw-bold">@Format.Money(Model.Total)</div>
-            @if (Model.ChangePercent is { } change)
+            <div class="fs-2 fw-bold">@Format.Money(revenue.Total)</div>
+            @if (revenue.ChangePercent is { } change)
             {
                 <span class="badge @(change >= 0 ? "text-bg-success" : "text-bg-danger")">
                     <i class="bi @(change >= 0 ? "bi-arrow-up" : "bi-arrow-down")"></i> @Math.Abs(change).ToString("0.#", Format.Vietnamese)%
                 </span>
             }
             else { <span class="badge text-bg-light">—</span> }
-            <span class="small text-muted">so với cùng kỳ trước (@Format.Money(Model.PreviousTotal))</span>
+            <span class="small text-muted">so với cùng kỳ trước (@Format.Money(revenue.PreviousTotal))</span>
         </div>
         <div style="height: 300px"><canvas id="revenue-chart" aria-label="Biểu đồ doanh thu"></canvas></div>
+    </div>
+</div>
+<div class="row g-4">
+    <div class="col-xl-7">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h6 mb-0">Đơn hàng gần đây</h2>
+            <a asp-controller="Orders" asp-action="Index" class="small">Xem tất cả</a>
+        </div>
+        <partial name="_OrderTable" model="Model.RecentOrders" />
+    </div>
+    <div class="col-xl-5">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h6 mb-0">Sản phẩm bán chạy</h2>
+            <div class="btn-group btn-group-sm" role="group" aria-label="Kỳ bán chạy">
+                @foreach (var (value, label) in topPeriods)
+                {
+                    <a asp-action="Index" asp-route-period="@revenue.Period" asp-route-top="@value" class="btn @(Model.BestSellerPeriod == value ? "btn-secondary" : "btn-outline-secondary")">@label</a>
+                }
+            </div>
+        </div>
+        <div class="card">
+            <table class="table table-sm mb-0">
+                <thead><tr><th>#</th><th>Sản phẩm</th><th class="text-end">Đã bán</th><th class="text-end">Doanh thu</th><th class="text-end">Tồn kho</th></tr></thead>
+                <tbody>
+                @{ var rank = 0; }
+                @foreach (var b in Model.BestSellers)
+                {
+                    <tr>
+                        <td>@(++rank)</td>
+                        <td class="small">@b.Name</td>
+                        <td class="text-end">@b.Quantity</td>
+                        <td class="text-end small">@Format.Money(b.Revenue)</td>
+                        <td class="text-end">
+                            @b.Available
+                            @if (b.Available <= DashboardQueries.LowStockThreshold) { <span class="badge text-bg-danger ms-1">Sắp hết</span> }
+                        </td>
+                    </tr>
+                }
+                @if (Model.BestSellers.Count == 0) { <tr><td colspan="5" class="text-center text-muted py-3">Chưa có đơn hoàn tất trong kỳ.</td></tr> }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 @section Scripts {
@@ -40,8 +105,8 @@
     new Chart(document.getElementById("revenue-chart"), {
         type: "line",
         data: {
-            labels: @Json.Serialize(Model.Labels),
-            datasets: [{ label: "Doanh thu", data: @Json.Serialize(Model.Values), borderColor: "#0d6efd", backgroundColor: "rgba(13,110,253,.1)", fill: true, tension: .3 }],
+            labels: @Json.Serialize(revenue.Labels),
+            datasets: [{ label: "Doanh thu", data: @Json.Serialize(revenue.Values), borderColor: "#0d6efd", backgroundColor: "rgba(13,110,253,.1)", fill: true, tension: .3 }],
         },
         options: {
             maintainAspectRatio: false,

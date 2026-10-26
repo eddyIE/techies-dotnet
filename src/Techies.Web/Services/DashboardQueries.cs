@@ -8,6 +8,9 @@ namespace Techies.Web.Services;
 public sealed record RevenueSummary(RevenuePeriod Period, decimal Total, decimal PreviousTotal, double? ChangePercent,
     List<string> Labels, List<decimal> Values);
 
+public sealed record DashboardModel(int AwaitingPayment, int Confirmed, RevenueSummary Revenue, List<OrderRow> RecentOrders,
+    RevenuePeriod BestSellerPeriod, List<BestSeller> BestSellers);
+
 public sealed record BestSeller(Guid ProductId, string Name, int Quantity, decimal Revenue, int Available);
 
 // BRD §1. Revenue counts COMPLETED orders only, dated by when they completed.

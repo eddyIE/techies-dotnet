@@ -65,6 +65,26 @@ internal static class OrderSeed
             plans.Add((order, null));
         }
 
+        // A couple of nearly sold-out products sell well this month, so the dashboard's
+        // best-seller list shows its red "Sắp hết" warning (BRD §1).
+        var stock = await db.StockItems.ToDictionaryAsync(si => si.ProductId, si => si.Available, ct);
+        foreach (var hot in products.Where(p => stock[p.Id] is > 0 and <= 5).Take(2))
+        {
+            for (var i = 0; i < 6; i++)
+            {
+                var created = Min(today.AddDays(-random.Next(1, 20)).AddMinutes(random.Next(8 * 60, 22 * 60)), now.AddHours(-12));
+                var order = NewOrder(random, PickCustomer(), created, [hot]);
+                order.Items[0].Quantity = 2;
+                order.Items[0].LineTotal = hot.Price * 2;
+                order.Subtotal = order.Items[0].LineTotal;
+                order.ShippingFee = OrderMath.ShippingFee(order.Subtotal);
+                order.Total = OrderMath.Total(order.Subtotal, order.ShippingFee, 0);
+                Finish(order, OrderStatus.Completed, random, PaymentMethodFor(random));
+                if (order.CompletedAt > now) order.CompletedAt = order.UpdatedAt = order.CreatedAt + (now - order.CreatedAt) / 2;
+                plans.Add((order, null));
+            }
+        }
+
         // Insert oldest first so order refs (ORD-100001, ...) ascend with time.
         plans.Sort((a, b) => a.Order.CreatedAt.CompareTo(b.Order.CreatedAt));
         foreach (var (order, _) in plans)

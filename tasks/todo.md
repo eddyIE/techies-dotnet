@@ -248,7 +248,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     for the sum.
   - Files: `Services/RevenuePeriods.cs`, `Services/DashboardQueries.cs`, `Areas/Admin/Controllers/DashboardController.cs`, `Index.cshtml`, tests
 
-- [ ] **Task 31: Pending cards, recent orders and best-sellers** (S) · deps: 30
+- [x] **Task 31: Pending cards, recent orders and best-sellers** (S) · deps: 30
   - Acceptance: AWAITING_PAYMENT and CONFIRMED cards linking to filtered order list; 10 recent
     orders; top 10 best-sellers per period with revenue, stock and "Sắp hết" (≤ 5).
   - Verify: service test for best-seller ranking; manual.
