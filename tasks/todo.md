@@ -219,7 +219,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 7 — Customers & Staff
 
-- [ ] **Task 27: Customer directory, profile and lock** (M) · deps: 21
+- [x] **Task 27: Customer directory, profile and lock** (M) · deps: 21
   - Acceptance: search by email/name/phone; read-only profile (contact, addresses, loyalty,
     point history, orders → admin detail); lock/unlock (policy `Orders`).
   - Verify: service test — search matches each field; lock then login refused; manual.

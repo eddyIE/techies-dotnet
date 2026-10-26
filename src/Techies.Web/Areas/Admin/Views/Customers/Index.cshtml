@@ -1,0 +1,29 @@
+@model Paged<Techies.Web.ViewModels.Customers.CustomerRow>
+@{
+    ViewData["Title"] = "Khách hàng";
+    var tiers = (Dictionary<short, string>)ViewData["Tiers"]!;
+}
+<form method="get" class="row g-2 mb-3">
+    <div class="col-md-5"><input name="q" value="@ViewData["Q"]" class="form-control" placeholder="Email, họ tên hoặc số điện thoại" /></div>
+    <div class="col-auto"><button class="btn btn-outline-primary"><i class="bi bi-search"></i> Tìm</button></div>
+</form>
+<div class="card">
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Khách hàng</th><th>Email</th><th>Điện thoại</th><th>Hạng</th><th class="text-end">Điểm khả dụng</th><th>Trạng thái</th></tr></thead>
+        <tbody>
+        @foreach (var c in Model.Items)
+        {
+            <tr>
+                <td><a asp-action="Details" asp-route-id="@c.Id">@c.FullName</a></td>
+                <td class="small">@c.Email</td>
+                <td class="small">@c.Phone</td>
+                <td>@tiers.GetValueOrDefault(c.Tier)</td>
+                <td class="text-end">@c.Balance.ToString("#,0", Format.Vietnamese)</td>
+                <td>@if (c.Status == AccountStatus.Locked) { <span class="badge text-bg-danger">Đã khóa</span> } else { <span class="badge text-bg-success">Hoạt động</span> }</td>
+            </tr>
+        }
+        @if (Model.Items.Count == 0) { <tr><td colspan="6" class="text-center text-muted py-4">Không tìm thấy khách hàng.</td></tr> }
+        </tbody>
+    </table>
+</div>
+<partial name="_Pager" model="Model.TotalPages" />

@@ -1,0 +1,59 @@
+@model Techies.Web.ViewModels.Customers.CustomerProfile
+@{
+    var u = Model.User;
+    ViewData["Title"] = "Khách hàng: " + u.FullName;
+    var locked = u.Status == AccountStatus.Locked;
+}
+<div class="d-flex align-items-center gap-2 mb-4">
+    @if (locked) { <span class="badge text-bg-danger fs-6">Đã khóa</span> } else { <span class="badge text-bg-success fs-6">Hoạt động</span> }
+    <span class="small text-muted">Hồ sơ chỉ xem — nhân viên không được tạo hoặc sửa thông tin khách hàng.</span>
+    <span class="flex-grow-1"></span>
+    <form asp-action="ToggleLock" asp-route-id="@u.Id" method="post" onsubmit="return confirm('@(locked ? "Mở khóa tài khoản này?" : "Khóa tài khoản này? Khách sẽ bị đăng xuất ngay.")')">
+        <button class="btn @(locked ? "btn-outline-success" : "btn-outline-danger")"><i class="bi @(locked ? "bi-unlock" : "bi-lock")"></i> @(locked ? "Mở khóa" : "Khóa tài khoản")</button>
+    </form>
+</div>
+<div class="row g-4 mb-4">
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h2 class="h6">Liên hệ</h2>
+        <div>@u.FullName</div><div class="small">@u.Email</div><div class="small">@u.Phone</div>
+        <div class="small text-muted mt-2">Đăng ký: @Format.LocalDate(u.CreatedAt)</div>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h2 class="h6">Thành viên</h2>
+        <div class="fs-5 fw-bold">@Model.TierName <span class="small text-muted fw-normal">(hạng @Model.Loyalty.Tier)</span></div>
+        <div class="small">Điểm tích lũy: @Model.Loyalty.LifetimePoints.ToString("#,0", Format.Vietnamese)</div>
+        <div class="small">Điểm khả dụng: @Model.Loyalty.Balance.ToString("#,0", Format.Vietnamese)</div>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <h2 class="h6">Sổ địa chỉ</h2>
+        @foreach (var a in Model.Addresses)
+        {
+            <div class="small mb-2">@a.RecipientName — @a.Phone @if (a.IsDefault) { <span class="badge text-bg-light">Mặc định</span> }<br /><span class="text-muted">@a.Line1, @a.Ward, @a.District, @a.Province</span></div>
+        }
+        @if (Model.Addresses.Count == 0) { <div class="small text-muted">Chưa có địa chỉ.</div> }
+    </div></div></div>
+</div>
+<div class="row g-4">
+    <div class="col-lg-7">
+        <h2 class="h6">Lịch sử mua hàng (@Model.Orders.Count đơn)</h2>
+        <partial name="_OrderTable" model="Model.Orders" />
+    </div>
+    <div class="col-lg-5">
+        <h2 class="h6">Lịch sử điểm</h2>
+        <div class="card">
+            <table class="table table-sm mb-0">
+                <tbody>
+                @foreach (var t in Model.PointHistory)
+                {
+                    <tr>
+                        <td class="small">@Format.LocalDate(t.CreatedAt)</td>
+                        <td class="small">@t.Note</td>
+                        <td class="text-end small @(t.PointsDelta < 0 ? "text-danger" : "text-success")">@(t.PointsDelta > 0 ? "+" : "")@t.PointsDelta.ToString("#,0", Format.Vietnamese)</td>
+                    </tr>
+                }
+                @if (Model.PointHistory.Count == 0) { <tr><td class="text-muted small text-center py-3">Chưa có giao dịch điểm.</td></tr> }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
