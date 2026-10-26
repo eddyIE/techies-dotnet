@@ -372,9 +372,9 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     redemptions of the last gift / last points; manual: redeemed code works at the counter.
   - Files: `Services/LoyaltyService.cs` or `Services/GiftRedemptionService.cs`, `Controllers/PointsController.cs`, `Views/Points/*`, header nav, tests
 
-- [ ] **Task 46: Change-set verification** (S) · deps: 42–45
+- [x] **Task 46: Change-set verification** (S) · deps: 42–45
   - Acceptance: end-to-end browser run (search → cart → coupon → checkout → staff completes →
     review → redeem gift → counter claims), README/SPEC updated, format/build/tests green.
 
 ### Checkpoint: Shop gaps closed
-- [ ] Every admin module can be driven by real customer actions.
+- [x] Every admin module can be driven by real customer actions.

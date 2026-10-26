@@ -4,7 +4,9 @@ Electronics e-commerce web app for a university project, built with **ASP.NET Co
 **EF Core** and **PostgreSQL 16**. One monolith, two kinds of user:
 
 - **Staff** run the business in the **Admin CMS** at `/admin` (the 7 modules of [brd.md](brd.md)).
-- **Customers** browse, order (cash on delivery) and track orders in the **shop** at `/`.
+- **Customers** use the **shop** at `/`: search (accent-insensitive, by product or category name),
+  cart, cash-on-delivery checkout with coupon codes, order tracking and cancelling, reviews of
+  completed orders, and a points page (`/diem-thuong`) to redeem gifts for a counter pickup code.
 
 The requirements live in [SPEC.md](SPEC.md); the module map is [CAPABILITY-MAP.md](CAPABILITY-MAP.md)
 and the build plan is in [tasks/](tasks/plan.md). The Spring Boot project in `../techies` was used
