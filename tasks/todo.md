@@ -188,7 +188,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test — shop query excludes inactive products; manual.
   - Files: `Services/ShopQueries.cs`, `Controllers/HomeController.cs`, `Controllers/ProductsController.cs` + views, tests
 
-- [ ] **Task 23: Session cart** (S) · deps: 22
+- [x] **Task 23: Session cart** (S) · deps: 22
   - Acceptance: add/update (1–99, ≤ available)/remove; totals with shipping from `OrderMath`;
     prices re-read from DB; header cart count.
   - Verify: unit test for cart line rules; manual.

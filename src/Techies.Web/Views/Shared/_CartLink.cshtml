@@ -1,1 +1,5 @@
-@* Cart icon with item count — filled in by the cart task. *@
+@{ var count = Techies.Web.Services.CartService.Load(Context.Session).Count; }
+<a asp-area="" asp-controller="Cart" asp-action="Index" class="btn btn-outline-light btn-sm me-2 position-relative" aria-label="Giỏ hàng">
+    <i class="bi bi-cart3"></i>
+    @if (count > 0) { <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">@count</span> }
+</a>

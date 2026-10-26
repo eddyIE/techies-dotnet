@@ -27,6 +27,15 @@ builder.Services.AddScoped<GiftService>();
 builder.Services.AddScoped<OrderService>();
 builder.Services.AddScoped<OrderQueries>();
 builder.Services.AddScoped<ShopQueries>();
+builder.Services.AddScoped<CartService>();
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(o =>
+{
+    o.Cookie.Name = ".Techies.Session";
+    o.Cookie.HttpOnly = true;
+    o.Cookie.IsEssential = true;
+    o.IdleTimeout = TimeSpan.FromDays(7);
+});
 builder.Services.AddScoped(sp => new Techies.Web.Infrastructure.ImageStorage(
     sp.GetRequiredService<IWebHostEnvironment>().WebRootPath,
     sp.GetRequiredService<TimeProvider>().GetUtcNow()));
@@ -45,6 +54,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
