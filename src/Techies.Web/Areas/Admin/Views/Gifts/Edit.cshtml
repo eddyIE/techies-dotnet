@@ -1,0 +1,36 @@
+@model Techies.Web.ViewModels.Loyalty.GiftForm
+@{
+    var id = ViewData["Id"] as Guid?;
+    var tiers = (List<MembershipTier>)ViewData["Tiers"]!;
+    ViewData["Title"] = id is null ? "Thêm quà tặng" : "Sửa quà tặng";
+}
+<form method="post" enctype="multipart/form-data" asp-action="@(id is null ? "Create" : "Edit")" asp-route-id="@id" class="card" style="max-width: 720px">
+    <div class="card-body">
+        <div asp-validation-summary="All" class="alert alert-danger py-2"></div>
+        <input type="hidden" asp-for="CurrentImageUrl" />
+        <div class="mb-3"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /></div>
+        <div class="mb-3"><label asp-for="Description" class="form-label"></label><textarea asp-for="Description" rows="3" class="form-control"></textarea></div>
+        <div class="row">
+            <div class="col-md-4 mb-3"><label asp-for="PointsCost" class="form-label"></label><input asp-for="PointsCost" type="number" min="1" class="form-control" /></div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="MinTier" class="form-label"></label>
+                <select asp-for="MinTier" class="form-select">
+                    @foreach (var t in tiers) { <option value="@t.Tier">@t.Tier — @t.Name</option> }
+                </select>
+            </div>
+            <div class="col-md-4 mb-3"><label asp-for="StockAvailable" class="form-label"></label><input asp-for="StockAvailable" type="number" min="0" class="form-control" /></div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Image" class="form-label"></label>
+            @if (Model.CurrentImageUrl is not null) { <div class="mb-2"><img src="@Model.CurrentImageUrl" alt="" width="80" height="80" class="rounded" style="object-fit:cover" /></div> }
+            <input asp-for="Image" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+        </div>
+        <div class="form-check form-switch mb-3">
+            <input asp-for="Active" class="form-check-input" role="switch" />
+            <label asp-for="Active" class="form-check-label"></label>
+            <div class="form-text">Đặt số lượng 0 để báo "Hết quà"; tắt để tạm khóa đổi món quà này.</div>
+        </div>
+        <button class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-link">Hủy</a>
+    </div>
+</form>

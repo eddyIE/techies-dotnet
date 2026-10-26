@@ -66,3 +66,18 @@ internal sealed class CustomerLoyaltyConfiguration : IEntityTypeConfiguration<Cu
         b.HasOne<MembershipTier>().WithMany().HasForeignKey(l => l.Tier);
     }
 }
+
+internal sealed class GiftConfiguration : IEntityTypeConfiguration<Gift>
+{
+    public void Configure(EntityTypeBuilder<Gift> b)
+    {
+        b.Property(g => g.Name).HasMaxLength(160);
+        b.Property(g => g.ImageUrl).HasMaxLength(500);
+        b.HasOne<MembershipTier>().WithMany().HasForeignKey(g => g.MinTier).OnDelete(DeleteBehavior.Restrict);
+        b.ToTable(t =>
+        {
+            t.HasCheckConstraint("ck_gifts_points_cost", "points_cost > 0");
+            t.HasCheckConstraint("ck_gifts_stock_available", "stock_available >= 0");
+        });
+    }
+}

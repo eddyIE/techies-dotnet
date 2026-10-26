@@ -122,7 +122,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: unit test for `Tiers.For`; service test — raising a threshold downgrades a customer.
   - Files: `Services/LoyaltyService.cs`, `Areas/Admin/Controllers/TiersController.cs` + view, tests
 
-- [ ] **Task 15: Gifts catalogue** (S) · deps: 4, 14
+- [x] **Task 15: Gifts catalogue** (S) · deps: 4, 14
   - Acceptance: gift entity + migration; list ("Hết quà" when stock 0), create/edit with image
     upload, active toggle (SuperAdmin); seed gifts from `loyalty-service/V1__init.sql`.
   - Verify: service test for validation (points cost > 0, min tier 0–3); manual.

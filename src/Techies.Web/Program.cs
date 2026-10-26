@@ -23,6 +23,7 @@ builder.Services.AddScoped<InventoryService>();
 builder.Services.AddScoped<StockLedger>();
 builder.Services.AddScoped<CouponService>();
 builder.Services.AddScoped<LoyaltyService>();
+builder.Services.AddScoped<GiftService>();
 builder.Services.AddScoped(sp => new Techies.Web.Infrastructure.ImageStorage(
     sp.GetRequiredService<IWebHostEnvironment>().WebRootPath,
     sp.GetRequiredService<TimeProvider>().GetUtcNow()));

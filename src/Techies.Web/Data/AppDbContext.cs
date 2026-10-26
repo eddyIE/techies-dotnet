@@ -17,6 +17,7 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<StockItem> StockItems => Set<StockItem>();
     public DbSet<InventoryAdjustment> InventoryAdjustments => Set<InventoryAdjustment>();
     public DbSet<Coupon> Coupons => Set<Coupon>();
+    public DbSet<Gift> Gifts => Set<Gift>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

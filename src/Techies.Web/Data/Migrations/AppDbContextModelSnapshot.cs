@@ -224,6 +224,66 @@ namespace Techies.Web.Data.Migrations
                     b.ToTable("customer_loyalty", (string)null);
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.Gift", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("image_url");
+
+                    b.Property<short>("MinTier")
+                        .HasColumnType("smallint")
+                        .HasColumnName("min_tier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(160)
+                        .HasColumnType("character varying(160)")
+                        .HasColumnName("name");
+
+                    b.Property<long>("PointsCost")
+                        .HasColumnType("bigint")
+                        .HasColumnName("points_cost");
+
+                    b.Property<int>("StockAvailable")
+                        .HasColumnType("integer")
+                        .HasColumnName("stock_available");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_gifts");
+
+                    b.HasIndex("MinTier")
+                        .HasDatabaseName("ix_gifts_min_tier");
+
+                    b.ToTable("gifts", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_gifts_points_cost", "points_cost > 0");
+
+                            t.HasCheckConstraint("ck_gifts_stock_available", "stock_available >= 0");
+                        });
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -610,6 +670,16 @@ namespace Techies.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_customer_loyalty_membership_tiers_tier");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Gift", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.MembershipTier", null)
+                        .WithMany()
+                        .HasForeignKey("MinTier")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_gifts_membership_tiers_min_tier");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>
