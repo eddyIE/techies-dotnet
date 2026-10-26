@@ -1,4 +1,6 @@
 using Techies.Web.Data;
+using Techies.Web.Infrastructure;
+using Techies.Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute()));
 builder.Services.AddAppDatabase(builder.Configuration);
+// Emit Vietnamese text as-is instead of &#x...; entities.
+builder.Services.AddWebEncoders(o => o.TextEncoderSettings =
+    new System.Text.Encodings.Web.TextEncoderSettings(System.Text.Unicode.UnicodeRanges.All));
 builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddAppAuthentication();
+builder.Services.AddScoped<AccountStatusService>();
+builder.Services.AddScoped<StaffAuthService>();
 builder.Services.AddScoped(sp => new Techies.Web.Infrastructure.ImageStorage(
     sp.GetRequiredService<IWebHostEnvironment>().WebRootPath,
     sp.GetRequiredService<TimeProvider>().GetUtcNow()));
@@ -25,6 +33,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();

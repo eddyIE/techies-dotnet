@@ -1,1 +1,19 @@
-@* Role-filtered menu — filled in by the identity module. *@
+@{
+    var current = ViewContext.RouteData.Values["controller"]?.ToString();
+    string? currentSection = null;
+}
+<ul class="nav flex-column">
+    @foreach (var item in AdminMenu.For(User))
+    {
+        if (item.Section != currentSection)
+        {
+            currentSection = item.Section;
+            <li class="nav-section">@currentSection</li>
+        }
+        <li class="nav-item">
+            <a class="nav-link @(item.Controller == current ? "active" : "")" asp-area="Admin" asp-controller="@item.Controller" asp-action="Index">
+                <i class="bi @item.Icon me-2"></i>@item.Title
+            </a>
+        </li>
+    }
+</ul>

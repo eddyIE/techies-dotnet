@@ -1,1 +1,7 @@
-@* Signed-in staff name + logout — filled in by the identity module. *@
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <form asp-area="Admin" asp-controller="Auth" asp-action="Logout" method="post" class="d-flex align-items-center gap-3">
+        <span class="small text-muted"><i class="bi bi-person-circle"></i> @User.Identity.Name</span>
+        <button class="btn btn-sm btn-outline-secondary">Đăng xuất</button>
+    </form>
+}

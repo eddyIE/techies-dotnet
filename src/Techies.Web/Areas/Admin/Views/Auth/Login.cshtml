@@ -1,0 +1,23 @@
+@model Techies.Web.ViewModels.Account.LoginForm
+@{
+    ViewData["Title"] = "Đăng nhập quản trị";
+    Layout = "_AdminAuthLayout";
+}
+<form asp-action="Login" method="post" class="card shadow-sm" style="max-width: 400px; width: 100%">
+    <div class="card-body p-4">
+        <h1 class="h4 mb-4 text-center"><i class="bi bi-lightning-charge-fill text-primary"></i> Techies CMS</h1>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+        <input type="hidden" asp-for="ReturnUrl" />
+        <div class="mb-3">
+            <label asp-for="Email" class="form-label"></label>
+            <input asp-for="Email" class="form-control" autofocus />
+            <span asp-validation-for="Email" class="text-danger small"></span>
+        </div>
+        <div class="mb-4">
+            <label asp-for="Password" class="form-label"></label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger small"></span>
+        </div>
+        <button class="btn btn-primary w-100">Đăng nhập</button>
+    </div>
+</form>

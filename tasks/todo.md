@@ -48,7 +48,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test — seeding twice leaves exactly 3 staff and 4 tiers.
   - Files: `Domain/*.cs`, `Data/AppDbContext.cs`, `Data/Migrations/*`, `Data/Seed/DbSeeder.cs`, tests
 
-- [ ] **Task 6: Staff login, roles and admin menus** (M) · deps: 3, 5
+- [x] **Task 6: Staff login, roles and admin menus** (M) · deps: 3, 5
   - Acceptance: `Staff` cookie scheme; `/admin/login` + logout; policies `SuperAdmin`,
     `Catalog`, `Orders`; sidebar filtered by role; access-denied page; locked staff refused at
     login and signed out on next request (`AccountStatusService`); non-admin roles land on
