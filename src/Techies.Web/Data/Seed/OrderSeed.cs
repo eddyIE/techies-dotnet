@@ -212,7 +212,7 @@ internal static class OrderSeed
             var redemption = new GiftRedemption
             {
                 // The BRD's example code, so the counter screen can be demoed straight from the document.
-                Code = count == 0 ? "GIFT-G53Y-ZDS3" : NewGiftCode(random),
+                Code = count == 0 ? "GIFT-G53Y-ZDS3" : GiftCodes.New(random),
                 GiftId = gift.Id, CustomerId = customer.Id, PointsSpent = gift.PointsCost, RedeemedAt = Min(redeemedAt, now),
                 Status = issued ? GiftRedemptionStatus.Issued : GiftRedemptionStatus.Claimed,
                 ClaimedAt = issued ? null : redeemedAt.AddDays(random.Next(1, 7)),
@@ -230,12 +230,6 @@ internal static class OrderSeed
         }
     }
 
-    private static string NewGiftCode(Random random)
-    {
-        const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-        string Part() => new(Enumerable.Range(0, 4).Select(_ => chars[random.Next(chars.Length)]).ToArray());
-        return $"GIFT-{Part()}-{Part()}";
-    }
 
     private static PaymentMethod PaymentMethodFor(Random random) =>
         random.NextDouble() < 0.65 ? PaymentMethod.Cod : PaymentMethod.MockCard;

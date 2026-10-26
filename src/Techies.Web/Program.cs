@@ -32,6 +32,7 @@ builder.Services.AddScoped<CheckoutService>();
 builder.Services.AddScoped<CustomerQueries>();
 builder.Services.AddScoped<ReviewQueries>();
 builder.Services.AddScoped<ReviewService>();
+builder.Services.AddScoped<RewardsService>();
 builder.Services.AddScoped<StaffService>();
 builder.Services.AddScoped<RoleService>();
 builder.Services.AddScoped<DashboardQueries>();

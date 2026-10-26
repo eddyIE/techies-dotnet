@@ -365,7 +365,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service tests for each rule; manual: review shows on product page and admin grid.
   - Files: `Services/ReviewService.cs`, `Controllers/MyOrdersController.cs`, `Views/MyOrders/Details.cshtml`, `Data/*`, tests
 
-- [ ] **Task 45: Points page and gift redemption** (M) · deps: 42
+- [x] **Task 45: Points page and gift redemption** (M) · deps: 42
   - Acceptance: `/diem-thuong` with tier progress, history, gifts, "Quà đã đổi"; `RedeemAsync`
     with locks, eligibility reasons, unique code, REDEEM transaction.
   - Verify: service tests — success, insufficient points, tier too low, out of stock, concurrent

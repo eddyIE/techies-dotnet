@@ -1,0 +1,109 @@
+@model Techies.Web.Services.RewardsOverview
+@{
+    ViewData["Title"] = "Điểm thưởng";
+    var l = Model.Loyalty;
+    string Points(long p) => p.ToString("#,0", Format.Vietnamese);
+}
+<h1 class="h4 mb-4">Điểm thưởng & quà tặng</h1>
+<div class="row g-3 mb-4">
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Hạng thành viên</div>
+        <div class="fs-3 fw-bold"><i class="bi bi-award text-warning"></i> @Model.TierName</div>
+        @if (Model.NextTierName is not null)
+        {
+            var target = l.LifetimePoints + Model.PointsToNextTier!.Value;
+            var percent = target == 0 ? 100 : (int)(100 * l.LifetimePoints / target);
+            <div class="progress mt-2" role="progressbar" aria-label="Tiến độ lên hạng" aria-valuenow="@percent" aria-valuemin="0" aria-valuemax="100" style="height: 8px">
+                <div class="progress-bar bg-warning" style="width: @percent%"></div>
+            </div>
+            <div class="small text-muted mt-1">Còn @Points(Model.PointsToNextTier.Value) điểm để lên hạng @Model.NextTierName</div>
+        }
+        else { <div class="small text-muted mt-2">Bạn đang ở hạng cao nhất.</div> }
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Điểm khả dụng (dùng để đổi quà)</div>
+        <div class="fs-3 fw-bold text-primary">@Points(l.Balance)</div>
+        <div class="small text-muted">1 điểm cho mỗi 1.000đ khi đơn hàng hoàn tất.</div>
+    </div></div></div>
+    <div class="col-md-4"><div class="card h-100"><div class="card-body">
+        <div class="text-muted small">Tổng điểm tích lũy (xét hạng)</div>
+        <div class="fs-3 fw-bold">@Points(l.LifetimePoints)</div>
+        <div class="small text-muted">Đổi quà không làm giảm hạng của bạn.</div>
+    </div></div></div>
+</div>
+
+<h2 class="h5 mb-3">Đổi quà</h2>
+<div class="row row-cols-2 row-cols-md-4 g-3 mb-5">
+    @foreach (var offer in Model.Gifts)
+    {
+        var g = offer.Gift;
+        <div class="col">
+            <div class="card h-100">
+                <img src="@g.ImageUrl" alt="" class="card-img-top" style="aspect-ratio:1;object-fit:cover" loading="lazy" onerror="this.src='/img/placeholder.svg'" />
+                <div class="card-body d-flex flex-column">
+                    <div class="fw-semibold small">@g.Name</div>
+                    <div class="small text-muted mb-2">@g.Description</div>
+                    <div class="mt-auto">
+                        <div class="fw-bold text-primary">@Points(g.PointsCost) điểm</div>
+                        @if (offer.BlockedReason is null)
+                        {
+                            <form asp-action="Redeem" asp-route-giftId="@g.Id" method="post" class="mt-2" onsubmit="return confirm('Dùng @Points(g.PointsCost) điểm để đổi “@g.Name”?')">
+                                <button class="btn btn-sm btn-primary w-100">Đổi quà</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <button class="btn btn-sm btn-outline-secondary w-100 mt-2" disabled>Đổi quà</button>
+                            <div class="small text-muted mt-1">@offer.BlockedReason</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <h2 class="h5 mb-3">Quà đã đổi</h2>
+        @if (Model.Redemptions.Count == 0) { <p class="text-muted small">Bạn chưa đổi quà nào.</p> }
+        else
+        {
+            <div class="list-group">
+            @foreach (var r in Model.Redemptions)
+            {
+                var claimed = r.Status == GiftRedemptionStatus.Claimed;
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-semibold">@r.GiftName</div>
+                        <div class="small text-muted">@Format.LocalTime(r.RedeemedAt) · @Points(r.PointsSpent) điểm</div>
+                    </div>
+                    <div class="text-end">
+                        <div class="font-monospace fs-6 @(claimed ? "text-muted text-decoration-line-through" : "fw-bold")">@r.Code</div>
+                        @if (claimed) { <span class="badge text-bg-secondary">Đã nhận @Format.LocalDate(r.ClaimedAt!.Value)</span> }
+                        else { <span class="badge text-bg-success">Chờ nhận tại cửa hàng</span> }
+                    </div>
+                </div>
+            }
+            </div>
+        }
+    </div>
+    <div class="col-lg-5">
+        <h2 class="h5 mb-3">Lịch sử điểm</h2>
+        <div class="card">
+            <table class="table table-sm mb-0">
+                <tbody>
+                @foreach (var t in Model.History)
+                {
+                    <tr>
+                        <td class="small">@Format.LocalDate(t.CreatedAt)</td>
+                        <td class="small">@t.Note</td>
+                        <td class="text-end small @(t.PointsDelta < 0 ? "text-danger" : "text-success")">@(t.PointsDelta > 0 ? "+" : "")@Points(t.PointsDelta)</td>
+                    </tr>
+                }
+                @if (Model.History.Count == 0) { <tr><td class="text-center text-muted small py-3">Chưa có giao dịch điểm.</td></tr> }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
