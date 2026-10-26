@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: techies
+      POSTGRES_USER: techies
+      POSTGRES_PASSWORD: techies_dev
+    ports:
+      # 5433 so it can run alongside ../techies (which uses 5432).
+      - "5433:5432"
+    volumes:
+      - techies-dotnet-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U techies -d techies"]
+      interval: 5s
+      retries: 10
+
+volumes:
+  techies-dotnet-db:

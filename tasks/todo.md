@@ -6,7 +6,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 1 — Foundation
 
-- [ ] **Task 1: Repository and solution skeleton** (M) · deps: none
+- [x] **Task 1: Repository and solution skeleton** (M) · deps: none
   - Acceptance: own git repo in `techies-dotnet/` with `.gitignore` (bin, obj, `wwwroot/uploads`,
     user secrets); `Techies.slnx` with `src/Techies.Web` (MVC, net10.0) and `tests/Techies.Tests`
     (xUnit); `docker-compose.yml` with Postgres 16 on 5433; app listens on 5080; existing
