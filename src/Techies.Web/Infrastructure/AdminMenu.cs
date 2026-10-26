@@ -13,6 +13,7 @@ public static class AdminMenu
         new("Sản phẩm & Kho", "Sản phẩm", "bi-phone", "Products", Policies.Catalog),
         new("Sản phẩm & Kho", "Danh mục", "bi-tags", "Categories", Policies.Catalog),
         new("Sản phẩm & Kho", "Kiểm kho & Nhập hàng", "bi-box-seam", "Inventory", Policies.Catalog),
+        new("Bán hàng & Khách hàng", "Quầy nhận quà", "bi-upc-scan", "GiftCounter", Policies.Orders),
         new("Khuyến mãi & Thành viên", "Mã giảm giá", "bi-ticket-perforated", "Coupons", Policies.SuperAdmin),
         new("Khuyến mãi & Thành viên", "Quà tặng đổi điểm", "bi-gift", "Gifts", Policies.SuperAdmin),
         new("Khuyến mãi & Thành viên", "Hạng thành viên", "bi-award", "Tiers", Policies.SuperAdmin),

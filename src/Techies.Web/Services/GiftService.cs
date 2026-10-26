@@ -5,6 +5,10 @@ using Techies.Web.ViewModels.Loyalty;
 
 namespace Techies.Web.Services;
 
+public sealed record RedemptionView(Guid Id, string Code, string GiftName, string? GiftImageUrl, long PointsSpent,
+    string CustomerName, string CustomerPhone, DateTimeOffset RedeemedAt, GiftRedemptionStatus Status,
+    DateTimeOffset? ClaimedAt, string? ClaimedByName);
+
 // BRD §5: gift catalogue and counter claims.
 public sealed class GiftService(AppDbContext db, TimeProvider clock)
 {
@@ -30,6 +34,35 @@ public sealed class GiftService(AppDbContext db, TimeProvider clock)
         if (imageUrl is not null) gift.ImageUrl = imageUrl;
         Apply(gift, form, clock.GetUtcNow());
         await db.SaveChangesAsync(ct);
+    }
+
+    // Counter lookup of the code a customer shows on their phone.
+    public Task<RedemptionView?> FindRedemptionAsync(string code, CancellationToken ct = default)
+    {
+        var normalized = code.Trim().ToUpperInvariant();
+        return db.GiftRedemptions.AsNoTracking()
+            .Where(r => r.Code == normalized)
+            .Select(r => new RedemptionView(r.Id, r.Code, r.Gift.Name, r.Gift.ImageUrl, r.PointsSpent, r.Customer.FullName,
+                r.Customer.Phone, r.RedeemedAt, r.Status, r.ClaimedAt, r.ClaimedByStaff != null ? r.ClaimedByStaff.FullName : null))
+            .SingleOrDefaultAsync(ct);
+    }
+
+    // Hand-over at the counter. The conditional update makes a double claim impossible even
+    // if two staff press the button at once.
+    public async Task ClaimAsync(string code, Guid staffId, CancellationToken ct = default)
+    {
+        var normalized = code.Trim().ToUpperInvariant();
+        var now = clock.GetUtcNow();
+        var updated = await db.GiftRedemptions
+            .Where(r => r.Code == normalized && r.Status == GiftRedemptionStatus.Issued)
+            .ExecuteUpdateAsync(u => u
+                .SetProperty(r => r.Status, GiftRedemptionStatus.Claimed)
+                .SetProperty(r => r.ClaimedAt, now)
+                .SetProperty(r => r.ClaimedBy, staffId), ct);
+        if (updated == 1) return;
+        throw await db.GiftRedemptions.AnyAsync(r => r.Code == normalized, ct)
+            ? new DomainException("Mã này đã được nhận quà trước đó.")
+            : new DomainException("Không tìm thấy mã nhận quà.");
     }
 
     private static void Apply(Gift gift, GiftForm form, DateTimeOffset now)

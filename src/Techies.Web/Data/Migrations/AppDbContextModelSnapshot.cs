@@ -284,6 +284,68 @@ namespace Techies.Web.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.GiftRedemption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("ClaimedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("claimed_at");
+
+                    b.Property<Guid?>("ClaimedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("claimed_by");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("code");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
+
+                    b.Property<Guid>("GiftId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("gift_id");
+
+                    b.Property<long>("PointsSpent")
+                        .HasColumnType("bigint")
+                        .HasColumnName("points_spent");
+
+                    b.Property<DateTimeOffset>("RedeemedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("redeemed_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_gift_redemptions");
+
+                    b.HasIndex("ClaimedBy")
+                        .HasDatabaseName("ix_gift_redemptions_claimed_by");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_gift_redemptions_code");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_gift_redemptions_customer_id");
+
+                    b.HasIndex("GiftId")
+                        .HasDatabaseName("ix_gift_redemptions_gift_id");
+
+                    b.ToTable("gift_redemptions", (string)null);
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>
                 {
                     b.Property<Guid>("Id")
@@ -680,6 +742,35 @@ namespace Techies.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("fk_gifts_membership_tiers_min_tier");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.GiftRedemption", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Staff", "ClaimedByStaff")
+                        .WithMany()
+                        .HasForeignKey("ClaimedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_gift_redemptions_staff_claimed_by");
+
+                    b.HasOne("Techies.Web.Domain.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_gift_redemptions_users_customer_id");
+
+                    b.HasOne("Techies.Web.Domain.Gift", "Gift")
+                        .WithMany()
+                        .HasForeignKey("GiftId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_gift_redemptions_gifts_gift_id");
+
+                    b.Navigation("ClaimedByStaff");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Gift");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>

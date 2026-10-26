@@ -31,3 +31,22 @@ public sealed class Gift
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }
 }
+
+public enum GiftRedemptionStatus { Issued, Claimed }
+
+// One exchange of points for a gift. The customer shows Code (GIFT-XXXX-XXXX) at the counter.
+public sealed class GiftRedemption
+{
+    public Guid Id { get; set; } = Guid.CreateVersion7();
+    public string Code { get; set; } = "";
+    public Guid GiftId { get; set; }
+    public Gift Gift { get; set; } = null!;
+    public Guid CustomerId { get; set; }
+    public User Customer { get; set; } = null!;
+    public long PointsSpent { get; set; }
+    public GiftRedemptionStatus Status { get; set; } = GiftRedemptionStatus.Issued;
+    public DateTimeOffset RedeemedAt { get; set; }
+    public DateTimeOffset? ClaimedAt { get; set; }
+    public Guid? ClaimedBy { get; set; }
+    public Staff? ClaimedByStaff { get; set; }
+}

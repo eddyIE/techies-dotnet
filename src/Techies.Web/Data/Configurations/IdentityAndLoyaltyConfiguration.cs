@@ -81,3 +81,16 @@ internal sealed class GiftConfiguration : IEntityTypeConfiguration<Gift>
         });
     }
 }
+
+internal sealed class GiftRedemptionConfiguration : IEntityTypeConfiguration<GiftRedemption>
+{
+    public void Configure(EntityTypeBuilder<GiftRedemption> b)
+    {
+        b.Property(r => r.Code).HasMaxLength(32);
+        b.HasIndex(r => r.Code).IsUnique();
+        b.Property(r => r.Status).HasMaxLength(16);
+        b.HasOne(r => r.Gift).WithMany().HasForeignKey(r => r.GiftId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne(r => r.Customer).WithMany().HasForeignKey(r => r.CustomerId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne(r => r.ClaimedByStaff).WithMany().HasForeignKey(r => r.ClaimedBy).OnDelete(DeleteBehavior.Restrict);
+    }
+}

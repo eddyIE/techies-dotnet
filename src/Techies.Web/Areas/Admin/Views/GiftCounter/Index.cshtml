@@ -1,0 +1,52 @@
+@model Techies.Web.Services.RedemptionView?
+@{
+    ViewData["Title"] = "Quầy nhận quà";
+    var code = ViewData["Code"] as string;
+}
+<form method="get" class="card mb-4" style="max-width: 640px">
+    <div class="card-body">
+        <label for="code" class="form-label">Mã nhận quà của khách</label>
+        <div class="input-group">
+            <input id="code" name="code" value="@code" class="form-control form-control-lg font-monospace text-uppercase" placeholder="GIFT-XXXX-XXXX" autofocus required />
+            <button class="btn btn-primary"><i class="bi bi-search"></i> Tra cứu</button>
+        </div>
+    </div>
+</form>
+@if (!string.IsNullOrWhiteSpace(code) && Model is null)
+{
+    <div class="alert alert-warning" style="max-width: 640px">Không tìm thấy mã <strong class="font-monospace">@code.Trim().ToUpperInvariant()</strong>.</div>
+}
+@if (Model is not null)
+{
+    var claimed = Model.Status == GiftRedemptionStatus.Claimed;
+    <div class="card" style="max-width: 640px">
+        <div class="card-body d-flex gap-3">
+            <img src="@Model.GiftImageUrl" alt="" width="96" height="96" class="rounded" style="object-fit:cover" onerror="this.style.visibility='hidden'" />
+            <div class="flex-grow-1">
+                <div class="d-flex justify-content-between">
+                    <h2 class="h5 mb-1">@Model.GiftName</h2>
+                    <span class="badge @(claimed ? "text-bg-secondary" : "text-bg-success") align-self-start">@(claimed ? "Đã nhận quà" : "Chờ nhận quà")</span>
+                </div>
+                <dl class="row small mb-0">
+                    <dt class="col-sm-4">Mã đổi quà</dt><dd class="col-sm-8 font-monospace">@Model.Code</dd>
+                    <dt class="col-sm-4">Khách hàng</dt><dd class="col-sm-8">@Model.CustomerName — @Model.CustomerPhone</dd>
+                    <dt class="col-sm-4">Điểm đã dùng</dt><dd class="col-sm-8">@Model.PointsSpent.ToString("#,0", Format.Vietnamese)</dd>
+                    <dt class="col-sm-4">Thời điểm đổi</dt><dd class="col-sm-8">@Format.LocalTime(Model.RedeemedAt)</dd>
+                    @if (claimed)
+                    {
+                        <dt class="col-sm-4">Đã giao lúc</dt><dd class="col-sm-8">@Format.LocalTime(Model.ClaimedAt!.Value) bởi @Model.ClaimedByName</dd>
+                    }
+                </dl>
+            </div>
+        </div>
+        @if (!claimed)
+        {
+            <div class="card-footer bg-white">
+                <form asp-action="Claim" method="post">
+                    <input type="hidden" name="code" value="@Model.Code" />
+                    <button class="btn btn-success"><i class="bi bi-check2-circle"></i> Xác nhận giao quà</button>
+                </form>
+            </div>
+        }
+    </div>
+}

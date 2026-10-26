@@ -128,14 +128,14 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test for validation (points cost > 0, min tier 0–3); manual.
   - Files: `Domain/Gift.cs`, `Data/*`, `Services/GiftService.cs`, `Areas/Admin/Controllers/GiftsController.cs` + views
 
-- [ ] **Task 16: Gift counter claim** (S) · deps: 15, 7
+- [x] **Task 16: Gift counter claim** (S) · deps: 15, 7
   - Acceptance: `gift_redemptions` + migration; counter screen (policy `Orders`) looks up a code
     case-insensitively, shows details, confirms hand-over once; unknown code message.
   - Verify: service tests — claim sets status/time/staff; second claim rejected; unknown code.
   - Files: `Domain/GiftRedemption.cs`, `Data/*`, `Services/GiftService.cs`, `Areas/Admin/Controllers/GiftCounterController.cs` + view, tests
 
 ### Checkpoint: Promotions & loyalty
-- [ ] Build + tests green; coupon, tier, gift and counter screens work.
+- [x] Build + tests green; coupon, tier, gift and counter screens work.
 
 ## Phase 5 — Orders
 
