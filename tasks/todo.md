@@ -77,7 +77,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test — category slug generated and unique; manual create/edit.
   - Files: `Domain/*`, `Data/*`, `Services/CategoryService.cs`, `Areas/Admin/Controllers/CategoriesController.cs` + views, tests
 
-- [ ] **Task 9: Port catalog and stock seed** (M) · deps: 8
+- [x] **Task 9: Port catalog and stock seed** (M) · deps: 8
   - Acceptance: `Data/Seed/categories.json`, `products.json` (with images + specs),
     `stock.json` converted from `../techies` catalog/inventory migrations; seeder loads them;
     stock includes zero and ≤ 5 items.

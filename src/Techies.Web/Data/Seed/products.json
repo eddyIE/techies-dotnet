@@ -1,0 +1,1727 @@
+[
+ {
+  "id": "143375fb-6a1a-5099-b224-bfb2203bf703",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "ASUS Zenbook 14 OLED",
+  "slug": "asus-zenbook-14-oled",
+  "description": "ASUS Zenbook 14 OLED - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 25990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=ASUS+Zenbook+14+OLED",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=ASUS+Zenbook+14+OLED+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=ASUS+Zenbook+14+OLED+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 70
+ },
+ {
+  "id": "47290275-f329-566c-a696-40ac4bb341eb",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "Acer Aspire Lite Gen 2 AL14-52M-32KV",
+  "slug": "laptop-acer-aspire-lite-gen-2-al14-52m-32kv",
+  "description": "Acer Aspire Lite Gen 2 AL14-52M-32KV - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 13490000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_659_1__4.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_659_1__4.png"
+  ],
+  "specs": [
+   {
+    "name": "Loại card đồ họa",
+    "value": "Intel UHD Graphics"
+   },
+   {
+    "name": "Dung lượng RAM",
+    "value": "8GB"
+   },
+   {
+    "name": "Loại RAM",
+    "value": "DDR5 Up to 4800 MT/s"
+   },
+   {
+    "name": "Số khe ram",
+    "value": "2 khe (1 x 8GB) Nâng cấp tối đa 64GB"
+   },
+   {
+    "name": "Ổ cứng",
+    "value": "256GB PCIe NVMe SSD (nâng cấp tối đa 2TB SSD)"
+   },
+   {
+    "name": "Công nghệ màn hình",
+    "value": "Độ sáng 300 nits / Độ phủ màu 45% NTSC"
+   },
+   {
+    "name": "Hệ điều hành khi ra mắt",
+    "value": "Windows 11 Home SL"
+   },
+   {
+    "name": "Loại CPU",
+    "value": "Intel Core i3-1305U (5 lõi / 6 luồng, 3.3 GHz, 4.5 GHz, 10 MB Intel Smart Cache)"
+   },
+   {
+    "name": "Kích thước màn hình",
+    "value": "14 inches"
+   },
+   {
+    "name": "Độ phân giải màn hình",
+    "value": "1920 x 1200 pixels (WUXGA)"
+   },
+   {
+    "name": "Pin",
+    "value": "Pin Li-ion 3 cell 58Wh / Bộ chuyển đổi 65W PD Type C"
+   },
+   {
+    "name": "Cổng giao tiếp",
+    "value": "1x USB Type-C / 3x Cổng USB-A / Đầu đọc thẻ MicroSD / Cổng HDMI 1.4 hỗ trợ HDCP / Giắc cắm tai nghe/loa 3.5 mm, hỗ trợ tai nghe có micrô tích hợp"
+   }
+  ],
+  "available": 22
+ },
+ {
+  "id": "cd11b47f-fba0-5d05-b842-f2d586ec167b",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "Acer Nitro V 15 RTX 4050",
+  "slug": "acer-nitro-v15",
+  "description": "Acer Nitro V 15 RTX 4050 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 21990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=Acer+Nitro+V+15+RTX+4050",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=Acer+Nitro+V+15+RTX+4050+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=Acer+Nitro+V+15+RTX+4050+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 1
+ },
+ {
+  "id": "c4fde632-bffe-5492-bc56-a34ea0aa24b6",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "AirPods 4",
+  "slug": "airpods-4",
+  "description": "AirPods 4 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 3390000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/7c2d12/ffffff/png?text=AirPods+4",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=AirPods+4+%281%2F2%29",
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=AirPods+4+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 140
+ },
+ {
+  "id": "04ce81f6-5b66-5a7d-893f-8b416be1851d",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "AirPods Pro 2 USB-C",
+  "slug": "airpods-pro-2-usbc",
+  "description": "AirPods Pro 2 USB-C - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 5690000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/7c2d12/ffffff/png?text=AirPods+Pro+2+USB-C",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=AirPods+Pro+2+USB-C+%281%2F2%29",
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=AirPods+Pro+2+USB-C+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 160
+ },
+ {
+  "id": "35bb84e1-87b2-5a23-997e-a117dc87d48f",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Amazfit GTR 4",
+  "slug": "amazfit-gtr-4",
+  "description": "Amazfit GTR 4 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 4290000.0,
+  "thumbnailUrl": "https://www.amazfit.com/cdn/shop/products/3_f704d6b8-309b-4fbe-a131-12477f5b080a_grande.jpg?v=1671676228",
+  "active": false,
+  "images": [
+   "https://www.amazfit.com/cdn/shop/products/3_f704d6b8-309b-4fbe-a131-12477f5b080a_grande.jpg?v=1671676228",
+   "https://www.amazfit.com/cdn/shop/products/3_f704d6b8-309b-4fbe-a131-12477f5b080a_grande.jpg?v=1671676228"
+  ],
+  "specs": [],
+  "available": 25
+ },
+ {
+  "id": "67f7cce7-b683-554c-8098-506e445a86df",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Anker PowerCore 20.000mAh 22.5W",
+  "slug": "anker-powerbank-20000",
+  "description": "Anker PowerCore 20.000mAh 22.5W - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/374151/ffffff/png?text=Anker+PowerCore+20.000mAh+22.5W",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/374151/ffffff/png?text=Anker+PowerCore+20.000mAh+22.5W+%281%2F2%29",
+   "https://placehold.co/800x800/374151/ffffff/png?text=Anker+PowerCore+20.000mAh+22.5W+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 200
+ },
+ {
+  "id": "63e2ed13-d51c-57a7-ad07-9eedaa647bcf",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Anker Sạc nhanh GaN 65W",
+  "slug": "anker-sac-nhanh-65w",
+  "description": "Anker Sạc nhanh GaN 65W - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 790000.0,
+  "thumbnailUrl": "https://cdn.shopify.com/s/files/1/0493/9834/9974/products/A2663111-Anker_715_Charger_Nano_II_65W.png?v=1767756360",
+  "active": true,
+  "images": [
+   "https://cdn.shopify.com/s/files/1/0493/9834/9974/products/A2663111-Anker_715_Charger_Nano_II_65W.png?v=1767756360",
+   "https://cdn.shopify.com/s/files/1/0493/9834/9974/products/A2663111-Anker_715_Charger_Nano_II_65W.png?v=1767756360"
+  ],
+  "specs": [],
+  "available": 175
+ },
+ {
+  "id": "cd60bfd7-890a-5778-b42a-9d7bb15a8dda",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Apple Watch SE 2 44mm GPS",
+  "slug": "apple-watch-se-2-44",
+  "description": "Apple Watch SE 2 44mm GPS - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 6490000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/4a044e/ffffff/png?text=Apple+Watch+SE+2+44mm+GPS",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/4a044e/ffffff/png?text=Apple+Watch+SE+2+44mm+GPS+%281%2F2%29",
+   "https://placehold.co/800x800/4a044e/ffffff/png?text=Apple+Watch+SE+2+44mm+GPS+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 85
+ },
+ {
+  "id": "8f2ab3b5-6a9a-5471-9172-b721e82fcc92",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Apple Watch Series 9 45mm GPS",
+  "slug": "apple-watch-series-9-45",
+  "description": "Apple Watch Series 9 45mm GPS - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 10990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/4a044e/ffffff/png?text=Apple+Watch+Series+9+45mm+GPS",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/4a044e/ffffff/png?text=Apple+Watch+Series+9+45mm+GPS+%281%2F2%29",
+   "https://placehold.co/800x800/4a044e/ffffff/png?text=Apple+Watch+Series+9+45mm+GPS+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 60
+ },
+ {
+  "id": "3231e16f-eb2c-5e1c-88e9-0d5dc7b83ae9",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Apple Watch Ultra 2 2024 49mm 4G Viền Titan Dây Alpine Size L | Chính hãng VN/A",
+  "slug": "apple-watch-ultra-2-2024-49mm-4g-vien-titan-day-alpine-size-l",
+  "description": "Apple Watch Ultra 2 2024 49mm 4G Viền Titan Dây Alpine Size L | Chính hãng VN/A - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 16990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/p/apple_lte_10__1_2.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/a/p/apple_lte_10__1_2.png"
+  ],
+  "specs": [
+   {
+    "name": "Công nghệ màn hình",
+    "value": "Retina LTPO2 OLED / Độ sáng 3000 nit"
+   },
+   {
+    "name": "Kích thước màn hình",
+    "value": "1185 mm"
+   },
+   {
+    "name": "Đường kính mặt",
+    "value": "49 mm"
+   },
+   {
+    "name": "Kích thước cổ tay phù hợp",
+    "value": "16.5 – 21 cm"
+   },
+   {
+    "name": "Nghe,gọi",
+    "value": "Nghe gọi qua eSim"
+   },
+   {
+    "name": "Tiện ích sức khoẻ",
+    "value": "Chế độ luyện tập, Theo dõi giấc ngủ, Đo nhịp tim, Đo lượng oxy trong máu, Đếm bước chân, Tính calo tiêu thụ, Tính quãng đường chạy, Đo mức độ stress, Cảm biến nhiệt độ, Phát hiện té ngã, Cảnh báo nhịp tim bất thường, Đo điện tâm đồ, Đo VO2 max (Đo lượng tiêu thụ oxy tối đa), Theo dõi chu kỳ"
+   },
+   {
+    "name": "Tương thích",
+    "value": "iOS 18 trở lên"
+   },
+   {
+    "name": "Thời lượng pin",
+    "value": "Lên đến 36 giờ khi sử dụng bình thường / Lên đến 72 giờ ở Chế Độ Nguồn Điện Thấp"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Apple Chính hãng"
+   }
+  ],
+  "available": 16
+ },
+ {
+  "id": "92b75a77-1cc8-5efa-8cbe-e210ef89a54d",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Baseus Giá đỡ điện thoại ô tô",
+  "slug": "baseus-gia-do-dien-thoai",
+  "description": "Baseus Giá đỡ điện thoại ô tô - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 350000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/374151/ffffff/png?text=Baseus+Gi%C3%A1+%C4%91%E1%BB%A1+%C4%91i%E1%BB%87n+tho%E1%BA%A1i+%C3%B4+t%C3%B4",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/374151/ffffff/png?text=Baseus+Gi%C3%A1+%C4%91%E1%BB%A1+%C4%91i%E1%BB%87n+tho%E1%BA%A1i+%C3%B4+t%C3%B4+%281%2F2%29",
+   "https://placehold.co/800x800/374151/ffffff/png?text=Baseus+Gi%C3%A1+%C4%91%E1%BB%A1+%C4%91i%E1%BB%87n+tho%E1%BA%A1i+%C3%B4+t%C3%B4+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 190
+ },
+ {
+  "id": "3df158f5-a7c4-520e-a911-97cb76a06f6f",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Bluetooth True Wireless Philips TAT3020",
+  "slug": "tai-nghe-bluetooth-tws-philips-tat3020",
+  "description": "Bluetooth True Wireless Philips TAT3020 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 620000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/a/tai-nghe-bluetooth-tws-philips-tat3020_1_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/a/tai-nghe-bluetooth-tws-philips-tat3020_1_.png"
+  ],
+  "specs": [
+   {
+    "name": "Trọng lượng",
+    "value": "Tai nghe: 3.8 g"
+   },
+   {
+    "name": "Công nghệ âm thanh",
+    "value": "Âm thanh 360 độ / Chống ồn chủ động ANC / Âm thanh Hi-Res"
+   },
+   {
+    "name": "Micro",
+    "value": "Có"
+   },
+   {
+    "name": "Thời lượng sử dụng Pin",
+    "value": "Tai nghe: 6 giờ / Hộp sạc: 16 giờ"
+   },
+   {
+    "name": "Tính năng khác",
+    "value": "Độ trễ thấp: 50 ms / Màn hình cảm ứng LCD / Chống ồn đàm thoại ENC"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Philips"
+   }
+  ],
+  "available": 70
+ },
+ {
+  "id": "6fb6ec88-3126-51a1-ac6f-30d01009eac6",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Bluetooth True Wireless SoundPEATS Air 5 Pro+",
+  "slug": "tai-nghe-khong-day-soundpeats-air-5-pro-plus",
+  "description": "Bluetooth True Wireless SoundPEATS Air 5 Pro+ - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 2090000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_314.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_314.png"
+  ],
+  "specs": [
+   {
+    "name": "Kích thước",
+    "value": "Tai nghe: 34.60x19.87x23.50mm / Hộp sạc: 66.88x48.33x26.92mm"
+   },
+   {
+    "name": "Trọng lượng",
+    "value": "Tai nghe：5.04g / Hộp sạc + tai nghe：51.11g"
+   },
+   {
+    "name": "Công nghệ âm thanh",
+    "value": "Hybrid Adaptive ANC / LDAC / XMEMS Micro Speaker"
+   },
+   {
+    "name": "Micro",
+    "value": "6 mic CVC 8.0"
+   },
+   {
+    "name": "Cổng kết nối",
+    "value": "Type C"
+   },
+   {
+    "name": "Thời lượng sử dụng Pin",
+    "value": "Lên đến 30 giờ"
+   },
+   {
+    "name": "Tính năng khác",
+    "value": "Kháng nước IPX5 / Chống ồn đàm thoại AI"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Soundpeats"
+   }
+  ],
+  "available": 1
+ },
+ {
+  "id": "8e693a9b-d65c-522c-ab1e-badcc58bc823",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Bose QuietComfort Ultra",
+  "slug": "bose-quietcomfort-ultra",
+  "description": "Bose QuietComfort Ultra - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 8990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/7c2d12/ffffff/png?text=Bose+QuietComfort+Ultra",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=Bose+QuietComfort+Ultra+%281%2F2%29",
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=Bose+QuietComfort+Ultra+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 22
+ },
+ {
+  "id": "2d4074a9-dd36-53ea-b664-7c0f84353787",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "Dell XPS 13 9340 Core Ultra 7",
+  "slug": "dell-xps-13-9340",
+  "description": "Dell XPS 13 9340 Core Ultra 7 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 38990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=Dell+XPS+13+9340+Core+Ultra+7",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=Dell+XPS+13+9340+Core+Ultra+7+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=Dell+XPS+13+9340+Core+Ultra+7+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 25
+ },
+ {
+  "id": "f02ca688-a95d-5ebe-b6d4-04b5f911504f",
+  "categoryId": "13df1ea8-f30d-553f-a03c-7af6c0e0d2f4",
+  "name": "GIÁ TREO TIVI 32 -75 INCH (C3-FG)",
+  "slug": "gia-treo-tivi-north-bayou-c3-fg",
+  "description": "GIÁ TREO TIVI 32 -75 INCH (C3-FG) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 350000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/i/gia-treo-tivi-north-bayou-c3-fg.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/i/gia-treo-tivi-north-bayou-c3-fg.png"
+  ],
+  "specs": [
+   {
+    "name": "Chuẩn VESA",
+    "value": "75 x 75 mm"
+   },
+   {
+    "name": "Kích cỡ màn hình hỗ trợ",
+    "value": "32 - 75 inch"
+   },
+   {
+    "name": "Tải trọng màn hình tối đa",
+    "value": "65 kg"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Hãng khác"
+   }
+  ],
+  "available": 25
+ },
+ {
+  "id": "c53ee39e-8596-5992-b536-199cfb87fa4c",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Garmin Forerunner 265",
+  "slug": "garmin-forerunner-265",
+  "description": "Garmin Forerunner 265 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 11990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/4a044e/ffffff/png?text=Garmin+Forerunner+265",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/4a044e/ffffff/png?text=Garmin+Forerunner+265+%281%2F2%29",
+   "https://placehold.co/800x800/4a044e/ffffff/png?text=Garmin+Forerunner+265+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 20
+ },
+ {
+  "id": "b71f1c4d-04d1-58a5-876a-c30f5b6cd806",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "HP Pavilion 15 Core i5",
+  "slug": "hp-pavilion-15",
+  "description": "HP Pavilion 15 Core i5 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 16990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=HP+Pavilion+15+Core+i5",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=HP+Pavilion+15+Core+i5+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=HP+Pavilion+15+Core+i5+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 110
+ },
+ {
+  "id": "b6f87b01-d775-5c86-b8cf-4833bbdd452f",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Hub USB 3.0 Orico TWU3-4A-BK 3 in 1",
+  "slug": "hub-usb-3-0-orico-twu3-4a-bk-3-in-1",
+  "description": "Hub USB 3.0 Orico TWU3-4A-BK 3 in 1 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 239000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/h/th_m_ti_u_ph_37_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/h/th_m_ti_u_ph_37_.png"
+  ],
+  "specs": [
+   {
+    "name": "Đầu vào",
+    "value": "USB-C"
+   },
+   {
+    "name": "Đầu ra",
+    "value": "4 x USB 3.0"
+   },
+   {
+    "name": "Tiện ích",
+    "value": "Thiết bị tương thích Window, Mac OS, Linux / Có đèn LED / Hỗ trợ đa dạng các thiết bị USB / Tương thích 2.0 và 1.0"
+   },
+   {
+    "name": "Chức năng",
+    "value": "Tốc độ truyền dữ liệu 5Gbps"
+   },
+   {
+    "name": "Chiều dài dây",
+    "value": "15cm"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Orico"
+   }
+  ],
+  "available": 90
+ },
+ {
+  "id": "513f03f9-8a1c-5813-9feb-2cae892e82a9",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "JBL Tune 770NC",
+  "slug": "jbl-tune-770nc",
+  "description": "JBL Tune 770NC - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 2290000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/7c2d12/ffffff/png?text=JBL+Tune+770NC",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=JBL+Tune+770NC+%281%2F2%29",
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=JBL+Tune+770NC+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 180
+ },
+ {
+  "id": "108f437e-8b69-5d7c-b6eb-42d16c3b341a",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Keychron K2 Pro Wireless",
+  "slug": "keychron-k2-pro",
+  "description": "Keychron K2 Pro Wireless - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 2890000.0,
+  "thumbnailUrl": "https://www.keychron.com/cdn/shop/products/Keychron-K2-Pro-QMK-VIA-Wireless-Mechanical-Keyboard-for-Mac-Windows-PBT-keycaps-PCB-screw-in-stabilizer-hot-swappable-red-switch_7f3edd88-59f3-4516-b953-05cdc3d3bece.jpg?crop=center&height=1200&v=1671268326&width=1200",
+  "active": true,
+  "images": [
+   "https://www.keychron.com/cdn/shop/products/Keychron-K2-Pro-QMK-VIA-Wireless-Mechanical-Keyboard-for-Mac-Windows-PBT-keycaps-PCB-screw-in-stabilizer-hot-swappable-red-switch_7f3edd88-59f3-4516-b953-05cdc3d3bece.jpg?crop=center&height=1200&v=1671268326&width=1200",
+   "https://www.keychron.com/cdn/shop/products/Keychron-K2-Pro-QMK-VIA-Wireless-Mechanical-Keyboard-for-Mac-Windows-PBT-keycaps-PCB-screw-in-stabilizer-hot-swappable-red-switch_7f3edd88-59f3-4516-b953-05cdc3d3bece.jpg?crop=center&height=1200&v=1671268326&width=1200"
+  ],
+  "specs": [],
+  "available": 1
+ },
+ {
+  "id": "70c37824-00a9-5289-8f5c-95c1272747b0",
+  "categoryId": "b1f38776-76d4-548b-81fa-f7f5bcd586f4",
+  "name": "LG Side By Side 519 lít 2023 (GR-B256BL)",
+  "slug": "tu-lanh-lg-inverter-side-by-side-gr-b256bl-519-lit",
+  "description": "LG Side By Side 519 lít 2023 (GR-B256BL) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 13490000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_l_nh_23_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_l_nh_23_.png"
+  ],
+  "specs": [
+   {
+    "name": "Kiểu tủ",
+    "value": "Side by Side - 2 cánh"
+   },
+   {
+    "name": "Dung tích thực",
+    "value": "519 lít"
+   },
+   {
+    "name": "Dung tích tổng",
+    "value": "566 lít"
+   },
+   {
+    "name": "Công nghệ tiết kiệm điện",
+    "value": "Smart Inverter"
+   },
+   {
+    "name": "Công suất tiêu thụ điện",
+    "value": "507 kWh/năm"
+   },
+   {
+    "name": "Công nghệ kháng khuẩn, khử mùi",
+    "value": "Bộ lọc khử mùi than hoạt tính"
+   },
+   {
+    "name": "Tiện ích",
+    "value": "Đèn LED chiếu sáng / Khay đá di động / Cảnh báo mở cửa / Có khóa / Bảng điều khiển cảm ứng bên ngoài cửa tủ / Làm đông nhanh"
+   },
+   {
+    "name": "Kích thước",
+    "value": "Cao 178.6 cm - Ngang 91 cm - Sâu 64.3 cm"
+   },
+   {
+    "name": "Khối lượng",
+    "value": "83 kg"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "LG"
+   }
+  ],
+  "available": 20
+ },
+ {
+  "id": "315ad7f2-19e4-532b-acf3-a0cad9eeebae",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "Lenovo IdeaPad Slim 5 15IRU9 83D00003VN",
+  "slug": "laptop-lenovo-ideapad-slim-5-15iru9-83d00003vn",
+  "description": "Lenovo IdeaPad Slim 5 15IRU9 83D00003VN - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 17990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_10__4_60.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/e/text_ng_n_10__4_60.png"
+  ],
+  "specs": [
+   {
+    "name": "Loại card đồ họa",
+    "value": "Intel Graphics"
+   },
+   {
+    "name": "Dung lượng RAM",
+    "value": "32GB"
+   },
+   {
+    "name": "Loại RAM",
+    "value": "LPDDR5x-5200 Onboard"
+   },
+   {
+    "name": "Ổ cứng",
+    "value": "512GB SSD M.2 2242 PCIe 4.0x4 NVMe (Một ổ đĩa, up to 1TB M.2 2242 SSD)"
+   },
+   {
+    "name": "Công nghệ màn hình",
+    "value": "Độ sáng 300nits / Màn hình chống chói / Độ phủ màu 100% sRGB"
+   },
+   {
+    "name": "Hệ điều hành khi ra mắt",
+    "value": "Windows 11 Home Single Language"
+   },
+   {
+    "name": "Loại CPU",
+    "value": "Intel Core 5 120U, 10C (2P + 8E) / 12T, P-core 1.4 / 5.0GHz, E-core 0.9 / 3.8GHz, 12MB"
+   },
+   {
+    "name": "Kích thước màn hình",
+    "value": "15.3 inches"
+   },
+   {
+    "name": "Độ phân giải màn hình",
+    "value": "1920 x 1200 pixels (WUXGA)"
+   },
+   {
+    "name": "Pin",
+    "value": "57Wh"
+   },
+   {
+    "name": "Cổng giao tiếp",
+    "value": "1x USB-A (USB 5Gbps / USB 3.2 Gen 1) / 1x USB-A (USB 5Gbps / USB 3.2 Gen 1), Always On / 2x USB-C (USB 5Gbps / USB 3.2 Gen 1), với USB PD 3.0 và DisplayPort 1.4 / 1x HDMI 1.4 / 1x Headphone / microphone combo jack (3.5mm) / 1x Đầu đọc microSD"
+   }
+  ],
+  "available": 28
+ },
+ {
+  "id": "efe6ca96-5b39-5521-aa31-f30f6865ade6",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "Lenovo Tab P12",
+  "slug": "lenovo-tab-p12",
+  "description": "Lenovo Tab P12 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 8990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/134e4a/ffffff/png?text=Lenovo+Tab+P12",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/134e4a/ffffff/png?text=Lenovo+Tab+P12+%281%2F2%29",
+   "https://placehold.co/800x800/134e4a/ffffff/png?text=Lenovo+Tab+P12+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 0
+ },
+ {
+  "id": "08b9af77-5587-52a9-9072-b885536d904c",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "Lenovo ThinkPad X1 Carbon Gen 12",
+  "slug": "lenovo-thinkpad-x1-carbon",
+  "description": "Lenovo ThinkPad X1 Carbon Gen 12 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 42990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=Lenovo+ThinkPad+X1+Carbon+Gen+12",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=Lenovo+ThinkPad+X1+Carbon+Gen+12+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=Lenovo+ThinkPad+X1+Carbon+Gen+12+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 18
+ },
+ {
+  "id": "56f2e956-2ca9-568d-93b5-c2266820b87d",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Logitech MX Master 3S",
+  "slug": "logitech-mx-master-3s",
+  "description": "Logitech MX Master 3S - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 2490000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/374151/ffffff/png?text=Logitech+MX+Master+3S",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/374151/ffffff/png?text=Logitech+MX+Master+3S+%281%2F2%29",
+   "https://placehold.co/800x800/374151/ffffff/png?text=Logitech+MX+Master+3S+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 55
+ },
+ {
+  "id": "b9606e9b-ec51-5d2a-b26e-fd1466cb8bf8",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "MSI Modern 14 C13M",
+  "slug": "msi-modern-14",
+  "description": "MSI Modern 14 C13M - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 13990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=MSI+Modern+14+C13M",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=MSI+Modern+14+C13M+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=MSI+Modern+14+C13M+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 0
+ },
+ {
+  "id": "717f7b5b-1ce7-5c1c-9e7d-3c5818effa1a",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "MacBook Air M3 13 inch 8GB/256GB",
+  "slug": "macbook-air-m3-13",
+  "description": "MacBook Air M3 13 inch 8GB/256GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 27990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/312e81/ffffff/png?text=MacBook+Air+M3+13+inch+8GB%2F256GB",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/312e81/ffffff/png?text=MacBook+Air+M3+13+inch+8GB%2F256GB+%281%2F2%29",
+   "https://placehold.co/800x800/312e81/ffffff/png?text=MacBook+Air+M3+13+inch+8GB%2F256GB+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 55
+ },
+ {
+  "id": "287496fe-7be5-597e-926f-a3594e633cbf",
+  "categoryId": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "MacBook Pro M3 14 inch 16GB/512GB",
+  "slug": "macbook-pro-m3-14",
+  "description": "MacBook Pro M3 14 inch 16GB/512GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 45990000.0,
+  "thumbnailUrl": "https://www.apple.com/newsroom/images/2023/10/apple-unveils-new-macbook-pro-featuring-m3-chips/article/Apple-MacBook-Pro-top-view-231030_big.jpg.large_2x.jpg",
+  "active": true,
+  "images": [
+   "https://www.apple.com/newsroom/images/2023/10/apple-unveils-new-macbook-pro-featuring-m3-chips/article/Apple-MacBook-Pro-top-view-231030_big.jpg.large_2x.jpg",
+   "https://www.apple.com/newsroom/images/2023/10/apple-unveils-new-macbook-pro-featuring-m3-chips/article/Apple-MacBook-Pro-top-view-231030_big.jpg.large_2x.jpg"
+  ],
+  "specs": [],
+  "available": 30
+ },
+ {
+  "id": "99943638-b747-5ada-b10a-bed9bf25563c",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Marshall Major V",
+  "slug": "marshall-major-v",
+  "description": "Marshall Major V - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 3990000.0,
+  "thumbnailUrl": "https://images.ctfassets.net/javen7msabdh/7Jo3yt8L1EKkGWPe8gK8tK/ba408004ee0cd7fc35126aba4ead321a/major-v-cream-front-desktop-1.jpeg?w=1200&fm=jpg&q=85",
+  "active": true,
+  "images": [
+   "https://images.ctfassets.net/javen7msabdh/7Jo3yt8L1EKkGWPe8gK8tK/ba408004ee0cd7fc35126aba4ead321a/major-v-cream-front-desktop-1.jpeg?w=1200&fm=jpg&q=85",
+   "https://images.ctfassets.net/javen7msabdh/7Jo3yt8L1EKkGWPe8gK8tK/ba408004ee0cd7fc35126aba4ead321a/major-v-cream-front-desktop-1.jpeg?w=1200&fm=jpg&q=85"
+  ],
+  "specs": [],
+  "available": 1
+ },
+ {
+  "id": "0cea5400-807a-540b-825e-1ce0d8b66d67",
+  "categoryId": "b3c7ffd4-af74-5471-8d98-eb1865f5241c",
+  "name": "Microphone thu âm không dây Boya MIC 2 ( 1TX + 1RX )",
+  "slug": "microphone-thu-am-boya-mic-2-1tx-1rx",
+  "description": "Microphone thu âm không dây Boya MIC 2 ( 1TX + 1RX ) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 2790000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/i/microphone-thu-am-boya-mic-2-1tx-1rx_6_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/i/microphone-thu-am-boya-mic-2-1tx-1rx_6_.png"
+  ],
+  "specs": [
+   {
+    "name": "Pin",
+    "value": "Pin Lithium-ion tích hợp"
+   },
+   {
+    "name": "Loại micro",
+    "value": "Type-C"
+   },
+   {
+    "name": "Phạm vi sử dụng",
+    "value": "300 m"
+   },
+   {
+    "name": "Tỷ lệ lấy mẫu",
+    "value": "48 kHz / 24-bit / 48 kHz / 32-bit"
+   },
+   {
+    "name": "Tỷ lệ tín hiệu trên tạp âm",
+    "value": "＞ 90 dB"
+   },
+   {
+    "name": "Tần số đáp ứng",
+    "value": "20 Hz - 20 kHz"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Boya"
+   },
+   {
+    "name": "Tính năng khác",
+    "value": "Micrô tụ điện 6 mm / Màn hình cảm ứng AMOLED 1,1 inch"
+   },
+   {
+    "name": "Tiện ích",
+    "value": "Ba chế độ âm thanh có thể lựa chọn / Kiểm soát ứng dụng BOYA"
+   }
+  ],
+  "available": 1
+ },
+ {
+  "id": "ad676778-9063-5aae-b4d1-ee8fbc52b46b",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "Máy đọc sách Kindle Paperwhite 6 16GB (Bản không quảng cáo)",
+  "slug": "may-doc-sach-kindle-paperwhite-6-16gb-khong-quang-cao",
+  "description": "Máy đọc sách Kindle Paperwhite 6 16GB (Bản không quảng cáo) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 5490000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-doc-sach-kindle-paperwhite-6-16gb_2__3.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-doc-sach-kindle-paperwhite-6-16gb_2__3.png"
+  ],
+  "specs": [
+   {
+    "name": "Bộ nhớ trong",
+    "value": "16 GB"
+   },
+   {
+    "name": "Kích thước màn hình",
+    "value": "7.0 inches"
+   },
+   {
+    "name": "Tính năng màn hình",
+    "value": "Công nghệ màn hình 7 ”Paperwhite của Amazon với ánh sáng tích hợp, 300 ppi, công nghệ phông chữ được tối ưu hóa, thang màu xám 16 cấp."
+   },
+   {
+    "name": "Pin",
+    "value": "Lên đến 12 tuần"
+   }
+  ],
+  "available": 33
+ },
+ {
+  "id": "644b3a20-c351-5f62-a755-2aecf4adf42e",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "Máy đọc sách New Kindle Gen 11 2024 16GB (Bản không quảng cáo)",
+  "slug": "may-doc-sach-kindle-new-2024-gen-11-16gb-khong-quang-cao",
+  "description": "Máy đọc sách New Kindle Gen 11 2024 16GB (Bản không quảng cáo) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 4090000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-doc-sach-kindle-new-2024-gen-11-16gb-khong-quang-cao.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/a/may-doc-sach-kindle-new-2024-gen-11-16gb-khong-quang-cao.png"
+  ],
+  "specs": [
+   {
+    "name": "Kích thước màn hình",
+    "value": "6.0 inches"
+   },
+   {
+    "name": "Bộ nhớ trong",
+    "value": "16 GB"
+   },
+   {
+    "name": "Pin",
+    "value": "lên đến 6 tuần sau mỗi lần sạc"
+   },
+   {
+    "name": "Tính năng màn hình",
+    "value": "Màn hình 6 ”của Amazon với ánh sáng tích hợp, 300ppi, công nghệ phông chữ được tối ưu hóa, thang màu xám 16 cấp."
+   }
+  ],
+  "available": 45
+ },
+ {
+  "id": "01f18f88-0728-59d2-805c-29640538c4aa",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "Nothing Phone (2a)",
+  "slug": "nothing-phone-2a",
+  "description": "Nothing Phone (2a) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 9990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/1e293b/ffffff/png?text=Nothing+Phone+%282a%29",
+  "active": false,
+  "images": [
+   "https://placehold.co/800x800/1e293b/ffffff/png?text=Nothing+Phone+%282a%29+%281%2F2%29",
+   "https://placehold.co/800x800/1e293b/ffffff/png?text=Nothing+Phone+%282a%29+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 40
+ },
+ {
+  "id": "d68f5695-3780-523e-a11e-151f7489d39d",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "OPPO Reno11 F 5G",
+  "slug": "oppo-reno11-f",
+  "description": "OPPO Reno11 F 5G - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 8490000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/42/321895/oppo-reno11-f-purple-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/42/321895/oppo-reno11-f-purple-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/42/321895/oppo-reno11-f-purple-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 150
+ },
+ {
+  "id": "98364c96-7701-5cee-aa21-24b23b8d534a",
+  "categoryId": "b300e933-d9b2-5527-8dae-ffd8abd6cd0f",
+  "name": "PC CPS Core Work P144F650 i5-14400F / RX 6500",
+  "slug": "pc-cps-core-work-p144f650",
+  "description": "PC CPS Core Work P144F650 i5-14400F / RX 6500 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 19930000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/c/pc-cps-core-work-p144f650.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/c/pc-cps-core-work-p144f650.png"
+  ],
+  "specs": [
+   {
+    "name": "Dung lượng RAM",
+    "value": "16GB"
+   },
+   {
+    "name": "CPU",
+    "value": "Intel Core i5-14400F (SN)"
+   },
+   {
+    "name": "VGA",
+    "value": "ASUS Dual Radeon RX 6500 XT OC 4GB DUAL-RX6500XT-O4G-V2"
+   },
+   {
+    "name": "RAM",
+    "value": "Ram PC Kingston Fury Beast DDR4 3200MHz 16GB KF432C16BB1/16WP"
+   },
+   {
+    "name": "SSD",
+    "value": "SSD Adata Legend 710 PCIe Gen3 X4 M.2 2280 (R 2400/W 1800) 256GB"
+   },
+   {
+    "name": "Mainboard",
+    "value": "Mainboard Gigabyte B760M Gaming Plus Wifi D4"
+   },
+   {
+    "name": "Chipset (PC lắp ráp)",
+    "value": "B760M"
+   }
+  ],
+  "available": 30
+ },
+ {
+  "id": "e2a02554-c7ac-5509-be71-d407c0b0c902",
+  "categoryId": "b300e933-d9b2-5527-8dae-ffd8abd6cd0f",
+  "name": "PC CPS Gaming G1 - AMD",
+  "slug": "pc-cps-gaming-g1-amd",
+  "description": "PC CPS Gaming G1 - AMD - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 10530000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/c/pc-cps-gaming-g1-amd-1253.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/c/pc-cps-gaming-g1-amd-1253.png"
+  ],
+  "specs": [
+   {
+    "name": "Loại card đồ họa",
+    "value": "GTX 1650"
+   },
+   {
+    "name": "Dung lượng RAM",
+    "value": "8GB"
+   },
+   {
+    "name": "Loại RAM",
+    "value": "DDR4 3200Mhz"
+   },
+   {
+    "name": "Số khe ram",
+    "value": "4 x DDR4"
+   },
+   {
+    "name": "Ổ cứng",
+    "value": "SSD 240GB Sata III 2.5inch"
+   },
+   {
+    "name": "CPU",
+    "value": "R5 4500"
+   },
+   {
+    "name": "VGA",
+    "value": "GTX 1650"
+   },
+   {
+    "name": "RAM",
+    "value": "8 GB"
+   },
+   {
+    "name": "SSD",
+    "value": "240 GB"
+   },
+   {
+    "name": "Mainboard",
+    "value": "A520M-K"
+   },
+   {
+    "name": "Loại CPU",
+    "value": "AMD Ryzen 5 4500"
+   },
+   {
+    "name": "Socket",
+    "value": "AMD AM4"
+   },
+   {
+    "name": "Chipset (PC lắp ráp)",
+    "value": "A520"
+   },
+   {
+    "name": "Cổng I/O mặt sau",
+    "value": "1 cổng kết hợp bàn phím / chuột PS / 2 / 1 x D-Sub / 1 x HDMI / 1 x cổng LAN (RJ45) / 4 x USB 3.1 thế hệ thứ 1 (màu xanh) Kiểu A / 2 x USB 2.0 / 3 x giắc cắm âm thanh"
+   }
+  ],
+  "available": 15
+ },
+ {
+  "id": "589cf07b-2cef-5411-bab5-220f66e6a339",
+  "categoryId": "b1f38776-76d4-548b-81fa-f7f5bcd586f4",
+  "name": "Panasonic 306 lít 2021 (NR-TV341VGMV)",
+  "slug": "tu-lanh-panasonic-inverter-nr-tv341vgmv-306-lit",
+  "description": "Panasonic 306 lít 2021 (NR-TV341VGMV) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 10590000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/u/tu-lanh-panasonic-inverter-nr-tv341vgmv-306-lit.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/u/tu-lanh-panasonic-inverter-nr-tv341vgmv-306-lit.png"
+  ],
+  "specs": [
+   {
+    "name": "Kiểu tủ",
+    "value": "Tủ lạnh ngăn đá trên - 2 cánh"
+   },
+   {
+    "name": "Dung tích thực",
+    "value": "306 lít"
+   },
+   {
+    "name": "Dung tích tổng",
+    "value": "340 lít"
+   },
+   {
+    "name": "Công nghệ tiết kiệm điện",
+    "value": "Cảm biến thông minh Econavi / Inverter"
+   },
+   {
+    "name": "Công suất tiêu thụ điện",
+    "value": "379 kWh/năm"
+   },
+   {
+    "name": "Công nghệ bảo quản thực phẩm",
+    "value": "Ngăn trữ đông tinh thể bạc Ag Hygiene Zone / Ngăn Extra Cool Zone giữ lạnh thực phẩm ở nhiệt độ 2°C / Ngăn rau củ góc mở rộng tối đa Wide Fresh Case"
+   },
+   {
+    "name": "Công nghệ kháng khuẩn, khử mùi",
+    "value": "Công nghệ diệt khuẩn Blue Ag+ với tinh thể bạc Ag+ và ánh sáng xanh"
+   },
+   {
+    "name": "Tiện ích",
+    "value": "Khay đá di động"
+   },
+   {
+    "name": "Kích thước",
+    "value": "Cao 164.5 cm - Ngang 59 cm - Sâu 63.7 cm"
+   },
+   {
+    "name": "Khối lượng",
+    "value": "58 kg"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Panasonic"
+   }
+  ],
+  "available": 35
+ },
+ {
+  "id": "0d464fa8-0db7-5be3-ab7f-8d0a54fe3609",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "Samsung Galaxy A55 5G",
+  "slug": "samsung-galaxy-a55",
+  "description": "Samsung Galaxy A55 5G - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 9490000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/42/322096/samsung-galaxy-a55-5g-blue-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/42/322096/samsung-galaxy-a55-5g-blue-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/42/322096/samsung-galaxy-a55-5g-blue-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 200
+ },
+ {
+  "id": "34354145-85e1-5538-b6e5-a46656eebaf3",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "Samsung Galaxy S24 Ultra 256GB",
+  "slug": "samsung-galaxy-s24-ultra",
+  "description": "Samsung Galaxy S24 Ultra 256GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 29990000.0,
+  "thumbnailUrl": "https://mindthegapps.com/wp-content/uploads/2023/09/samsung-galaxy-s24-ultra-release-date-and-everything.webp",
+  "active": true,
+  "images": [
+   "https://mindthegapps.com/wp-content/uploads/2023/09/samsung-galaxy-s24-ultra-release-date-and-everything.webp",
+   "https://mindthegapps.com/wp-content/uploads/2023/09/samsung-galaxy-s24-ultra-release-date-and-everything.webp"
+  ],
+  "specs": [],
+  "available": 75
+ },
+ {
+  "id": "0de535db-f821-566a-8093-6288472bb016",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "Samsung Galaxy Tab S9 FE",
+  "slug": "samsung-tab-s9-fe",
+  "description": "Samsung Galaxy Tab S9 FE - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 11990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/522/309818/galaxy-tab-s9-fe-grey-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/522/309818/galaxy-tab-s9-fe-grey-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/522/309818/galaxy-tab-s9-fe-grey-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 80
+ },
+ {
+  "id": "b6b38a23-5b37-5049-becc-0000c5d5c2bf",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Samsung Galaxy Watch6 Classic 47mm",
+  "slug": "samsung-watch6-classic",
+  "description": "Samsung Galaxy Watch6 Classic 47mm - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 8490000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/7077/310858/samsung-galaxy-watch6-classic-47-mm-bac-ksp-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/7077/310858/samsung-galaxy-watch6-classic-47-mm-bac-ksp-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/7077/310858/samsung-galaxy-watch6-classic-47-mm-bac-ksp-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 35
+ },
+ {
+  "id": "1ed0d41d-a9f3-57d0-bf1f-f0006e04485e",
+  "categoryId": "2ac73eb3-4007-5de9-a602-5390c65018f0",
+  "name": "Samsung cửa ngang Bespoke 14kg 2024 (WW14BB944DGBSV)",
+  "slug": "may-giat-samsung-bespoke-14kg-inverter-ww14bb944dgbsv",
+  "description": "Samsung cửa ngang Bespoke 14kg 2024 (WW14BB944DGBSV) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 13490000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/_/m_y_c_o_r_u_14_11_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/_/m_y_c_o_r_u_14_11_.png"
+  ],
+  "specs": [
+   {
+    "name": "Loại máy giặt",
+    "value": "Cửa trước - Lồng ngang"
+   },
+   {
+    "name": "Khối lượng giặt",
+    "value": "14kg"
+   },
+   {
+    "name": "Số người sử dụng",
+    "value": "Trên 7 người"
+   },
+   {
+    "name": "Kiểu động cơ",
+    "value": "Truyền động gián tiếp (dây Curoa)"
+   },
+   {
+    "name": "Công suất quay vắt tối đa",
+    "value": "1400 vòng/phút"
+   },
+   {
+    "name": "Công suất tiêu thụ điện",
+    "value": "13.4 Wh/kg"
+   },
+   {
+    "name": "Tiện ích",
+    "value": "Điều khiển máy giặt bằng smartphone qua ứng dụng SmartThings / Tự động vệ sinh lồng giặt Drum Clean+ / Tự động phân bổ nước giặt / Khóa trẻ em / Hẹn giờ giặt kết thúc / Chỉnh số vòng vắt / Chỉnh nhiệt độ nước / Chẩn đoán sự cố thông minh qua Smart Check / Bảng điều khiển thông minh AI Control / Khóa cửa máy / Cài đặt ngôn ngữ hiển thị bằng Tiếng Anh hoặc Tiếng Việt / Tiết kiệm năng lượng với SmartThings AI Energy"
+   },
+   {
+    "name": "Sản xuất tại",
+    "value": "Việt Nam"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Samsung Chính hãng"
+   }
+  ],
+  "available": 12
+ },
+ {
+  "id": "759d9034-b058-5375-aa35-cadf437332c3",
+  "categoryId": "13df1ea8-f30d-553f-a03c-7af6c0e0d2f4",
+  "name": "Smart Tivi Samsung Neo QLED 4K 75 inch 2025 (75QN80F)",
+  "slug": "smart-tivi-samsung-neo-qled-75qn80f-4k-75-inch-2025",
+  "description": "Smart Tivi Samsung Neo QLED 4K 75 inch 2025 (75QN80F) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 29990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/v/tv-ss-75qn80f-qled-4k-75_1_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/v/tv-ss-75qn80f-qled-4k-75_1_.png"
+  ],
+  "specs": [
+   {
+    "name": "Kích cỡ màn hình",
+    "value": "75 inch"
+   },
+   {
+    "name": "Công nghệ hình ảnh",
+    "value": "HDR 10+ / 4K AI Upscaling / Color Booster Pro / Chế độ Filmmaker / Chế độ EyeComfort / Neo Quantum HDR / Wide Viewing Angle / Real Depth Enhancer / Auto HDR Remastering / Supreme UHD Dimming / Motion Xcelerator 144Hz / Quantum Matrix Technology Core / Công nghệ Quantum Matrix Core"
+   },
+   {
+    "name": "Độ phân giải",
+    "value": "4K"
+   },
+   {
+    "name": "Loại màn hình",
+    "value": "QLED"
+   },
+   {
+    "name": "Tần số quét",
+    "value": "100Hz"
+   },
+   {
+    "name": "Loại tivi",
+    "value": "Tivi QLED, Smart tivi, Neo QLED"
+   },
+   {
+    "name": "Công nghệ âm thanh",
+    "value": "OTS Lite / Q-Symphony / Dolby Atmos / Adaptive Sound / Âm thanh 360° / Active Voice Amplifier Pro"
+   },
+   {
+    "name": "Hệ điều hành",
+    "value": "Tizen OS"
+   },
+   {
+    "name": "Tiện ích nổi bật",
+    "value": "Tìm kiếm giọng nói bằng tiếng Việt, Tích hợp trợ lí ảo Google Assistant, Chiếu hình ảnh từ điện thoại lên TV"
+   },
+   {
+    "name": "Thương hiệu",
+    "value": "Samsung"
+   }
+  ],
+  "available": 40
+ },
+ {
+  "id": "c29f5a79-bcd8-5ef8-92fe-6588e1238388",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Sony WF-1000XM5",
+  "slug": "sony-wf-1000xm5",
+  "description": "Sony WF-1000XM5 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 5990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_431.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_431.png",
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/f/r/frame_431.png"
+  ],
+  "specs": [
+   {
+    "name": "Kích thước",
+    "value": "Hộp sạc: 64.6 x 40 x 26.5 mm"
+   },
+   {
+    "name": "Trọng lượng",
+    "value": "Tai nghe: 5.9 gram / Hộp sạc: 39 gram"
+   },
+   {
+    "name": "Công nghệ âm thanh",
+    "value": "Hi-Res Audio / DSEE Extreme™ / Âm thanh 360"
+   },
+   {
+    "name": "Micro",
+    "value": "Có"
+   },
+   {
+    "name": "Thời lượng sử dụng Pin",
+    "value": "Tai nghe: 6 giờ / Hộp sạc: 7 giờ (Bật ANC) / Tai nghe: 8 giờ / Hộp sạc: 12 giờ (Tắt ANC)"
+   },
+   {
+    "name": "Phương thức điều khiển",
+    "value": "Chạm cảm ứng"
+   },
+   {
+    "name": "Tính năng khác",
+    "value": "Chức năng theo dõi đầu / Chống ồn đàm thoại / Chống nước IPX4"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Sony"
+   }
+  ],
+  "available": 50
+ },
+ {
+  "id": "b32865ff-c545-56ce-84fc-50147aa5ff3f",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Sony WH-1000XM5",
+  "slug": "sony-wh-1000xm5",
+  "description": "Sony WH-1000XM5 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 7990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/7c2d12/ffffff/png?text=Sony+WH-1000XM5",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=Sony+WH-1000XM5+%281%2F2%29",
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=Sony+WH-1000XM5+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 45
+ },
+ {
+  "id": "08f2421a-f186-5270-be82-390e8f6376fe",
+  "categoryId": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "SoundPEATS Air4 Pro",
+  "slug": "soundpeats-air4-pro",
+  "description": "SoundPEATS Air4 Pro - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 1490000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/7c2d12/ffffff/png?text=SoundPEATS+Air4+Pro",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=SoundPEATS+Air4+Pro+%281%2F2%29",
+   "https://placehold.co/800x800/7c2d12/ffffff/png?text=SoundPEATS+Air4+Pro+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 200
+ },
+ {
+  "id": "171a6b0c-323b-53bb-b47f-4191b79f314d",
+  "categoryId": "b3c7ffd4-af74-5471-8d98-eb1865f5241c",
+  "name": "Tai nghe Bluetooth True Wireless Baseus Bowie M2",
+  "slug": "tai-nghe-bluetooth-baseus-bowie-m2",
+  "description": "Tai nghe Bluetooth True Wireless Baseus Bowie M2 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 750000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_146_3_.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_146_3_.png"
+  ],
+  "specs": [
+   {
+    "name": "Công nghệ âm thanh",
+    "value": "Chống ồn chủ động / Chế độ xuyên âm / Game Mode"
+   },
+   {
+    "name": "Micro",
+    "value": "Có"
+   },
+   {
+    "name": "Thời lượng sử dụng Pin",
+    "value": "Tai nghe: Dùng 5 giờ / Hộp sạc: Dùng 30 giờ"
+   },
+   {
+    "name": "Phương thức điều khiển",
+    "value": "Chạm cảm ứng"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Baseus"
+   }
+  ],
+  "available": 60
+ },
+ {
+  "id": "1204a92e-277e-5f49-8241-16a6b01e55fe",
+  "categoryId": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "UGREEN Cáp USB-C to USB-C 2m 100W",
+  "slug": "ugreen-cap-usbc-2m",
+  "description": "UGREEN Cáp USB-C to USB-C 2m 100W - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 290000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/374151/ffffff/png?text=UGREEN+C%C3%A1p+USB-C+to+USB-C+2m+100W",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/374151/ffffff/png?text=UGREEN+C%C3%A1p+USB-C+to+USB-C+2m+100W+%281%2F2%29",
+   "https://placehold.co/800x800/374151/ffffff/png?text=UGREEN+C%C3%A1p+USB-C+to+USB-C+2m+100W+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 200
+ },
+ {
+  "id": "46be6c64-3e42-5c1d-b3d9-bfaa69128c81",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "Xiaomi 14 Ultra",
+  "slug": "xiaomi-14-ultra",
+  "description": "Xiaomi 14 Ultra - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 24990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/42/313889/xiaomi-14-ultra-black-thumbnew-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/42/313889/xiaomi-14-ultra-black-thumbnew-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/42/313889/xiaomi-14-ultra-black-thumbnew-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 1
+ },
+ {
+  "id": "50d40450-0458-5b54-af57-070144d84b1e",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "Xiaomi 15T Pro 5G 12GB 512GB",
+  "slug": "dien-thoai-xiaomi-15t-pro-5g",
+  "description": "Xiaomi 15T Pro 5G 12GB 512GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 15990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-15t-pro-5g_1.jpg",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/x/i/xiaomi-15t-pro-5g_1.jpg"
+  ],
+  "specs": [
+   {
+    "name": "Hệ điều hành",
+    "value": "Xiaomi HyperOS 2"
+   },
+   {
+    "name": "Chipset",
+    "value": "MediaTek Dimensity 9400+"
+   },
+   {
+    "name": "Dung lượng RAM",
+    "value": "12 GB"
+   },
+   {
+    "name": "Bộ nhớ trong",
+    "value": "512 GB"
+   },
+   {
+    "name": "Kích thước màn hình",
+    "value": "6.83 inches"
+   },
+   {
+    "name": "Công nghệ màn hình",
+    "value": "AMOLED"
+   },
+   {
+    "name": "Tính năng màn hình",
+    "value": "Độ sáng tối đa 3200 nits, 447ppi, 68 tỷ màu, DCI-P3, HDR10+, Dolby Vision®, DC dimming, TÜV Rheinland"
+   },
+   {
+    "name": "Camera sau",
+    "value": "Chính: 50MP, f/1.62, OIS, cảm biến Light Fusion 900 / Tele: 50MP, f/3.0, OIS, Samsung JN5, Zoom 5x, 10x lossless, Ultra Zoom 20x / Siêu rộng: 12MP, f/2.2, 120° FOV"
+   },
+   {
+    "name": "Camera trước",
+    "value": "32MP, f/2.2, tiêu cự 21mm"
+   },
+   {
+    "name": "Pin",
+    "value": "5500mAh"
+   },
+   {
+    "name": "Thời điểm ra mắt",
+    "value": "09/2025"
+   }
+  ],
+  "available": 80
+ },
+ {
+  "id": "b34862a6-1101-55ed-9448-8d5767afd347",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "Xiaomi Pad 6 128GB",
+  "slug": "xiaomi-pad-6",
+  "description": "Xiaomi Pad 6 128GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 7990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/522/309848/xiaomi-pad-6-blue-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/522/309848/xiaomi-pad-6-blue-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/522/309848/xiaomi-pad-6-blue-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 95
+ },
+ {
+  "id": "ae97f3e8-4c13-525e-8879-ca615910a29b",
+  "categoryId": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Xiaomi Watch S3",
+  "slug": "xiaomi-watch-s3",
+  "description": "Xiaomi Watch S3 - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 2990000.0,
+  "thumbnailUrl": "https://i02.appmifile.com/563_operatorx_operatorx_opx/18/11/2024/f8bb3a1bb9990d8d5dde34cdbc9b9af7.png",
+  "active": true,
+  "images": [
+   "https://i02.appmifile.com/563_operatorx_operatorx_opx/18/11/2024/f8bb3a1bb9990d8d5dde34cdbc9b9af7.png",
+   "https://i02.appmifile.com/563_operatorx_operatorx_opx/18/11/2024/f8bb3a1bb9990d8d5dde34cdbc9b9af7.png"
+  ],
+  "specs": [],
+  "available": 120
+ },
+ {
+  "id": "f9f208fa-0a89-5e02-abcc-81521fd08651",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "iPad Air M2 11 inch WiFi 128GB",
+  "slug": "ipad-air-m2-11",
+  "description": "iPad Air M2 11 inch WiFi 128GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 16990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/522/325501/ipad-air-11-inch-m2-wifi-purple-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/522/325501/ipad-air-11-inch-m2-wifi-purple-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/522/325501/ipad-air-11-inch-m2-wifi-purple-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 65
+ },
+ {
+  "id": "a6ce327b-7cc2-585c-9824-94daaf664d0c",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "iPad Gen 10 WiFi 64GB",
+  "slug": "ipad-gen-10",
+  "description": "iPad Gen 10 WiFi 64GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 10490000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/522/294103/iPad-Gen-10-sliver-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/522/294103/iPad-Gen-10-sliver-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/522/294103/iPad-Gen-10-sliver-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 130
+ },
+ {
+  "id": "9db2c05c-f0ef-5d7c-b075-377083159bf2",
+  "categoryId": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "iPad Pro M4 11 inch WiFi 256GB",
+  "slug": "ipad-pro-m4-11",
+  "description": "iPad Pro M4 11 inch WiFi 256GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 28990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/522/325513/ipad-pro-11-inch-m4-wifi-sliver-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/522/325513/ipad-pro-11-inch-m4-wifi-sliver-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/522/325513/ipad-pro-11-inch-m4-wifi-sliver-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 40
+ },
+ {
+  "id": "e0404394-59b0-5044-af93-6a93adc3af39",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "iPhone 15 128GB",
+  "slug": "iphone-15-128gb",
+  "description": "iPhone 15 128GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 22990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/42/281570/iphone-15-xanh-thumb-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/42/281570/iphone-15-xanh-thumb-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/42/281570/iphone-15-xanh-thumb-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 90
+ },
+ {
+  "id": "1f8d1d18-6b82-542e-bcca-e7485fe03e0d",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "iPhone 15 Pro Max 256GB",
+  "slug": "iphone-15-pro-max-256gb",
+  "description": "iPhone 15 Pro Max 256GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 31990000.0,
+  "thumbnailUrl": "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg",
+  "active": true,
+  "images": [
+   "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg",
+   "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg"
+  ],
+  "specs": [],
+  "available": 120
+ },
+ {
+  "id": "07324815-82b1-580d-b763-45dbb73655a4",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "iPhone 16 Pro Max 256GB",
+  "slug": "iphone-16-pro-max",
+  "description": "iPhone 16 Pro Max 256GB - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 30990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-16-pro-max.png"
+  ],
+  "specs": [
+   {
+    "name": "Hệ điều hành khi ra mắt",
+    "value": "iOS 18"
+   },
+   {
+    "name": "Chipset",
+    "value": "Apple A18 Pro"
+   },
+   {
+    "name": "Dung lượng RAM",
+    "value": "8 GB"
+   },
+   {
+    "name": "Bộ nhớ trong",
+    "value": "256 GB"
+   },
+   {
+    "name": "Loại CPU",
+    "value": "CPU 6 lõi mới với 2 lõi hiệu năng và 4 lõi hiệu suất"
+   },
+   {
+    "name": "GPU",
+    "value": "GPU 6 lõi mới"
+   },
+   {
+    "name": "Kích thước màn hình",
+    "value": "6.9 inches"
+   },
+   {
+    "name": "Công nghệ màn hình",
+    "value": "Super Retina XDR OLED"
+   },
+   {
+    "name": "Độ phân giải màn hình",
+    "value": "2868 x 1320 pixels"
+   },
+   {
+    "name": "Tính năng màn hình",
+    "value": "Dynamic Island / Màn hình Luôn Bật / Công nghệ ProMotion với tốc độ làm mới thích ứng lên đến 120Hz / Màn hình HDR / True Tone / Dải màu rộng (P3) / Haptic Touch / Tỷ lệ tương phản 2.000.000:1"
+   },
+   {
+    "name": "Camera sau",
+    "value": "Camera chính: 48MP, f/1.78, 24mm, 2µm, chống rung quang học dịch chuyển cảm biến thế hệ thứ hai, Focus Pixels 100% / Telephoto 2x 12MP: 52 mm, ƒ/1.6 / Camera góc siêu rộng: 48MP, 13 mm,ƒ/2.2 và trường ảnh 120°, Hybrid Focus Pixels, ảnh có độ phân giải"
+   },
+   {
+    "name": "Camera trước",
+    "value": "12MP, ƒ/1.9, Tự động lấy nét theo pha Focus Pixels"
+   },
+   {
+    "name": "Hỗ trợ mạng",
+    "value": "5G"
+   },
+   {
+    "name": "Thẻ SIM",
+    "value": "Sim kép (nano-Sim và e-Sim) - Hỗ trợ 2 e-Sim"
+   },
+   {
+    "name": "Công nghệ NFC",
+    "value": "Có"
+   },
+   {
+    "name": "Thời điểm ra mắt",
+    "value": "09/2024"
+   }
+  ],
+  "available": 50
+ },
+ {
+  "id": "642863ee-5326-56f4-89e6-cdf893ad9d2a",
+  "categoryId": "2ac73eb3-4007-5de9-a602-5390c65018f0",
+  "name": "sấy Hitachi cửa ngang giặt 10.5kg - sấy 7kg 2023 (BD-D1054HVOS)",
+  "slug": "may-giat-say-hitachi-inverter-10-5-bd-d1054hvos",
+  "description": "sấy Hitachi cửa ngang giặt 10.5kg - sấy 7kg 2023 (BD-D1054HVOS) - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 9990000.0,
+  "thumbnailUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/_/m_y_c_o_r_u_14_27.png",
+  "active": true,
+  "images": [
+   "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/_/m_y_c_o_r_u_14_27.png"
+  ],
+  "specs": [
+   {
+    "name": "Loại máy giặt",
+    "value": "Máy giặt sấy - Lồng ngang"
+   },
+   {
+    "name": "Khối lượng giặt",
+    "value": "10.5 Kg"
+   },
+   {
+    "name": "Số người sử dụng",
+    "value": "Trên 7 người"
+   },
+   {
+    "name": "Kiểu động cơ",
+    "value": "Truyền động gián tiếp (dây Curoa)"
+   },
+   {
+    "name": "Công suất quay vắt tối đa",
+    "value": "1400 vòng/phút"
+   },
+   {
+    "name": "Công suất tiêu thụ điện",
+    "value": "8.5 Wh/kg"
+   },
+   {
+    "name": "Tiện ích",
+    "value": "Vệ sinh lồng giặt / Khóa trẻ em / Hẹn giờ giặt / Có sấy / Chống nhăn"
+   },
+   {
+    "name": "Sản xuất tại",
+    "value": "Trung Quốc"
+   },
+   {
+    "name": "Hãng sản xuất",
+    "value": "Hitachi"
+   }
+  ],
+  "available": 18
+ },
+ {
+  "id": "9dc2c272-0914-54de-b46b-62ca7e689523",
+  "categoryId": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "vivo V30e 5G",
+  "slug": "vivo-v30e",
+  "description": "vivo V30e 5G - hàng chính hãng, bảo hành 12 tháng tại Techies.",
+  "price": 8990000.0,
+  "thumbnailUrl": "https://placehold.co/600x600/1e293b/ffffff/png?text=vivo+V30e+5G",
+  "active": true,
+  "images": [
+   "https://placehold.co/800x800/1e293b/ffffff/png?text=vivo+V30e+5G+%281%2F2%29",
+   "https://placehold.co/800x800/1e293b/ffffff/png?text=vivo+V30e+5G+%282%2F2%29"
+  ],
+  "specs": [],
+  "available": 60
+ }
+]

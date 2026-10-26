@@ -1,0 +1,79 @@
+[
+ {
+  "id": "621a9347-0b52-58d5-ba30-9c524079231d",
+  "name": "Điện thoại",
+  "slug": "dien-thoai",
+  "imageUrl": "https://cdn.tgdd.vn/Products/Images/42/305658/iphone-15-pro-max-blue-thumbnew-600x600.jpg",
+  "displayOrder": 1
+ },
+ {
+  "id": "1cf6c2ff-e4cd-50c1-bcb8-39c22a711b9b",
+  "name": "Laptop",
+  "slug": "laptop",
+  "imageUrl": "https://www.apple.com/newsroom/images/2023/10/apple-unveils-new-macbook-pro-featuring-m3-chips/article/Apple-MacBook-Pro-top-view-231030_big.jpg.large_2x.jpg",
+  "displayOrder": 2
+ },
+ {
+  "id": "155c3f45-7376-54b8-8fe4-9859afd0cd8e",
+  "name": "Máy tính bảng",
+  "slug": "tablet",
+  "imageUrl": "https://cdn.tgdd.vn/Products/Images/522/325513/ipad-pro-11-inch-m4-wifi-sliver-thumb-600x600.jpg",
+  "displayOrder": 3
+ },
+ {
+  "id": "3a8e7aee-9455-52a3-be9a-3790e375821a",
+  "name": "Tai nghe",
+  "slug": "tai-nghe",
+  "imageUrl": "https://images.ctfassets.net/javen7msabdh/7Jo3yt8L1EKkGWPe8gK8tK/ba408004ee0cd7fc35126aba4ead321a/major-v-cream-front-desktop-1.jpeg?w=1200&fm=jpg&q=85",
+  "displayOrder": 4
+ },
+ {
+  "id": "5e8b4230-0d61-5f2b-a468-5499e8e7331b",
+  "name": "Đồng hồ thông minh",
+  "slug": "dong-ho-thong-minh",
+  "imageUrl": "https://cdn.tgdd.vn/Products/Images/7077/310858/samsung-galaxy-watch6-classic-47-mm-bac-ksp-600x600.jpg",
+  "displayOrder": 5
+ },
+ {
+  "id": "cec6d4cc-9d78-55d8-aaf7-35d3bcf87a9f",
+  "name": "Phụ kiện",
+  "slug": "phu-kien",
+  "imageUrl": "https://cdn.shopify.com/s/files/1/0493/9834/9974/products/A2663111-Anker_715_Charger_Nano_II_65W.png?v=1767756360",
+  "displayOrder": 6
+ },
+ {
+  "id": "13df1ea8-f30d-553f-a03c-7af6c0e0d2f4",
+  "name": "Tivi",
+  "slug": "tivi",
+  "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/v/tv-ss-75qn80f-qled-4k-75_1_.png",
+  "displayOrder": 7
+ },
+ {
+  "id": "b300e933-d9b2-5527-8dae-ffd8abd6cd0f",
+  "name": "Máy tính để bàn",
+  "slug": "may-tinh-de-ban",
+  "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/p/c/pc-cps-gaming-g1-amd-1253.png",
+  "displayOrder": 8
+ },
+ {
+  "id": "b3c7ffd4-af74-5471-8d98-eb1865f5241c",
+  "name": "Âm thanh",
+  "slug": "am-thanh",
+  "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/g/r/group_146_3_.png",
+  "displayOrder": 9
+ },
+ {
+  "id": "b1f38776-76d4-548b-81fa-f7f5bcd586f4",
+  "name": "Tủ lạnh",
+  "slug": "tu-lanh",
+  "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/t/_/t_l_nh_23_.png",
+  "displayOrder": 10
+ },
+ {
+  "id": "2ac73eb3-4007-5de9-a602-5390c65018f0",
+  "name": "Máy giặt",
+  "slug": "may-giat",
+  "imageUrl": "https://cdn2.cellphones.com.vn/insecure/rs:fill:0:0/q:90/plain/https://cellphones.com.vn/media/catalog/product/m/_/m_y_c_o_r_u_14_11_.png",
+  "displayOrder": 11
+ }
+]

@@ -12,6 +12,7 @@ public sealed class DbSeeder(AppDbContext db, TimeProvider clock)
         await SeedTiersAsync(ct);
         await SeedStaffAsync(ct);
         await CustomerSeed.SeedAsync(db, clock.GetUtcNow(), ct);
+        await CatalogSeed.SeedAsync(db, clock.GetUtcNow(), ct);
     }
 
     private async Task SeedTiersAsync(CancellationToken ct)
