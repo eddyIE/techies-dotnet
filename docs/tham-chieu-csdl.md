@@ -433,9 +433,16 @@ Yêu cầu bắt buộc:
 1. Đúng 22 thực thể, đúng tên bảng trong tài liệu (không tiền tố schema). KHÔNG vẽ các bảng đã bỏ
    (carts, cart_items, saga_steps, stock_movements, stock_movement_items, user_avatars, review_summaries,
    order_ref_counters, staff_accounts) và không vẽ __EFMigrationsHistory.
-2. Mỗi thực thể là một hộp gọn: dòng tiêu đề = tên bảng + tên tiếng Việt (VD "orders — Đơn hàng"); bên dưới
-   CHỈ liệt kê khóa: dòng "PK …" và các dòng "FK …" (không ghi kiểu dữ liệu, không ghi cột thường). Mục đích
-   của sơ đồ là thể hiện LIÊN KẾT giữa các thực thể, không phải cấu trúc cột.
+2. Mỗi thực thể là MỘT hộp chỉ có tên — KHÔNG có trường nào (không cột, không PK/FK, không kiểu dữ liệu).
+   Nội dung hộp: tên bảng (đậm) và tên tiếng Việt bên dưới, đúng theo danh sách này:
+   users: Khách hàng · addresses: Địa chỉ · staff: Nhân viên · roles: Vai trò · permissions: Quyền ·
+   role_permissions: Quyền của vai trò · categories: Danh mục · products: Sản phẩm ·
+   product_images: Ảnh sản phẩm · product_specs: Thông số sản phẩm · stock_items: Tồn kho ·
+   inventory_adjustments: Biến động kho · orders: Đơn hàng · order_items: Dòng đơn hàng ·
+   coupons: Mã giảm giá · coupon_redemptions: Lượt dùng mã · membership_tiers: Hạng thành viên ·
+   customer_loyalty: Điểm thành viên · point_transactions: Giao dịch điểm · gifts: Quà tặng ·
+   gift_redemptions: Lượt đổi quà · reviews: Đánh giá.
+   Mục đích của sơ đồ là thể hiện LIÊN KẾT giữa các thực thể; cấu trúc cột đã có ở mục 3, không vẽ lại.
 3. Vẽ đủ 30 quan hệ trong bảng mục 4, mỗi quan hệ một đường nối:
    - Ký hiệu crow's foot đúng cardinality ở CẢ HAI đầu, dùng style draw.io:
      "một và chỉ một" = ERmandOne, "không hoặc một" = ERzeroToOne,
@@ -463,8 +470,8 @@ Yêu cầu bắt buộc:
 Sau tệp draw.io, in thêm bảng kiểm tra: số thứ tự quan hệ (1–30) → tên đường nối đã vẽ.
 ```
 
-**Sơ đồ tham chiếu (Mermaid)** — cùng nội dung, để AI hoặc người kiểm tra đối chiếu (dán vào
-https://mermaid.live để xem). `||` = một và chỉ một, `o|` = không hoặc một, `|{` = một hoặc nhiều,
+**Sơ đồ tham chiếu (Mermaid)** — cùng nội dung (chỉ thực thể và quan hệ, không có trường), để AI hoặc người
+kiểm tra đối chiếu (dán vào https://mermaid.live để xem). `||` = một và chỉ một, `o|` = không hoặc một, `|{` = một hoặc nhiều,
 `o{` = không hoặc nhiều.
 
 ```mermaid
@@ -499,98 +506,4 @@ erDiagram
     users ||--o{ reviews : "viết"
     products ||--o{ reviews : "được đánh giá"
     orders ||--o{ reviews : "được đánh giá trong"
-
-    users {
-        uuid id PK
-    }
-    addresses {
-        uuid id PK
-        uuid user_id FK
-    }
-    customer_loyalty {
-        uuid customer_id PK
-        smallint tier FK
-    }
-    membership_tiers {
-        smallint tier PK
-    }
-    staff {
-        uuid id PK
-        int role_id FK
-    }
-    roles {
-        int id PK
-    }
-    permissions {
-        int id PK
-    }
-    role_permissions {
-        int role_id PK
-        int permission_id PK
-    }
-    categories {
-        uuid id PK
-    }
-    products {
-        uuid id PK
-        uuid category_id FK
-    }
-    product_images {
-        uuid id PK
-        uuid product_id FK
-    }
-    product_specs {
-        uuid id PK
-        uuid product_id FK
-    }
-    stock_items {
-        uuid product_id PK
-    }
-    inventory_adjustments {
-        uuid id PK
-        uuid product_id FK
-        uuid order_id FK
-        uuid staff_id FK
-    }
-    orders {
-        uuid id PK
-        uuid user_id FK
-    }
-    order_items {
-        uuid id PK
-        uuid order_id FK
-        uuid product_id FK
-    }
-    coupons {
-        uuid id PK
-        uuid created_by FK
-    }
-    coupon_redemptions {
-        uuid id PK
-        uuid coupon_id FK
-        uuid order_id FK
-        uuid customer_id FK
-    }
-    point_transactions {
-        uuid id PK
-        uuid customer_id FK
-        uuid order_id FK
-        uuid gift_redemption_id FK
-    }
-    gifts {
-        uuid id PK
-        smallint min_tier FK
-    }
-    gift_redemptions {
-        uuid id PK
-        uuid gift_id FK
-        uuid customer_id FK
-        uuid claimed_by FK
-    }
-    reviews {
-        uuid id PK
-        uuid customer_id FK
-        uuid product_id FK
-        uuid order_id FK
-    }
 ```
