@@ -97,14 +97,14 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test — save replaces specs/images as submitted; manual create + edit.
   - Files: `Services/ProductService.cs`, `ViewModels/Catalog/ProductForm.cs`, `ProductsController.cs`, `Edit.cshtml`, `wwwroot/js/product-form.js`
 
-- [ ] **Task 12: Inventory import, stock count and history** (M) · deps: 10
+- [x] **Task 12: Inventory import, stock count and history** (M) · deps: 10
   - Acceptance: inventory list; Nhập hàng (+qty, `IMPORT`) and Kiểm kê (set qty, `COUNT`)
     each write an adjustment with before/after, reason, staff; per-product history.
   - Verify: service tests for both actions incl. invalid input (qty ≤ 0, count < 0).
   - Files: `Services/InventoryService.cs`, `Areas/Admin/Controllers/InventoryController.cs` + views, tests
 
 ### Checkpoint: Catalog
-- [ ] Build + tests green; catalog staff can manage everything in BRD §2 against seeded data.
+- [x] Build + tests green; catalog staff can manage everything in BRD §2 against seeded data.
 
 ## Phase 4 — Promotions & Loyalty
 
