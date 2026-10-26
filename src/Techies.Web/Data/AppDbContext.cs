@@ -1,11 +1,31 @@
 using Microsoft.EntityFrameworkCore;
+using Techies.Web.Domain;
 
 namespace Techies.Web.Data;
 
 public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
+    public DbSet<User> Users => Set<User>();
+    public DbSet<Address> Addresses => Set<Address>();
+    public DbSet<Staff> Staff => Set<Staff>();
+    public DbSet<MembershipTier> MembershipTiers => Set<MembershipTier>();
+    public DbSet<CustomerLoyalty> CustomerLoyalty => Set<CustomerLoyalty>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+
+        foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties()))
+        {
+            var type = Nullable.GetUnderlyingType(property.ClrType) ?? property.ClrType;
+            if (type.IsEnum)
+                property.SetValueConverter((Microsoft.EntityFrameworkCore.Storage.ValueConversion.ValueConverter)
+                    Activator.CreateInstance(typeof(UpperSnakeEnumConverter<>).MakeGenericType(type))!);
+        }
+    }
+
+    protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+    {
+        configurationBuilder.Properties<decimal>().HavePrecision(19, 2);
     }
 }

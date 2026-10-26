@@ -41,7 +41,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 2 — Identity
 
-- [ ] **Task 5: Identity schema and staff/tier seed** (M) · deps: 2
+- [x] **Task 5: Identity schema and staff/tier seed** (M) · deps: 2
   - Acceptance: entities + migration for `users` (with status), `addresses`, `staff` (role,
     status), `membership_tiers`, `customer_loyalty`; seeder adds tiers 0–3 and the 3 demo staff
     with BCrypt hashes.
