@@ -19,9 +19,14 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Coupon> Coupons => Set<Coupon>();
     public DbSet<Gift> Gifts => Set<Gift>();
     public DbSet<GiftRedemption> GiftRedemptions => Set<GiftRedemption>();
+    public DbSet<Order> Orders => Set<Order>();
+    public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+    public DbSet<CouponRedemption> CouponRedemptions => Set<CouponRedemption>();
+    public DbSet<PointTransaction> PointTransactions => Set<PointTransaction>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasSequence<long>(Configurations.OrderConfiguration.RefSequence).StartsAt(100001);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 
         foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(t => t.GetProperties()))

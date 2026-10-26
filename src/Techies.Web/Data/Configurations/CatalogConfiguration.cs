@@ -63,6 +63,7 @@ internal sealed class InventoryAdjustmentConfiguration : IEntityTypeConfiguratio
         b.Property(a => a.AdjustmentType).HasMaxLength(16);
         b.HasOne<Product>().WithMany().HasForeignKey(a => a.ProductId).OnDelete(DeleteBehavior.Restrict);
         b.HasOne(a => a.Staff).WithMany().HasForeignKey(a => a.StaffId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne<Order>().WithMany().HasForeignKey(a => a.OrderId).OnDelete(DeleteBehavior.Restrict);
         b.HasIndex(a => new { a.ProductId, a.CreatedAt });
     }
 }

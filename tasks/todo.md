@@ -139,7 +139,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 5 — Orders
 
-- [ ] **Task 17: Order schema and pure order rules** (M) · deps: 12, 13, 16
+- [x] **Task 17: Order schema and pure order rules** (M) · deps: 12, 13, 16
   - Acceptance: `orders` (ref sequence from 100001), `order_items`, `coupon_redemptions`,
     `point_transactions` + migration (incl. deferred FKs); `OrderMath`: shipping fee, total,
     amount to collect, points for an order.

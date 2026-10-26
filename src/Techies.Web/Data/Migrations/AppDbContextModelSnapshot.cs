@@ -22,6 +22,9 @@ namespace Techies.Web.Data.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.HasSequence("order_ref_seq")
+                .StartsAt(100001L);
+
             modelBuilder.Entity("Techies.Web.Domain.Address", b =>
                 {
                     b.Property<Guid>("Id")
@@ -191,6 +194,59 @@ namespace Techies.Web.Data.Migrations
 
                             t.HasCheckConstraint("ck_coupons_min_subtotal", "min_subtotal >= 0");
                         });
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.CouponRedemption", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("CouponId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("coupon_id");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("discount_amount");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<DateTimeOffset>("RedeemedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("redeemed_at");
+
+                    b.Property<DateTimeOffset?>("RestoredAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("restored_at");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("status");
+
+                    b.HasKey("Id")
+                        .HasName("pk_coupon_redemptions");
+
+                    b.HasIndex("CouponId")
+                        .HasDatabaseName("ix_coupon_redemptions_coupon_id");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_coupon_redemptions_customer_id");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_coupon_redemptions_order_id");
+
+                    b.ToTable("coupon_redemptions", (string)null);
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.CustomerLoyalty", b =>
@@ -394,6 +450,9 @@ namespace Techies.Web.Data.Migrations
                     b.HasKey("Id")
                         .HasName("pk_inventory_adjustments");
 
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_inventory_adjustments_order_id");
+
                     b.HasIndex("StaffId")
                         .HasDatabaseName("ix_inventory_adjustments_staff_id");
 
@@ -428,6 +487,252 @@ namespace Techies.Web.Data.Migrations
                         .HasName("pk_membership_tiers");
 
                     b.ToTable("membership_tiers", (string)null);
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CompletedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("completed_at");
+
+                    b.Property<string>("CouponCode")
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("coupon_code");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<decimal>("Discount")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("discount");
+
+                    b.Property<string>("FailureCode")
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("failure_code");
+
+                    b.Property<string>("OrderRef")
+                        .IsRequired()
+                        .ValueGeneratedOnAdd()
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)")
+                        .HasColumnName("order_ref")
+                        .HasDefaultValueSql("'ORD-' || nextval('order_ref_seq')");
+
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("payment_method");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("payment_status");
+
+                    b.Property<string>("ShipDistrict")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("ship_district");
+
+                    b.Property<string>("ShipLine1")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)")
+                        .HasColumnName("ship_line1");
+
+                    b.Property<string>("ShipPhone")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("character varying(11)")
+                        .HasColumnName("ship_phone");
+
+                    b.Property<string>("ShipProvince")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("ship_province");
+
+                    b.Property<string>("ShipRecipient")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("ship_recipient");
+
+                    b.Property<string>("ShipWard")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("ship_ward");
+
+                    b.Property<decimal>("ShippingFee")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("shipping_fee");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("status");
+
+                    b.Property<decimal>("Subtotal")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("subtotal");
+
+                    b.Property<decimal>("Total")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("total");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_orders");
+
+                    b.HasIndex("CompletedAt")
+                        .HasDatabaseName("ix_orders_completed_at");
+
+                    b.HasIndex("OrderRef")
+                        .IsUnique()
+                        .HasDatabaseName("ix_orders_order_ref");
+
+                    b.HasIndex("ShipPhone")
+                        .HasDatabaseName("ix_orders_ship_phone");
+
+                    b.HasIndex("Status")
+                        .HasDatabaseName("ix_orders_status");
+
+                    b.HasIndex("UserId", "CreatedAt")
+                        .HasDatabaseName("ix_orders_user_id_created_at");
+
+                    b.ToTable("orders", (string)null);
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.OrderItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<decimal>("LineTotal")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("line_total");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("ProductName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("product_name");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("thumbnail_url");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("unit_price");
+
+                    b.HasKey("Id")
+                        .HasName("pk_order_items");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_order_items_order_id");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_order_items_product_id");
+
+                    b.ToTable("order_items", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_order_items_quantity", "quantity >= 1");
+                        });
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.PointTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
+
+                    b.Property<Guid?>("GiftRedemptionId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("gift_redemption_id");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("text")
+                        .HasColumnName("note");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<long>("PointsDelta")
+                        .HasColumnType("bigint")
+                        .HasColumnName("points_delta");
+
+                    b.Property<string>("TransactionType")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("transaction_type");
+
+                    b.HasKey("Id")
+                        .HasName("pk_point_transactions");
+
+                    b.HasIndex("GiftRedemptionId")
+                        .HasDatabaseName("ix_point_transactions_gift_redemption_id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique()
+                        .HasDatabaseName("ix_point_transactions_order_id")
+                        .HasFilter("transaction_type = 'EARN'");
+
+                    b.HasIndex("CustomerId", "CreatedAt")
+                        .HasDatabaseName("ix_point_transactions_customer_id_created_at");
+
+                    b.ToTable("point_transactions", (string)null);
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.Product", b =>
@@ -717,6 +1022,30 @@ namespace Techies.Web.Data.Migrations
                         .HasConstraintName("fk_coupons_staff_created_by");
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.CouponRedemption", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Coupon", null)
+                        .WithMany()
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_coupon_redemptions_coupons_coupon_id");
+
+                    b.HasOne("Techies.Web.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_coupon_redemptions_users_customer_id");
+
+                    b.HasOne("Techies.Web.Domain.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_coupon_redemptions_orders_order_id");
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.CustomerLoyalty", b =>
                 {
                     b.HasOne("Techies.Web.Domain.User", null)
@@ -775,6 +1104,12 @@ namespace Techies.Web.Data.Migrations
 
             modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>
                 {
+                    b.HasOne("Techies.Web.Domain.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_inventory_adjustments_orders_order_id");
+
                     b.HasOne("Techies.Web.Domain.Product", null)
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -789,6 +1124,57 @@ namespace Techies.Web.Data.Migrations
                         .HasConstraintName("fk_inventory_adjustments_staff_staff_id");
 
                     b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Order", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_orders_users_user_id");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.OrderItem", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Order", null)
+                        .WithMany("Items")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_items_orders_order_id");
+
+                    b.HasOne("Techies.Web.Domain.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_order_items_products_product_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.PointTransaction", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_point_transactions_users_customer_id");
+
+                    b.HasOne("Techies.Web.Domain.GiftRedemption", null)
+                        .WithMany()
+                        .HasForeignKey("GiftRedemptionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_point_transactions_gift_redemptions_gift_redemption_id");
+
+                    b.HasOne("Techies.Web.Domain.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_point_transactions_orders_order_id");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.Product", b =>
@@ -831,6 +1217,11 @@ namespace Techies.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_stock_items_products_product_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Order", b =>
+                {
+                    b.Navigation("Items");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.Product", b =>
