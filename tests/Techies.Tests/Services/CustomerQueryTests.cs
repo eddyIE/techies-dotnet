@@ -20,7 +20,7 @@ public class CustomerQueryTests(PostgresFixture fixture)
         TestData.Customer(db, "minh@example.com");
         await db.SaveChangesAsync();
 
-        var page = await new CustomerQueries(db).SearchAsync(q, page: 1);
+        var page = await new CustomerQueries(db, TimeProvider.System).SearchAsync(q, page: 1);
 
         Assert.Equal([lan.Id], page.Items.Select(c => c.Id));
     }
@@ -32,7 +32,7 @@ public class CustomerQueryTests(PostgresFixture fixture)
         TestData.Tiers(db);
         var accounts = new CustomerAccountService(db, TimeProvider.System);
         var user = await accounts.RegisterAsync(new() { FullName = "Lan", Email = "lan@example.com", Phone = "0912345678", Password = "Matkhau@1", ConfirmPassword = "Matkhau@1" });
-        var queries = new CustomerQueries(db);
+        var queries = new CustomerQueries(db, TimeProvider.System);
 
         Assert.Equal(AccountStatus.Locked, await queries.ToggleLockAsync(user.Id));
         await Assert.ThrowsAsync<DomainException>(() => accounts.AuthenticateAsync("lan@example.com", "Matkhau@1"));

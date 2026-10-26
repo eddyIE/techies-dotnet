@@ -254,11 +254,11 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test for best-seller ranking; manual.
   - Files: `Services/DashboardQueries.cs`, `Index.cshtml`, tests
 
-- [ ] **Task 32: README and final verification** (S) · deps: all
+- [x] **Task 32: README and final verification** (S) · deps: all
   - Acceptance: `README.md` with setup, commands, logins, module overview; fresh-DB run-through
     of every Success Criterion; code-review sub-agent pass, fixes applied.
   - Verify: Success Criteria 1–6 in SPEC.md checked off.
   - Files: `README.md`
 
 ### Checkpoint: Complete
-- [ ] All SPEC acceptance criteria met; all **[test]** criteria covered; ready for review.
+- [x] All SPEC acceptance criteria met; all **[test]** criteria covered; ready for review.

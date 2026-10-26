@@ -8,7 +8,7 @@ using Techies.Web.ViewModels.Customers;
 namespace Techies.Web.Services;
 
 // BRD §6: staff look customers up read-only; the only thing they may change is lock status.
-public sealed class CustomerQueries(AppDbContext db)
+public sealed class CustomerQueries(AppDbContext db, TimeProvider clock)
 {
     public Task<Paged<CustomerRow>> SearchAsync(string? q, int page, CancellationToken ct = default)
     {
@@ -43,7 +43,7 @@ public sealed class CustomerQueries(AppDbContext db)
     {
         var user = await db.Users.FindAsync([id], ct) ?? throw new DomainException("Không tìm thấy khách hàng.");
         user.Status = user.Status == AccountStatus.Active ? AccountStatus.Locked : AccountStatus.Active;
-        user.UpdatedAt = DateTimeOffset.UtcNow;
+        user.UpdatedAt = clock.GetUtcNow();
         await db.SaveChangesAsync(ct);
         return user.Status;
     }

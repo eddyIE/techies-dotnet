@@ -11,8 +11,15 @@ public sealed class ImageStorageTests : IDisposable
 
     public void Dispose() => Directory.Delete(_webRoot, recursive: true);
 
-    private static IFormFile File(string name, int bytes) =>
-        new FormFile(new MemoryStream(new byte[bytes]), 0, bytes, "file", name);
+    private static readonly byte[] PngHeader = [0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A];
+
+    // A file of `bytes` length that starts with `header` (a real PNG signature by default).
+    private static IFormFile File(string name, int bytes, byte[]? header = null)
+    {
+        var content = new byte[bytes];
+        (header ?? PngHeader).CopyTo(content, 0);
+        return new FormFile(new MemoryStream(content), 0, bytes, "file", name);
+    }
 
     [Fact]
     public async Task Saves_allowed_image_under_uploads_year_folder()
@@ -32,6 +39,23 @@ public sealed class ImageStorageTests : IDisposable
 
         var ex = await Assert.ThrowsAsync<DomainException>(() => storage.SaveAsync(File("script.svg", 10)));
         Assert.Contains("jpg", ex.Message);
+    }
+
+    [Fact]
+    public async Task Rejects_non_image_content_with_an_image_extension()
+    {
+        var storage = new ImageStorage(_webRoot, _now);
+
+        await Assert.ThrowsAsync<DomainException>(() => storage.SaveAsync(File("evil.png", 64, "<html><script>"u8.ToArray())));
+    }
+
+    [Fact]
+    public async Task Accepts_jpeg_and_webp_signatures()
+    {
+        var storage = new ImageStorage(_webRoot, _now);
+
+        await storage.SaveAsync(File("a.jpg", 64, [0xFF, 0xD8, 0xFF, 0xE0]));
+        await storage.SaveAsync(File("b.webp", 64, "RIFF\0\0\0\0WEBP"u8.ToArray()));
     }
 
     [Fact]

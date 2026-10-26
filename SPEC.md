@@ -213,7 +213,7 @@ Objective: two separate kinds of login with no crossover.
 
 Acceptance:
 - Two cookie schemes: `Customer` (shop, login at `/tai-khoan/dang-nhap`) and `Staff`
-  (admin, login at `/admin/login`). A customer cookie never grants admin access and vice versa.
+  (admin, login at `/admin/auth/login`). A customer cookie never grants admin access and vice versa.
 - Customer registration: full name, email (unique, case-insensitive), phone (10 digits,
   starts with 0), password ≥ 8 chars, confirm password. Creates `users` + `customer_loyalty`
   at tier 0. Staff have **no** registration page.
