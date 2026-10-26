@@ -1,0 +1,32 @@
+@model Techies.Web.ViewModels.Catalog.CategoryForm
+@{
+    var id = ViewData["Id"] as Guid?;
+    ViewData["Title"] = id is null ? "Thêm danh mục" : "Sửa danh mục";
+}
+<form method="post" enctype="multipart/form-data" asp-action="@(id is null ? "Create" : "Edit")" asp-route-id="@id" class="card" style="max-width: 640px">
+    <div class="card-body">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="DisplayOrder" class="form-label"></label>
+            <input asp-for="DisplayOrder" type="number" class="form-control" />
+            <span asp-validation-for="DisplayOrder" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Icon" class="form-label"></label>
+            @if (Model.CurrentImageUrl is not null)
+            {
+                <div class="mb-2"><img src="@Model.CurrentImageUrl" alt="" width="64" height="64" class="rounded" style="object-fit:cover" /></div>
+            }
+            <input asp-for="Icon" type="file" accept=".jpg,.jpeg,.png,.webp" class="form-control" />
+            <div class="form-text">jpg, png hoặc webp, tối đa 2 MB.</div>
+        </div>
+        <input type="hidden" asp-for="CurrentImageUrl" />
+        <button class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-link">Hủy</a>
+    </div>
+</form>

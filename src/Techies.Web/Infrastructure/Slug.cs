@@ -23,3 +23,15 @@ public static partial class Slug
     [GeneratedRegex("[^a-z0-9]+")]
     private static partial Regex NonAlphanumeric();
 }
+
+public static class Slugs
+{
+    // "phu-kien" taken -> "phu-kien-2", then "-3", ...
+    public static string FirstFree(string baseSlug, ICollection<string> taken)
+    {
+        if (!taken.Contains(baseSlug)) return baseSlug;
+        var n = 2;
+        while (taken.Contains($"{baseSlug}-{n}")) n++;
+        return $"{baseSlug}-{n}";
+    }
+}

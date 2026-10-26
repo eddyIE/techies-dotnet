@@ -1,0 +1,26 @@
+@model List<Category>
+@{ ViewData["Title"] = "Danh mục sản phẩm"; }
+<div class="d-flex justify-content-end mb-3">
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Thêm danh mục</a>
+</div>
+<div class="card">
+    <table class="table mb-0">
+        <thead><tr><th style="width:80px">Icon</th><th>Tên</th><th>Slug</th><th>Thứ tự</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <td><img src="@c.ImageUrl" alt="" class="rounded" width="48" height="48" style="object-fit:cover" onerror="this.style.visibility='hidden'" /></td>
+                <td>@c.Name</td>
+                <td class="text-muted small">@c.Slug</td>
+                <td>@c.DisplayOrder</td>
+                <td class="text-end"><a asp-action="Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary">Sửa</a></td>
+            </tr>
+        }
+        @if (Model.Count == 0)
+        {
+            <tr><td colspan="5" class="text-center text-muted py-4">Chưa có danh mục nào.</td></tr>
+        }
+        </tbody>
+    </table>
+</div>

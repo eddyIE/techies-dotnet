@@ -70,7 +70,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 3 — Catalog
 
-- [ ] **Task 8: Catalog schema and categories admin** (M) · deps: 4, 6
+- [x] **Task 8: Catalog schema and categories admin** (M) · deps: 4, 6
   - Acceptance: entities + migration for categories, products, product_images, product_specs,
     stock_items (CHECK available ≥ 0), inventory_adjustments; admin categories list/create/edit
     with icon upload and display order (policy `Catalog`).

@@ -10,6 +10,7 @@ public static class AdminMenu
     public static readonly AdminMenuItem[] Items =
     [
         new("Tổng quan", "Bảng điều khiển", "bi-speedometer2", "Dashboard", Policies.SuperAdmin),
+        new("Sản phẩm & Kho", "Danh mục", "bi-tags", "Categories", Policies.Catalog),
     ];
 
     public static IEnumerable<AdminMenuItem> For(ClaimsPrincipal user) => Items.Where(i => user.Allows(i.Policy));

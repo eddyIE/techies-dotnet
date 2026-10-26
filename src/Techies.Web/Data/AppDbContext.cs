@@ -10,6 +10,12 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<Staff> Staff => Set<Staff>();
     public DbSet<MembershipTier> MembershipTiers => Set<MembershipTier>();
     public DbSet<CustomerLoyalty> CustomerLoyalty => Set<CustomerLoyalty>();
+    public DbSet<Category> Categories => Set<Category>();
+    public DbSet<Product> Products => Set<Product>();
+    public DbSet<ProductImage> ProductImages => Set<ProductImage>();
+    public DbSet<ProductSpec> ProductSpecs => Set<ProductSpec>();
+    public DbSet<StockItem> StockItems => Set<StockItem>();
+    public DbSet<InventoryAdjustment> InventoryAdjustments => Set<InventoryAdjustment>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new Microsoft.AspNetCore.Mvc.AutoValidateAntiforgeryTokenAttribute()));
 builder.Services.AddAppDatabase(builder.Configuration);
+builder.Services.AddRouting(o => o.LowercaseUrls = true);
 // Emit Vietnamese text as-is instead of &#x...; entities.
 builder.Services.AddWebEncoders(o => o.TextEncoderSettings =
     new System.Text.Encodings.Web.TextEncoderSettings(System.Text.Unicode.UnicodeRanges.All));
@@ -16,6 +17,7 @@ builder.Services.AddAppAuthentication();
 builder.Services.AddScoped<AccountStatusService>();
 builder.Services.AddScoped<StaffAuthService>();
 builder.Services.AddScoped<CustomerAccountService>();
+builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped(sp => new Techies.Web.Infrastructure.ImageStorage(
     sp.GetRequiredService<IWebHostEnvironment>().WebRootPath,
     sp.GetRequiredService<TimeProvider>().GetUtcNow()));

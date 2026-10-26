@@ -90,6 +90,44 @@ namespace Techies.Web.Data.Migrations
                     b.ToTable("addresses", (string)null);
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.Category", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer")
+                        .HasColumnName("display_order");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("image_url");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("name");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(140)
+                        .HasColumnType("character varying(140)")
+                        .HasColumnName("slug");
+
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ix_categories_slug");
+
+                    b.ToTable("categories", (string)null);
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.CustomerLoyalty", b =>
                 {
                     b.Property<Guid>("CustomerId")
@@ -121,6 +159,63 @@ namespace Techies.Web.Data.Migrations
                     b.ToTable("customer_loyalty", (string)null);
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("AdjustmentType")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("character varying(16)")
+                        .HasColumnName("adjustment_type");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid?>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<int>("QuantityAfter")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity_after");
+
+                    b.Property<int>("QuantityBefore")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity_before");
+
+                    b.Property<int>("QuantityDelta")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity_delta");
+
+                    b.Property<string>("Reason")
+                        .HasColumnType("text")
+                        .HasColumnName("reason");
+
+                    b.Property<Guid?>("StaffId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("staff_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_inventory_adjustments");
+
+                    b.HasIndex("StaffId")
+                        .HasDatabaseName("ix_inventory_adjustments_staff_id");
+
+                    b.HasIndex("ProductId", "CreatedAt")
+                        .HasDatabaseName("ix_inventory_adjustments_product_id_created_at");
+
+                    b.ToTable("inventory_adjustments", (string)null);
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.MembershipTier", b =>
                 {
                     b.Property<short>("Tier")
@@ -146,6 +241,137 @@ namespace Techies.Web.Data.Migrations
                         .HasName("pk_membership_tiers");
 
                     b.ToTable("membership_tiers", (string)null);
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Product", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<Guid>("CategoryId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("category_id");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)")
+                        .HasColumnName("name");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("price");
+
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(220)
+                        .HasColumnType("character varying(220)")
+                        .HasColumnName("slug");
+
+                    b.Property<string>("ThumbnailUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("thumbnail_url");
+
+                    b.HasKey("Id")
+                        .HasName("pk_products");
+
+                    b.HasIndex("Active")
+                        .HasDatabaseName("ix_products_active");
+
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_products_category_id");
+
+                    b.HasIndex("Slug")
+                        .IsUnique()
+                        .HasDatabaseName("ix_products_slug");
+
+                    b.ToTable("products", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_products_price", "price > 0");
+                        });
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.ProductImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer")
+                        .HasColumnName("display_order");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("Url")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("url");
+
+                    b.HasKey("Id")
+                        .HasName("pk_product_images");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_product_images_product_id");
+
+                    b.ToTable("product_images", (string)null);
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.ProductSpec", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("integer")
+                        .HasColumnName("display_order");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<string>("SpecName")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("spec_name");
+
+                    b.Property<string>("SpecValue")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)")
+                        .HasColumnName("spec_value");
+
+                    b.HasKey("Id")
+                        .HasName("pk_product_specs");
+
+                    b.HasIndex("ProductId")
+                        .HasDatabaseName("ix_product_specs_product_id");
+
+                    b.ToTable("product_specs", (string)null);
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.Staff", b =>
@@ -205,6 +431,29 @@ namespace Techies.Web.Data.Migrations
                         .HasDatabaseName("ix_staff_email");
 
                     b.ToTable("staff", (string)null);
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.StockItem", b =>
+                {
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<int>("Available")
+                        .HasColumnType("integer")
+                        .HasColumnName("available");
+
+                    b.Property<DateTimeOffset>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("ProductId")
+                        .HasName("pk_stock_items");
+
+                    b.ToTable("stock_items", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_stock_items_available", "available >= 0");
+                        });
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.User", b =>
@@ -287,6 +536,75 @@ namespace Techies.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_customer_loyalty_membership_tiers_tier");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.InventoryAdjustment", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Product", null)
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_inventory_adjustments_products_product_id");
+
+                    b.HasOne("Techies.Web.Domain.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_inventory_adjustments_staff_staff_id");
+
+                    b.Navigation("Staff");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Product", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_products_categories_category_id");
+
+                    b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.ProductImage", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Product", null)
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_images_products_product_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.ProductSpec", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Product", null)
+                        .WithMany("Specs")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_product_specs_products_product_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.StockItem", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Product", null)
+                        .WithOne("Stock")
+                        .HasForeignKey("Techies.Web.Domain.StockItem", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_stock_items_products_product_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Product", b =>
+                {
+                    b.Navigation("Images");
+
+                    b.Navigation("Specs");
+
+                    b.Navigation("Stock");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.User", b =>
