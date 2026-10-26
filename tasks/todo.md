@@ -162,7 +162,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test for list query (status + search); manual complete and cancel.
   - Files: `Services/OrderQueries.cs`, `Areas/Admin/Controllers/OrdersController.cs`, `Index.cshtml`, `Details.cshtml`, tests
 
-- [ ] **Task 20: Delivery note print view** (S) · deps: 19
+- [x] **Task 20: Delivery note print view** (S) · deps: 19
   - Acceptance: print page with ref, recipient, address, phone, items, total, amount to collect,
     Print button; `@media print` hides chrome.
   - Verify: manual print preview.

@@ -1,0 +1,7 @@
+.note { max-width: 800px; background: #fff; }
+.collect { font-size: 1.75rem; }
+@media print {
+    .no-print { display: none !important; }
+    .note { max-width: none; padding: 0 !important; }
+    @page { margin: 12mm; }
+}
