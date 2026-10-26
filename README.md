@@ -26,13 +26,14 @@ To start over: `docker compose down -v`, then run again.
 
 | Who | Email | Password | Lands on |
 |---|---|---|---|
-| Super Admin | `admin@techies.vn` | `Admin@123` | `/admin` dashboard, every menu |
+| Super Admin (system role) | `admin@techies.vn` | `Admin@123` | `/admin` dashboard, every menu incl. Nhân sự and Vai trò & Phân quyền |
 | Catalog & inventory staff | `kho@techies.vn` | `Staff@123` | Products, categories, inventory |
 | Order & counter staff | `quay@techies.vn` | `Staff@123` | Orders, customers, reviews, gift counter |
 | Customers | `khach01@example.com` … `khach40@example.com` | `Customer@123` | Shop |
 
 Customers can also register at `/tai-khoan/dang-ky`. Staff accounts are created by the Super Admin
-(there is no staff sign-up). Try gift code **`GIFT-G53Y-ZDS3`** at *Quầy nhận quà*.
+(there is no staff sign-up), who can also define new roles and their permissions under
+*Vai trò & Phân quyền*. Try gift code **`GIFT-G53Y-ZDS3`** at *Quầy nhận quà*.
 
 ## Develop
 
@@ -52,7 +53,7 @@ src/Techies.Web/
   Domain/           Entities and enums
   Data/             DbContext, Fluent configuration, migrations, seed (Data/Seed/*.json ported from ../techies)
   Services/         All business rules — order complete/cancel, checkout, stock ledger, loyalty, coupons, …
-  Infrastructure/   Auth schemes and policies, admin menu, formatting, uploads, labels
+  Infrastructure/   Auth schemes, permissions and policies, admin menu, grid, formatting, uploads, labels
 tests/Techies.Tests/
   Unit/             Pure rules (order math, coupons, tiers, revenue periods, cart, formatting)
   Services/         Service tests against a real Postgres (Testcontainers)
@@ -66,8 +67,14 @@ tests/Techies.Tests/
 - **Two cookie schemes** (`Staff`, `Customer`), each policy bound to one scheme, so a customer login
   never opens `/admin`. Sessions are re-validated per request: locking an account or changing a
   staff role takes effect immediately.
-- **Three fixed staff roles** instead of the permission tables in `db-design.docx` — the BRD never
-  asks to edit permissions.
+- **Roles and permissions** (`roles`, `permissions`, `role_permissions`). The permission catalogue
+  lives in code (`Infrastructure/Permissions.cs`) and is seeded by migration; every admin action
+  carries `[RequirePermission(...)]`, and permissions are read once per request so role edits apply
+  immediately. The built-in Super Admin role has everything and alone manages staff and roles.
+- **One shared admin grid** (`Infrastructure/Grid`, `_Grid.cshtml`, `wwwroot/js/admin-grid.js`) for every
+  listing, Magento-style: sortable columns, a *Bộ lọc* panel, filter chips, page size, mass actions
+  and a per-row *Chọn* menu. The server renders the grid; the script fetches just the grid partial
+  and keeps the state in the URL (back button and bookmarks work, and it degrades to full pages).
 - **`StockLedger` is the only writer of stock.** It locks the row, refuses negative stock and writes
   an `inventory_adjustments` audit row for every import, stock count, order and cancellation.
   Concurrent checkouts for the last unit sell it once (covered by a test).
