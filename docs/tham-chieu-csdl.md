@@ -19,7 +19,9 @@ Bạn sẽ nhận `db-design.docx` (bản cũ) và tài liệu này. Khi cập n
    `public`; tên bảng **không có tiền tố** (viết `products`, không viết `catalog.products`). Có thể giữ việc
    **nhóm theo phân hệ** (mục 3) để trình bày.
 5. Giá trị trạng thái (mục 5) lưu dạng chuỗi chữ IN HOA; chép nguyên.
-6. Vẽ ERD theo **prompt ở mục 8**.
+6. Thuật ngữ kỹ thuật (PK, FK, index, constraint, migration, snapshot, cardinality, transaction, …) giữ
+   nguyên tiếng Anh, không dịch gượng.
+7. Vẽ ERD theo **prompt ở mục 8**.
 
 ---
 
@@ -45,12 +47,12 @@ Bạn sẽ nhận `db-design.docx` (bản cũ) và tài liệu này. Khi cập n
 | 5 schema (`identity`, `catalog`, `inventory`, `orders`, `cms`) | 1 schema `public`, tên bảng không tiền tố |
 | Nhiều quan hệ "chỉ là quan hệ logic" | **Mọi quan hệ là FOREIGN KEY vật lý** (30 khóa ngoại) |
 | Thiếu bảng đơn hàng (mục "Schema orders" chỉ liệt kê bảng cms) | Có `orders`, `order_items` (mục 3.4) |
-| Hàm SQL `complete_order_and_award_points`, `cancel_confirmed_order`, trigger `prevent_review_mutation` | **Bỏ**; logic nằm trong mã C# (một giao dịch CSDL mỗi thao tác) |
+| Hàm SQL `complete_order_and_award_points`, `cancel_confirmed_order`, trigger `prevent_review_mutation` | **Bỏ**; logic nằm trong mã C# (một database transaction mỗi thao tác) |
 | View `v_customer_directory`, `v_product_stock` | **Bỏ** (truy vấn trực tiếp) |
 | Hàm `immutable_unaccent(text)` | **Giữ** — dùng cho tìm kiếm không phân biệt dấu (extension `unaccent`) |
 
 ### 2.2 Bảng bị bỏ (không đưa vào tài liệu mới, không vẽ trong ERD)
-`user_avatars`, `stock_movements`, `stock_movement_items`, `carts`, `cart_items` (giỏ hàng lưu trong phiên
+`user_avatars`, `stock_movements`, `stock_movement_items`, `carts`, `cart_items` (giỏ hàng lưu trong session của
 trình duyệt), `saga_steps`, `order_ref_counters`, `review_summaries`, `staff_accounts` (đổi tên thành `staff`).
 
 ### 2.3 Bảng/cột thêm hoặc đổi
@@ -62,7 +64,7 @@ trình duyệt), `saga_steps`, `order_ref_counters`, `review_summaries`, `staff_
 | `permissions` | `id` là `integer` **cố định** (khớp danh mục quyền trong mã); 22 dòng nạp sẵn |
 | `orders` | Có `coupon_code`, `discount`, **`completed_at`** (doanh thu tính theo thời điểm hoàn tất); `order_ref` sinh từ sequence `order_ref_seq` |
 | `order_items` | Có `thumbnail_url` (ảnh lưu kèm đơn) |
-| `inventory_adjustments` | Là **nhật ký kho duy nhất**; **thêm** `order_id` → `orders.id`; `adjustment_type` có thêm `ORDER`, `CANCEL` |
+| `inventory_adjustments` | Là **inventory log duy nhất** (nhật ký kho); **thêm** `order_id` → `orders.id`; `adjustment_type` có thêm `ORDER`, `CANCEL` |
 | `stock_items` | **Bỏ** `version` |
 | `reviews` | **Thêm** ràng buộc duy nhất (`order_id`, `product_id`) — mỗi dòng của một đơn chỉ đánh giá một lần |
 | `point_transactions` | **Thêm** ràng buộc duy nhất `order_id` khi `transaction_type = 'EARN'` — mỗi đơn chỉ cộng điểm một lần |
@@ -215,7 +217,7 @@ Sản phẩm), (3 `ORDER_STAFF` Nhân viên Điều phối & Quầy). Vai trò h
 | coupon_code | varchar(40) | | | Mã giảm giá đã dùng (lưu chuỗi) |
 | discount | numeric(19,2) | NN | | Số tiền giảm |
 | total | numeric(19,2) | NN | | = subtotal + shipping_fee − discount |
-| ship_recipient, ship_phone, ship_line1, ship_ward, ship_district, ship_province | varchar | NN | | **Bản chụp** địa chỉ giao lúc đặt (không liên kết `addresses`) |
+| ship_recipient, ship_phone, ship_line1, ship_ward, ship_district, ship_province | varchar | NN | | **Snapshot** địa chỉ giao lúc đặt (không liên kết `addresses`) |
 | payment_method | varchar(16) | NN | | `COD` / `MOCK_CARD` |
 | payment_status | varchar(16) | NN | | `PENDING` / `PAID` / `DECLINED` / `REFUNDED` |
 | created_at, updated_at | timestamptz | NN | | |
@@ -227,9 +229,9 @@ Sản phẩm), (3 `ORDER_STAFF` Nhân viên Điều phối & Quầy). Vai trò h
 | id | uuid | NN | PK | |
 | order_id | uuid | NN | FK → orders (CASCADE) | |
 | product_id | uuid | NN | FK → products (RESTRICT) | |
-| product_name | varchar(200) | NN | | **Bản chụp** tên lúc đặt |
-| unit_price | numeric(19,2) | NN | | **Bản chụp** giá lúc đặt |
-| thumbnail_url | varchar(500) | | | **Bản chụp** ảnh |
+| product_name | varchar(200) | NN | | **Snapshot** tên lúc đặt |
+| unit_price | numeric(19,2) | NN | | **Snapshot** giá lúc đặt |
+| thumbnail_url | varchar(500) | | | **Snapshot** ảnh |
 | quantity | integer | NN | CHECK ≥ 1 | Số lượng |
 | line_total | numeric(19,2) | NN | | = unit_price × quantity |
 
@@ -335,9 +337,9 @@ Sản phẩm), (3 `ORDER_STAFF` Nhân viên Điều phối & Quầy). Vai trò h
 
 ## 4. Quan hệ (30 khóa ngoại)
 
-Bản số đọc theo chiều "cha → con". "0..1" ở cha nghĩa là khóa ngoại cho phép null.
+Cardinality đọc theo chiều "cha → con". "0..1" ở cha nghĩa là khóa ngoại cho phép null.
 
-| # | Bảng cha | Bản số | Bảng con | Cột khóa ngoại | Diễn giải |
+| # | Bảng cha | Cardinality | Bảng con | Cột khóa ngoại | Diễn giải |
 |---|---|---|---|---|---|
 | 1 | users | 1 — 0..* | addresses | user_id | Khách có nhiều địa chỉ |
 | 2 | users | 1 — 1 | customer_loyalty | customer_id | Mỗi khách đúng một hồ sơ điểm |
@@ -371,7 +373,7 @@ Bản số đọc theo chiều "cha → con". "0..1" ở cha nghĩa là khóa ng
 | 30 | orders | 1 — 0..* | reviews | order_id | Đánh giá gắn với đơn (một đánh giá mỗi sản phẩm của đơn) |
 
 Ghi chú: `orders` **không** có khóa ngoại tới `addresses` hay `coupons` — địa chỉ và mã giảm giá được **chép**
-vào đơn lúc đặt (bản chụp); liên kết tới mã giảm giá đi qua `coupon_redemptions`.
+vào đơn lúc đặt (snapshot); liên kết tới mã giảm giá đi qua `coupon_redemptions`.
 
 ## 5. Giá trị trạng thái (lưu chuỗi IN HOA, kiểm tra ở ứng dụng)
 
@@ -415,7 +417,7 @@ vào đơn lúc đặt (bản chụp); liên kết tới mã giảm giá đi qua
 
 > **Vấn đề của sơ đồ hiện tại (`Techies.drawio`):** đó là bản xuất từ pgAdmin của CSDL microservice cũ — mỗi bảng
 > là một hộp liệt kê **toàn bộ cột và kiểu dữ liệu**, tên có tiền tố schema (`catalog.`, `cms.`, …), các đường nối
-> chỉ ghi "JOIN Untitled.x (FK) = Untitled.id (PK)" **không có bản số (cardinality)**, thiếu phần lớn quan hệ (vì
+> chỉ ghi "JOIN Untitled.x (FK) = Untitled.id (PK)" **không có cardinality**, thiếu phần lớn quan hệ (vì
 > CSDL cũ không có khóa ngoại giữa các schema), và còn các bảng đã bỏ (`carts`, `saga_steps`, `stock_movements`,
 > `user_avatars`, `review_summaries`, `staff_accounts`, …). Đó là sơ đồ cấu trúc vật lý, **không phải ERD**.
 
@@ -435,7 +437,7 @@ Yêu cầu bắt buộc:
    CHỈ liệt kê khóa: dòng "PK …" và các dòng "FK …" (không ghi kiểu dữ liệu, không ghi cột thường). Mục đích
    của sơ đồ là thể hiện LIÊN KẾT giữa các thực thể, không phải cấu trúc cột.
 3. Vẽ đủ 30 quan hệ trong bảng mục 4, mỗi quan hệ một đường nối:
-   - Ký hiệu chân chim (crow's foot) đúng bản số ở CẢ HAI đầu, dùng style draw.io:
+   - Ký hiệu crow's foot đúng cardinality ở CẢ HAI đầu, dùng style draw.io:
      "một và chỉ một" = ERmandOne, "không hoặc một" = ERzeroToOne,
      "một hoặc nhiều" = ERoneToMany, "không hoặc nhiều" = ERzeroToMany.
      (VD users 1 — 0..* orders: đầu users = ERmandOne, đầu orders = ERzeroToMany;
@@ -444,7 +446,7 @@ Yêu cầu bắt buộc:
    - Nhãn đường nối là động từ tiếng Việt ngắn theo cột "Diễn giải" (VD "đặt", "chứa", "giao quà").
    - Đường nối gắn vào cạnh hộp, kiểu orthogonal (edgeStyle=orthogonalEdgeStyle), hạn chế cắt nhau.
 4. roles — permissions là quan hệ nhiều–nhiều qua bảng nối role_permissions: vẽ role_permissions như một
-   thực thể kết hợp (associative entity) nhỏ nằm giữa, với hai quan hệ 1 — 0..*.
+   associative entity nhỏ nằm giữa, với hai quan hệ 1 — 0..*.
 5. Hai quan hệ 1–1 (users — customer_loyalty, products — stock_items) đặt hai hộp sát nhau.
 6. Nhóm thực thể theo phân hệ bằng khung nền (container) có màu và tiêu đề:
    - Tài khoản & phân quyền: users, addresses, staff, roles, permissions, role_permissions
@@ -454,9 +456,9 @@ Yêu cầu bắt buộc:
    - Thành viên & quà: membership_tiers, customer_loyalty, point_transactions, gifts, gift_redemptions
    - Đánh giá: reviews
    Đặt "orders" ở trung tâm vì nó nối với nhiều phân hệ nhất; users bên trái, products bên phải.
-7. Thêm một chú giải (legend) nhỏ ở góc giải thích 4 ký hiệu chân chim.
+7. Thêm một legend nhỏ ở góc giải thích 4 ký hiệu crow's foot.
 8. Tự kiểm tra trước khi trả kết quả: đếm đủ 22 thực thể và 30 đường nối; mỗi đường nối khớp đúng một dòng
-   của bảng mục 4 (đúng bảng cha, bảng con, bản số). Nếu thiếu hoặc thừa, sửa lại.
+   của bảng mục 4 (đúng bảng cha, bảng con, cardinality). Nếu thiếu hoặc thừa, sửa lại.
 
 Sau tệp draw.io, in thêm bảng kiểm tra: số thứ tự quan hệ (1–30) → tên đường nối đã vẽ.
 ```

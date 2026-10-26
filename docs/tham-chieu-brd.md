@@ -9,7 +9,10 @@
 Bạn sẽ nhận `brd.md` (bản cũ) và tài liệu này. Hãy cập nhật `brd.md` theo các quy tắc:
 
 1. **Giữ cấu trúc và văn phong của BRD cũ** (các mục 1–7, gạch đầu dòng, tiếng Việt, tên trường kỹ thuật để
-   trong ngoặc như `status`, `paymentStatus`). Thêm mục mới ở cuối (mục 8, 9, 10) như phần "Bổ sung" bên dưới.
+   trong ngoặc như `status`, `paymentStatus`). Thêm mục mới ở cuối (mục 8, 9) như phần "Bổ sung" bên dưới.
+   Thuật ngữ kỹ thuật phổ biến (grid, filter, sort, mass action, row action, dashboard, session, transaction,
+   seed data, …) **giữ nguyên tiếng Anh**, không dịch gượng; nhãn giao diện (VD **Bộ lọc**, **Thao tác hàng
+   loạt**, **Chọn**) thì chép đúng chữ hiển thị.
 2. Mỗi mục trong tài liệu này có nhãn **TRẠNG THÁI**:
    - `GIỮ NGUYÊN` — BRD đã đúng, không sửa (có thể làm rõ câu chữ).
    - `THAY ĐỔI` — BRD mô tả khác với hệ thống; **thay** câu cũ (được trích trong khối "BRD cũ") bằng nội dung mới.
@@ -28,16 +31,15 @@ Bạn sẽ nhận `brd.md` (bản cũ) và tài liệu này. Hãy cập nhật `
 |---|---|---|
 | Phạm vi chung | Hệ thống gồm trang quản trị **và** cửa hàng web cho khách | THAY ĐỔI |
 | §1 Dashboard | Thẻ đơn chờ, biểu đồ doanh thu, đơn gần đây, sản phẩm bán chạy | GIỮ NGUYÊN (+ làm rõ quy tắc) |
-| §2 Sản phẩm & kho | Lọc "hết hàng" là khoảng tồn kho; nhật ký kho | THAY ĐỔI nhỏ + BỔ SUNG |
-| §3 Đơn hàng | Bỏ 5 tab → bộ lọc trạng thái trong lưới; thao tác hàng loạt | THAY ĐỔI |
+| §2 Sản phẩm & kho | Lọc "hết hàng" là khoảng tồn kho; inventory log | THAY ĐỔI nhỏ + BỔ SUNG |
+| §3 Đơn hàng | Bỏ 5 tab → filter trạng thái trong grid; mass action | THAY ĐỔI |
 | §3 Thanh toán | MOCK_CARD/VNPay chưa có ở cửa hàng; chỉ COD | CHƯA TRIỂN KHAI (một phần) |
 | §4 Mã giảm giá | Khách nhập mã khi đặt hàng | GIỮ NGUYÊN + BỔ SUNG |
 | §5 Quà tặng & hạng | Khách đổi quà trên web; "Hết quà" = số lượng 0; voucher % theo hạng chưa dùng | THAY ĐỔI + CHƯA TRIỂN KHAI |
 | §6 Khách hàng & đánh giá | Lưới, khóa hàng loạt, khách tự viết đánh giá | GIỮ NGUYÊN + BỔ SUNG |
 | §7 Nhân sự & phân quyền | Vai trò do Quản trị viên cao cấp tự tạo, quyền theo từng thao tác | THAY ĐỔI |
 | (mới) §8 Cửa hàng web | Toàn bộ chức năng phía khách hàng | BỔ SUNG |
-| (mới) §9 Lưới dữ liệu quản trị | Cách mọi danh sách quản trị hoạt động | BỔ SUNG |
-| (mới) §10 Chưa triển khai | Danh sách những gì BRD nhắc nhưng chưa làm | BỔ SUNG |
+| (mới) §9 Grid quản trị | Cách mọi danh sách quản trị hoạt động | BỔ SUNG |
 
 ---
 
@@ -61,7 +63,7 @@ Chỉ nhân viên có quyền `dashboard.view` mới thấy (mặc định chỉ
 này khi mở `/admin` được chuyển tới menu đầu tiên họ được phép.
 
 - **Đơn chưa hoàn thành:** hai thẻ số lượng — `AWAITING_PAYMENT` (Chờ thanh toán) và `CONFIRMED` (Đã xác nhận /
-  Chờ giao). Bấm vào thẻ mở lưới Đơn hàng đã lọc sẵn đúng trạng thái đó.
+  Chờ giao). Bấm vào thẻ mở grid Đơn hàng đã lọc sẵn đúng trạng thái đó.
 - **Doanh thu:** tổng `total` của các đơn `COMPLETED`, tính theo **thời điểm hoàn tất** (`completed_at`), múi giờ
   Việt Nam. Bộ lọc kỳ và độ chia của biểu đồ đường:
   - 7 ngày qua → theo ngày; Tháng này → theo ngày; Quý này → theo tuần; Năm nay → theo tháng.
@@ -81,21 +83,21 @@ tiếng Việt (VD "Điện thoại" → `dien-thoai`). **Không có chức năn
 
 **Sản phẩm:**
 - **THAY ĐỔI** — BRD cũ: *"lọc riêng các sản phẩm đang hết hàng (inStock = false)"*. Mới: không có trường
-  `inStock`; lưới sản phẩm có bộ lọc **khoảng tồn kho** (từ–đến; "hết hàng" = tồn kho 0), kèm lọc theo danh
+  `inStock`; grid sản phẩm có bộ lọc **khoảng tồn kho** (từ–đến; "hết hàng" = tồn kho 0), kèm lọc theo danh
   mục, khoảng giá, trạng thái kinh doanh, và ô tìm kiếm.
 - **BỔ SUNG** — Tìm kiếm không phân biệt hoa/thường và dấu tiếng Việt; mỗi từ khóa phải khớp **tên sản phẩm
   hoặc tên danh mục** (VD "dien thoai samsung" ra các điện thoại Samsung).
 - Thêm/sửa: tên, danh mục, giá (> 0), mô tả, ảnh đại diện, thư viện nhiều ảnh (thêm, bỏ, sắp xếp lại thứ tự),
   bảng thông số "Thêm dòng thông số" / xóa dòng. — GIỮ NGUYÊN.
 - Bật/Tắt kinh doanh: sản phẩm tắt thì không hiện trên cửa hàng, không thêm vào giỏ, không đặt được; đơn cũ vẫn
-  giữ nguyên thông tin. Có thể bật/tắt **hàng loạt** từ lưới. **Không xóa cứng sản phẩm.** — GIỮ NGUYÊN + BỔ SUNG.
+  giữ nguyên thông tin. Có thể bật/tắt **hàng loạt** từ grid. **Không xóa cứng sản phẩm.** — GIỮ NGUYÊN + BỔ SUNG.
 - Sản phẩm mới tạo có tồn kho 0 cho tới khi nhập hàng. — BỔ SUNG.
 - Ảnh tải lên: jpg/png/webp, tối đa 2 MB, hệ thống kiểm tra nội dung tệp đúng là ảnh. — BỔ SUNG.
 
 **Kiểm kho & nhập hàng:**
 - **Nhập hàng:** cộng thêm số lượng (> 0). **Kiểm kê:** nhập số lượng thực tế (≥ 0), hệ thống tự tính chênh lệch.
   — GIỮ NGUYÊN.
-- **BỔ SUNG — Nhật ký kho:** mọi thay đổi tồn kho đều được ghi lại với loại, số lượng trước/sau, chênh lệch, lý
+- **BỔ SUNG — Inventory log (nhật ký kho):** mọi thay đổi tồn kho đều được ghi lại với loại, số lượng trước/sau, chênh lệch, lý
   do, người thực hiện, thời gian. Có 4 loại: `IMPORT` (Nhập hàng), `COUNT` (Kiểm kê), `ORDER` (Xuất theo đơn khi
   khách đặt), `CANCEL` (Hoàn kho khi hủy đơn). Mỗi sản phẩm có trang lịch sử biến động kho.
 - **BỔ SUNG — Quy tắc:** tồn kho không bao giờ âm; hai khách cùng đặt món cuối cùng thì chỉ một người đặt được.
@@ -105,12 +107,12 @@ tiếng Việt (VD "Điện thoại" → `dien-thoai`). **Không có chức năn
 ## §3. Quản lý & điều phối đơn hàng — TRẠNG THÁI: THAY ĐỔI
 
 **THAY ĐỔI — Danh sách đơn.** BRD cũ: *"Chuyển đổi qua lại giữa 5 Tab trạng thái đơn hàng (status)"*.
-Mới: **không còn tab**. Danh sách đơn là một lưới dữ liệu (xem §9) với:
+Mới: **không còn tab**. Danh sách đơn là một grid (xem §9) với:
 - Ô tìm kiếm theo **mã đơn** (VD `ORD-100117`) hoặc **số điện thoại người nhận** — GIỮ NGUYÊN.
 - Bộ lọc: **Trạng thái** (5 giá trị, kèm số lượng mỗi trạng thái), phương thức thanh toán, trạng thái thanh
   toán, khoảng tổng tiền, khoảng ngày đặt.
 - Sắp xếp theo mã đơn, ngày đặt, tổng tiền (mặc định mới nhất trước).
-- **Thao tác hàng loạt:** Hoàn tất đơn, Hủy đơn, In phiếu giao hàng (nhiều phiếu, mỗi phiếu một trang in). Mỗi
+- **Mass action:** Hoàn tất đơn, Hủy đơn, In phiếu giao hàng (nhiều phiếu, mỗi phiếu một trang in). Mỗi
   đơn được xử lý riêng; kết quả báo "Đã hoàn tất N / M" và lý do các đơn bị bỏ qua.
 
 **5 trạng thái đơn — GIỮ NGUYÊN:** `AWAITING_PAYMENT`, `CONFIRMED`, `COMPLETED`, `CANCELLED`, `FAILED`
@@ -132,7 +134,7 @@ thức và trạng thái thanh toán. **Số tiền cần thu hộ** = `total` n
 được cộng điểm một lần.
 
 **Hủy đơn (CONFIRMED → CANCELLED) — THAY ĐỔI câu chữ:** BRD cũ *"hoàn lại voucher (nếu có)"* → Mới: **hoàn lại
-lượt dùng mã giảm giá (coupon) nếu có** (hệ thống không có voucher theo hạng, xem §10). Trả hàng về kho (ghi
+lượt dùng mã giảm giá (coupon) nếu có** (voucher theo hạng thành viên chưa triển khai). Trả hàng về kho (ghi
 nhật ký `CANCEL`); thanh toán `PAID` → `REFUNDED`; COD chưa thanh toán giữ `PENDING`. Chỉ áp dụng cho đơn
 `CONFIRMED`.
 - **BỔ SUNG:** khách hàng cũng tự hủy được đơn của mình trên cửa hàng khi đơn còn `CONFIRMED` (cùng quy tắc).
@@ -146,7 +148,7 @@ cần thu hộ, chỗ ký của người giao và người nhận.
 
 - Mã giảm **số tiền cố định** (VNĐ) trên tạm tính; điều kiện **tạm tính tối thiểu**; mã gồm 3–40 chữ cái/chữ
   số, tự viết hoa, không trùng. Giảm không vượt quá tạm tính. — GIỮ NGUYÊN.
-- Tạm dừng / kích hoạt lại bất kỳ lúc nào (cả **hàng loạt** từ lưới); ngày bắt đầu và ngày hết hạn tùy chọn
+- Tạm dừng / kích hoạt lại bất kỳ lúc nào (cả **hàng loạt** từ grid); ngày bắt đầu và ngày hết hạn tùy chọn
   (hết hạn phải sau bắt đầu). — GIỮ NGUYÊN + BỔ SUNG.
 - **BỔ SUNG — Trạng thái hiển thị** (tính tự động): `Đang chạy`, `Tạm dừng`, `Chưa bắt đầu`, `Hết hạn`; lọc
   được theo trạng thái, khoảng số tiền giảm, khoảng ngày hết hạn.
@@ -189,7 +191,7 @@ lũy. Giá trị mặc định: 0 Thành viên/0 điểm; 1 Bạc/10.000; 2 Vàn
   lịch sử điểm, lịch sử mua hàng. **Không tạo mới / sửa thông tin khách.** — GIỮ NGUYÊN.
 - Khóa / Mở khóa (cả hàng loạt). **BỔ SUNG:** khách bị khóa không đăng nhập được và **bị đăng xuất ngay** ở thao
   tác tiếp theo.
-- **Đánh giá:** lưới chỉ xem — lọc theo sản phẩm, **khoảng số sao** (VD 1→2 để xem đánh giá thấp), khoảng ngày,
+- **Đánh giá:** grid chỉ xem — lọc theo sản phẩm, **khoảng số sao** (VD 1→2 để xem đánh giá thấp), khoảng ngày,
   từ khóa trong nhận xét; dòng 1–2 sao được tô đỏ. Không sửa, xóa, trả lời. — THAY ĐỔI nhỏ (bỏ ô "chỉ 1–2 sao"
   riêng, thay bằng bộ lọc khoảng sao).
 - **BỔ SUNG — Khách tự viết đánh giá** trên cửa hàng (xem §8.5).
@@ -207,7 +209,7 @@ lũy. Giá trị mặc định: 0 Thành viên/0 điểm; 1 Bạc/10.000; 2 Vàn
   Khóa/mở khóa được cả hàng loạt.
 
 **BỔ SUNG — Quy tắc an toàn:** Quản trị viên cao cấp không tự khóa hoặc tự hạ quyền chính mình; luôn phải còn
-ít nhất một Quản trị viên cao cấp đang hoạt động. Đổi vai trò của ai thì phiên đăng nhập của người đó kết thúc.
+ít nhất một Quản trị viên cao cấp đang hoạt động. Đổi vai trò của ai thì session của người đó kết thúc.
 
 **THAY ĐỔI — Vai trò.** BRD cũ: *"Định nghĩa 3 nhóm quyền hạn rõ ràng"* (cố định). Mới: **Quản trị viên cao cấp
 tự tạo, sửa, xóa vai trò** tại màn hình **Vai trò & Phân quyền**, và chọn quyền cho từng vai trò theo danh sách
@@ -263,7 +265,7 @@ sơ, đổi mật khẩu, quên mật khẩu.
 giá, mô tả, bảng thông số, tình trạng còn/hết hàng, đánh giá và điểm trung bình). Sản phẩm tắt kinh doanh không
 xuất hiện.
 
-**8.3 Giỏ hàng:** lưu theo phiên trình duyệt; thêm, đổi số lượng (1–99 và không quá tồn kho), xóa; hiển thị tạm
+**8.3 Giỏ hàng:** lưu trong session của trình duyệt; thêm, đổi số lượng (1–99 và không quá tồn kho), xóa; hiển thị tạm
 tính, phí vận chuyển, tổng. Giá luôn lấy theo giá hiện tại của sản phẩm.
 
 **8.4 Đặt hàng (chỉ COD):** bắt buộc đăng nhập; chọn địa chỉ đã lưu hoặc nhập địa chỉ mới (lưu vào sổ địa chỉ,
@@ -274,7 +276,7 @@ tự hủy đơn khi còn `CONFIRMED`.
 
 **8.5 Đánh giá:** với đơn `COMPLETED`, mỗi sản phẩm trong đơn có ô chấm **1–5 sao** (bắt buộc) và nhận xét (không
 bắt buộc, ≤ 1000 ký tự). **Mỗi dòng sản phẩm của một đơn chỉ đánh giá một lần**; không sửa/xóa. Đánh giá hiện
-ngay trên trang sản phẩm và trong lưới đánh giá của quản trị.
+ngay trên trang sản phẩm và trong grid đánh giá của quản trị.
 
 **8.6 Điểm thưởng & đổi quà** (`/diem-thuong`): hiển thị hạng, thanh tiến độ và số điểm còn thiếu để lên hạng kế
 tiếp, điểm khả dụng, tổng điểm tích lũy, lịch sử điểm, danh sách quà đang mở đổi, và "Quà đã đổi" (mã, quà,
@@ -288,7 +290,7 @@ tiếp, điểm khả dụng, tổng điểm tích lũy, lịch sử điểm, da
 
 ---
 
-## §9. (MỚI) Lưới dữ liệu ở trang quản trị — TRẠNG THÁI: BỔ SUNG
+## §9. (MỚI) Grid ở trang quản trị — TRẠNG THÁI: BỔ SUNG
 
 Áp dụng cho **mọi danh sách quản trị**: sản phẩm, kho, danh mục, đơn hàng, khách hàng, đánh giá, mã giảm giá,
 quà tặng, nhân sự, vai trò.
@@ -299,13 +301,13 @@ quà tặng, nhân sự, vai trò.
   **Áp dụng bộ lọc** để lọc, **Hủy** để đóng mà không áp dụng. Các điều kiện đang lọc hiện thành nhãn có nút ✕ và
   nút **Xóa tất cả**.
 - **Không tải lại trang:** sắp xếp, lọc, chuyển trang, đổi số dòng (20/50/100) chỉ tải lại phần danh sách; địa chỉ
-  trang luôn phản ánh bộ lọc hiện tại nên dùng được nút Back và lưu dấu trang.
-- **Thao tác hàng loạt:** ô chọn ở mỗi dòng + ô chọn cả trang + menu **Thao tác hàng loạt** (chỉ hiện các thao tác
+  trang luôn phản ánh bộ lọc hiện tại nên dùng được nút Back và bookmark.
+- **Mass action:** checkbox ở mỗi dòng + checkbox chọn cả trang + dropdown **Thao tác hàng loạt** (chỉ hiện các thao tác
   người dùng có quyền); hỏi xác nhận; kết quả "Đã … N / M" kèm lý do các dòng bị bỏ qua.
-- **Thao tác từng dòng:** cột cuối có menu **Chọn ▾** (Xem, Sửa, Khóa…), chỉ hiện thao tác hợp lệ với quyền và
+- **Row action:** cột cuối có dropdown **Chọn ▾** (Xem, Sửa, Khóa…), chỉ hiện thao tác hợp lệ với quyền và
   trạng thái của dòng (VD "Hoàn tất" chỉ có với đơn `CONFIRMED`).
 
-| Danh sách | Thao tác hàng loạt |
+| Danh sách | Mass action |
 |---|---|
 | Sản phẩm | Bật kinh doanh, Tắt kinh doanh |
 | Đơn hàng | Hoàn tất đơn hàng, Hủy đơn, In phiếu giao hàng |
@@ -315,14 +317,3 @@ quà tặng, nhân sự, vai trò.
 | Nhân sự | Khóa tài khoản, Mở khóa (theo quy tắc an toàn §7) |
 | Vai trò | Xóa vai trò (bỏ qua vai trò hệ thống và vai trò đang được gán) |
 | Kho, Danh mục, Đánh giá | Không có |
-
----
-
-## §10. (MỚI) Chưa triển khai — TRẠNG THÁI: BỔ SUNG (để ghi chú trong BRD)
-
-- Thanh toán điện tử (MOCK_CARD, VNPay) trên cửa hàng; trạng thái `AWAITING_PAYMENT` / `FAILED` phát sinh từ
-  cửa hàng (hiện chỉ có trong dữ liệu mẫu).
-- Voucher giảm % theo hạng thành viên (`discountPercent` được cấu hình nhưng chưa dùng).
-- Trả lời đánh giá; sửa/xóa đánh giá (theo đúng BRD: không cho phép).
-- Sửa hồ sơ khách, đổi/quên mật khẩu, thông báo email.
-- App Android và backend Spring Boot (dự án `../techies` là hệ thống riêng, chỉ dùng tham khảo).

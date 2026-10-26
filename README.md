@@ -10,7 +10,7 @@
 
 Yêu cầu chi tiết nằm trong [SPEC.md](SPEC.md); sơ đồ phân hệ ở [CAPABILITY-MAP.md](CAPABILITY-MAP.md); kế hoạch
 triển khai ở [tasks/](tasks/plan.md). Dự án Spring Boot ở `../techies` chỉ được dùng làm tham khảo và làm nguồn
-dữ liệu mẫu.
+seed data.
 
 **Tài liệu tham chiếu để cập nhật BRD và thiết kế CSDL** (viết cho người và cho AI đọc):
 
@@ -26,7 +26,7 @@ docker compose up -d db                      # PostgreSQL 16 tại localhost:543
 dotnet run --project src/Techies.Web         # http://localhost:5080
 ```
 
-Khi khởi động, ứng dụng tự áp dụng migration và nạp dữ liệu mẫu (chỉ khi CSDL còn trống).
+Khi khởi động, ứng dụng tự áp dụng migration và nạp seed data (chỉ khi CSDL còn trống).
 Muốn làm lại từ đầu: `docker compose down -v` rồi chạy lại.
 
 ### Tài khoản dùng thử
@@ -47,7 +47,7 @@ Khách hàng có thể tự đăng ký tại `/tai-khoan/dang-ky`. Tài khoản 
 
 ```bash
 dotnet build Techies.slnx
-dotnet test Techies.slnx                     # cần Docker: test dịch vụ chạy trên một Postgres tạm (Testcontainers)
+dotnet test Techies.slnx                     # cần Docker: service test chạy trên một Postgres tạm (Testcontainers)
 dotnet ef migrations add <TenMigration> --project src/Techies.Web --output-dir Data/Migrations
 dotnet format Techies.slnx --verify-no-changes
 ```
@@ -59,12 +59,12 @@ src/Techies.Web/
   Areas/Admin/      Controller + view của trang quản trị (mỗi nhóm màn hình một controller)
   Controllers/      Controller của cửa hàng (Home, Products, Cart, Checkout, Account, MyOrders, Points)
   Domain/           Thực thể (entity) và enum
-  Data/             DbContext, cấu hình Fluent, migration, dữ liệu mẫu (Data/Seed/*.json chuyển từ ../techies)
+  Data/             DbContext, Fluent configuration, migration, seed data (Data/Seed/*.json chuyển từ ../techies)
   Services/         Toàn bộ quy tắc nghiệp vụ — hoàn tất/hủy đơn, đặt hàng, sổ kho, điểm thưởng, mã giảm giá, …
-  Infrastructure/   Cơ chế đăng nhập, quyền và policy, menu quản trị, lưới dữ liệu (grid), định dạng, upload, nhãn
+  Infrastructure/   Authentication, permission & policy, admin menu, grid, định dạng, upload, label
 tests/Techies.Tests/
-  Unit/             Quy tắc thuần (tính tiền đơn hàng, mã giảm giá, hạng, kỳ doanh thu, giỏ hàng, định dạng)
-  Services/         Test dịch vụ trên Postgres thật (Testcontainers)
+  Unit/             Unit test cho quy tắc thuần (tính tiền đơn hàng, mã giảm giá, hạng, kỳ doanh thu, giỏ hàng, định dạng)
+  Services/         Service test trên Postgres thật (Testcontainers)
 docs/               Tài liệu tham chiếu cho BRD và thiết kế CSDL
 ```
 
@@ -72,21 +72,21 @@ docs/               Tài liệu tham chiếu cho BRD và thiết kế CSDL
 
 - **Monolith, không dùng microservice.** Các luồng chính của BRD đi qua nhiều phân hệ (hủy đơn chạm tới đơn
   hàng, kho, mã giảm giá và thanh toán; hoàn tất đơn cộng điểm thưởng). Trong một ứng dụng, mỗi luồng là một
-  giao dịch (transaction) CSDL thay vì một saga.
-- **Hai cơ chế cookie đăng nhập riêng** (`Staff`, `Customer`); mỗi policy gắn với đúng một cơ chế, nên đăng
-  nhập khách hàng không bao giờ mở được `/admin`. Phiên được kiểm tra lại ở mỗi request: khóa tài khoản hoặc
+  database transaction thay vì một saga.
+- **Hai cookie authentication scheme riêng** (`Staff`, `Customer`); mỗi policy gắn với đúng một scheme, nên đăng
+  nhập khách hàng không bao giờ mở được `/admin`. Session được kiểm tra lại ở mỗi request: khóa tài khoản hoặc
   đổi vai trò nhân viên có hiệu lực ngay.
 - **Vai trò và quyền** (`roles`, `permissions`, `role_permissions`). Danh mục quyền nằm trong mã nguồn
   (`Infrastructure/Permissions.cs`) và được nạp bằng migration; mọi thao tác quản trị đều gắn
   `[RequirePermission(...)]`, quyền được đọc một lần mỗi request nên sửa vai trò có hiệu lực ngay. Vai trò hệ
   thống Quản trị viên cao cấp luôn có toàn quyền và là vai trò duy nhất quản lý nhân sự và phân quyền.
-- **Một lưới dữ liệu dùng chung** (`Infrastructure/Grid`, `_Grid.cshtml`, `wwwroot/js/admin-grid.js`) cho mọi
-  danh sách quản trị, kiểu Magento: cột sắp xếp được, nút *Bộ lọc* mở bảng lọc, nhãn bộ lọc đang áp dụng, số
-  dòng mỗi trang, thao tác hàng loạt và menu *Chọn* cho từng dòng. Máy chủ dựng lưới; script chỉ tải lại phần
-  lưới bằng AJAX và giữ trạng thái trên URL (nút Back và bookmark hoạt động, tắt JavaScript vẫn dùng được).
+- **Một grid dùng chung** (`Infrastructure/Grid`, `_Grid.cshtml`, `wwwroot/js/admin-grid.js`) cho mọi danh sách
+  quản trị, kiểu Magento: sort theo cột, nút *Bộ lọc* mở filter panel, filter chip cho các bộ lọc đang áp dụng,
+  page size, mass action và row action (menu *Chọn* ở mỗi dòng). Server render grid; script chỉ tải lại phần
+  grid bằng AJAX và giữ state trên URL (nút Back và bookmark hoạt động, tắt JavaScript vẫn dùng được).
 - **Tìm kiếm không phân biệt dấu** bằng extension `unaccent` của PostgreSQL: mỗi từ khóa phải xuất hiện trong
   tên sản phẩm hoặc tên danh mục ("dien thoai samsung" ra điện thoại Samsung).
-- **`StockLedger` là nơi duy nhất thay đổi tồn kho.** Nó khóa dòng tồn kho, không cho tồn âm và ghi một dòng
+- **`StockLedger` là nơi duy nhất thay đổi tồn kho.** Nó dùng row lock trên dòng tồn kho, không cho tồn âm và ghi một dòng
   `inventory_adjustments` cho mọi lần nhập hàng, kiểm kê, đặt hàng và hủy đơn. Hai người cùng đặt món hàng
   cuối cùng thì chỉ một người mua được (có test kiểm chứng).
 - **Không xóa cứng** sản phẩm, nhân viên, khách hàng, đơn hàng hay đánh giá; sản phẩm thì tắt kinh doanh,
