@@ -1,6 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using Techies.Web.Domain;
-
 namespace Techies.Web.ViewModels.Staff;
 
 public sealed class StaffForm
@@ -25,5 +23,5 @@ public sealed class StaffForm
     public string? Password { get; set; }
 
     [Display(Name = "Vai trò")]
-    public StaffRole Role { get; set; } = StaffRole.OrderStaff;
+    public int RoleId { get; set; } = Domain.SeededRoles.OrderStaff;
 }

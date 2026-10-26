@@ -11,6 +11,8 @@
             <div class="display-5 fw-bold @(available == 0 ? "text-danger" : "")">@available</div>
         </div></div>
     </div>
+    @if (await Staff.HasAsync(Permissions.InventoryImport))
+    {
     <div class="col-md-4">
         <form asp-action="Import" asp-route-id="@product.Id" method="post" class="card h-100"><div class="card-body">
             <h2 class="h6"><i class="bi bi-box-arrow-in-down"></i> Nhập hàng</h2>
@@ -19,6 +21,9 @@
             <button class="btn btn-primary w-100">Cộng vào kho</button>
         </div></form>
     </div>
+    }
+    @if (await Staff.HasAsync(Permissions.InventoryCount))
+    {
     <div class="col-md-4">
         <form asp-action="Count" asp-route-id="@product.Id" method="post" class="card h-100"><div class="card-body">
             <h2 class="h6"><i class="bi bi-clipboard-check"></i> Kiểm kê</h2>
@@ -27,6 +32,7 @@
             <button class="btn btn-outline-primary w-100">Cập nhật số thực tế</button>
         </div></form>
     </div>
+    }
 </div>
 <div class="card">
     <div class="card-header">Lịch sử biến động kho</div>

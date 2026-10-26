@@ -681,6 +681,196 @@ namespace Techies.Web.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.Permission", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Module")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
+                        .HasColumnName("module");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_permissions");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_permissions_code");
+
+                    b.ToTable("permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "dashboard.view",
+                            Module = "Tổng quan",
+                            Name = "Xem bảng điều khiển & doanh thu"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "products.view",
+                            Module = "Sản phẩm",
+                            Name = "Xem sản phẩm"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "products.edit",
+                            Module = "Sản phẩm",
+                            Name = "Thêm / sửa sản phẩm"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Code = "products.toggle",
+                            Module = "Sản phẩm",
+                            Name = "Bật / tắt kinh doanh"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Code = "categories.manage",
+                            Module = "Danh mục",
+                            Name = "Quản lý danh mục"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Code = "inventory.view",
+                            Module = "Kho",
+                            Name = "Xem tồn kho"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Code = "inventory.import",
+                            Module = "Kho",
+                            Name = "Nhập hàng"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Code = "inventory.count",
+                            Module = "Kho",
+                            Name = "Kiểm kê"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Code = "orders.view",
+                            Module = "Đơn hàng",
+                            Name = "Xem đơn hàng"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Code = "orders.complete",
+                            Module = "Đơn hàng",
+                            Name = "Hoàn tất đơn hàng"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Code = "orders.cancel",
+                            Module = "Đơn hàng",
+                            Name = "Hủy đơn hàng"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Code = "orders.print",
+                            Module = "Đơn hàng",
+                            Name = "In phiếu giao hàng"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Code = "customers.view",
+                            Module = "Khách hàng",
+                            Name = "Xem khách hàng"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Code = "customers.lock",
+                            Module = "Khách hàng",
+                            Name = "Khóa / mở khóa khách hàng"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Code = "reviews.view",
+                            Module = "Đánh giá",
+                            Name = "Xem đánh giá"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Code = "giftcounter.lookup",
+                            Module = "Quầy nhận quà",
+                            Name = "Tra cứu mã nhận quà"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Code = "giftcounter.claim",
+                            Module = "Quầy nhận quà",
+                            Name = "Xác nhận giao quà"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Code = "coupons.view",
+                            Module = "Mã giảm giá",
+                            Name = "Xem mã giảm giá"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Code = "coupons.manage",
+                            Module = "Mã giảm giá",
+                            Name = "Tạo / sửa / tạm dừng mã"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Code = "gifts.view",
+                            Module = "Quà tặng",
+                            Name = "Xem quà tặng"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Code = "gifts.manage",
+                            Module = "Quà tặng",
+                            Name = "Thêm / sửa quà tặng"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Code = "tiers.manage",
+                            Module = "Hạng thành viên",
+                            Name = "Cấu hình hạng thành viên"
+                        });
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.PointTransaction", b =>
                 {
                     b.Property<Guid>("Id")
@@ -918,6 +1108,176 @@ namespace Techies.Web.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.Role", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("code");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<bool>("IsSystem")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_system");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("name");
+
+                    b.HasKey("Id")
+                        .HasName("pk_roles");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_roles_code");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("ix_roles_name");
+
+                    b.ToTable("roles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Code = "SUPER_ADMIN",
+                            Description = "Toàn quyền, quản lý nhân sự và phân quyền.",
+                            IsSystem = true,
+                            Name = "Quản trị viên cao cấp"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Code = "CATALOG_STAFF",
+                            Description = "Thêm/sửa sản phẩm, thông số, nhập hàng và kiểm kê.",
+                            IsSystem = false,
+                            Name = "Nhân viên Kho & Sản phẩm"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Code = "ORDER_STAFF",
+                            Description = "Xử lý đơn hàng, in phiếu giao, tra cứu quà tặng, hỗ trợ khách hàng.",
+                            IsSystem = false,
+                            Name = "Nhân viên Điều phối & Quầy"
+                        });
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.RolePermission", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("role_id");
+
+                    b.Property<int>("PermissionId")
+                        .HasColumnType("integer")
+                        .HasColumnName("permission_id");
+
+                    b.HasKey("RoleId", "PermissionId")
+                        .HasName("pk_role_permissions");
+
+                    b.HasIndex("PermissionId")
+                        .HasDatabaseName("ix_role_permissions_permission_id");
+
+                    b.ToTable("role_permissions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 2
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 3
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 4
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 5
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 6
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 7
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            PermissionId = 8
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 9
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 10
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 11
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 12
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 13
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 14
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 15
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 16
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            PermissionId = 17
+                        });
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.Staff", b =>
                 {
                     b.Property<Guid>("Id")
@@ -951,11 +1311,9 @@ namespace Techies.Web.Data.Migrations
                         .HasColumnType("character varying(11)")
                         .HasColumnName("phone");
 
-                    b.Property<string>("Role")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("character varying(32)")
-                        .HasColumnName("role");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("integer")
+                        .HasColumnName("role_id");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -973,6 +1331,9 @@ namespace Techies.Web.Data.Migrations
                     b.HasIndex("Email")
                         .IsUnique()
                         .HasDatabaseName("ix_staff_email");
+
+                    b.HasIndex("RoleId")
+                        .HasDatabaseName("ix_staff_role_id");
 
                     b.ToTable("staff", (string)null);
                 });
@@ -1289,6 +1650,35 @@ namespace Techies.Web.Data.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.RolePermission", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_role_permissions_permissions_permission_id");
+
+                    b.HasOne("Techies.Web.Domain.Role", null)
+                        .WithMany("Permissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_role_permissions_roles_role_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Staff", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Role", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_staff_roles_role_id");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.StockItem", b =>
                 {
                     b.HasOne("Techies.Web.Domain.Product", null)
@@ -1311,6 +1701,11 @@ namespace Techies.Web.Data.Migrations
                     b.Navigation("Specs");
 
                     b.Navigation("Stock");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Role", b =>
+                {
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.User", b =>

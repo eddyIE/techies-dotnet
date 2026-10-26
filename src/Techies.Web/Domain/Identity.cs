@@ -37,7 +37,8 @@ public sealed class Staff
     public string Email { get; set; } = "";
     public string? Phone { get; set; }
     public string PasswordHash { get; set; } = "";
-    public StaffRole Role { get; set; }
+    public int RoleId { get; set; }
+    public Role Role { get; set; } = null!;
     public AccountStatus Status { get; set; } = AccountStatus.Active;
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset UpdatedAt { get; set; }

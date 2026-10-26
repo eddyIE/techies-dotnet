@@ -11,7 +11,7 @@ public class InventoryServiceTests(PostgresFixture fixture)
     private static async Task<(Product Product, Staff Staff)> ArrangeAsync(AppDbContext db, int available)
     {
         var product = TestData.Product(db, TestData.Category(db), "Pin dự phòng", available: available);
-        var staff = new Staff { FullName = "Kho", Email = "kho@x.vn", PasswordHash = "x", Role = StaffRole.CatalogStaff };
+        var staff = new Staff { FullName = "Kho", Email = "kho@x.vn", PasswordHash = "x", RoleId = SeededRoles.CatalogStaff };
         db.Staff.Add(staff);
         await db.SaveChangesAsync();
         return (product, staff);

@@ -4,16 +4,17 @@ using Techies.Web.Services;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-public sealed class DashboardController(DashboardQueries dashboard, TimeProvider clock) : AdminController
+public sealed class DashboardController(DashboardQueries dashboard, CurrentStaff current, TimeProvider clock) : AdminController
 {
-    // /admin is everyone's entry point; only Super Admin sees the dashboard (it shows revenue),
-    // other roles are sent to their first allowed menu.
+    // /admin is everyone's entry point; staff without dashboard.view (it shows revenue) are
+    // sent to their first allowed menu.
     public async Task<IActionResult> Index(RevenuePeriod period = RevenuePeriod.Last7Days, RevenuePeriod top = RevenuePeriod.ThisMonth)
     {
-        if (!User.Allows(Policies.SuperAdmin))
+        var access = await current.AccessAsync();
+        if (!access.Has(Permissions.DashboardView))
         {
-            var first = AdminMenu.For(User).FirstOrDefault();
-            return first is null ? View("NoMenu") : RedirectToAction("Index", first.Controller);
+            var first = AdminMenu.For(access).FirstOrDefault();
+            return first is null ? View("NoMenu") : RedirectToAction("Index", first.Controller, new { area = "Admin" });
         }
         var now = clock.GetUtcNow();
         var (awaiting, confirmed) = await dashboard.PendingCountsAsync();

@@ -6,7 +6,7 @@ using Techies.Web.ViewModels.Loyalty;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.SuperAdmin)]
+[RequirePermission(Permissions.TiersManage)]
 public sealed class TiersController(LoyaltyService loyalty) : AdminController
 {
     public async Task<IActionResult> Index() => View((await loyalty.TiersAsync())

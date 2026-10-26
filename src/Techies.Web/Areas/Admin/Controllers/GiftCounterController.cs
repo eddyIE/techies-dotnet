@@ -5,7 +5,7 @@ using Techies.Web.Services;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.Orders)]
+[RequirePermission(Permissions.GiftCounterLookup)]
 public sealed class GiftCounterController(GiftService gifts) : AdminController
 {
     public async Task<IActionResult> Index(string? code)
@@ -14,7 +14,7 @@ public sealed class GiftCounterController(GiftService gifts) : AdminController
         return View(string.IsNullOrWhiteSpace(code) ? null : await gifts.FindRedemptionAsync(code));
     }
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.GiftCounterClaim)]
     public Task<IActionResult> Claim(string code) =>
         TryAsync(() => gifts.ClaimAsync(code, StaffId), "Đã xác nhận giao quà cho khách.",
             RedirectToAction(nameof(Index), new { code }));

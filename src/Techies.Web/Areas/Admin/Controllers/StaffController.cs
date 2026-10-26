@@ -8,17 +8,17 @@ using Techies.Web.ViewModels.Staff;
 namespace Techies.Web.Areas.Admin.Controllers;
 
 [Authorize(Policy = Policies.SuperAdmin)]
-public sealed class StaffController(StaffService staff) : AdminController
+public sealed class StaffController(StaffService staff, RoleService roles) : AdminController
 {
     public async Task<IActionResult> Index() => View(await staff.ListAsync());
 
     [HttpGet]
-    public IActionResult Create() => FormView(new StaffForm(), null);
+    public Task<IActionResult> Create() => FormView(new StaffForm(), null);
 
     [HttpPost]
     public async Task<IActionResult> Create(StaffForm form)
     {
-        if (!ModelState.IsValid) return FormView(form, null);
+        if (!ModelState.IsValid) return await FormView(form, null);
         try
         {
             await staff.CreateAsync(form);
@@ -28,7 +28,7 @@ public sealed class StaffController(StaffService staff) : AdminController
         catch (DomainException ex)
         {
             ModelState.AddModelError("", ex.Message);
-            return FormView(form, null);
+            return await FormView(form, null);
         }
     }
 
@@ -37,14 +37,14 @@ public sealed class StaffController(StaffService staff) : AdminController
     {
         var s = await staff.GetAsync(id);
         ViewData["Status"] = s.Status;
-        return FormView(new StaffForm { FullName = s.FullName, Email = s.Email, Phone = s.Phone, Role = s.Role }, id);
+        return await FormView(new StaffForm { FullName = s.FullName, Email = s.Email, Phone = s.Phone, RoleId = s.RoleId }, id);
     }
 
     [HttpPost]
     public async Task<IActionResult> Edit(Guid id, StaffForm form)
     {
         ModelState.Remove(nameof(form.Password));
-        if (!ModelState.IsValid) return FormView(form, id);
+        if (!ModelState.IsValid) return await FormView(form, id);
         return await TryAsync(() => staff.UpdateAsync(id, form, StaffId), "Đã lưu thông tin nhân viên.",
             RedirectToAction(nameof(Edit), new { id }));
     }
@@ -57,9 +57,10 @@ public sealed class StaffController(StaffService staff) : AdminController
     public Task<IActionResult> ToggleLock(Guid id) =>
         TryAsync(() => staff.ToggleLockAsync(id, StaffId), "Đã cập nhật trạng thái tài khoản.", RedirectToAction(nameof(Index)));
 
-    private ViewResult FormView(StaffForm form, Guid? id)
+    private async Task<IActionResult> FormView(StaffForm form, Guid? id)
     {
         ViewData["Id"] = id;
+        ViewData["Roles"] = await roles.ListAsync();
         return View("Edit", form);
     }
 }

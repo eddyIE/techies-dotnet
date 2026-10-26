@@ -20,9 +20,9 @@
                     <div class="mb-3"><label asp-for="Password" class="form-label"></label><input asp-for="Password" class="form-control" /><div class="form-text">Tối thiểu 8 ký tự.</div></div>
                 }
                 <div class="mb-3">
-                    <label asp-for="Role" class="form-label"></label>
-                    <select asp-for="Role" class="form-select">
-                        @foreach (var role in Enum.GetValues<StaffRole>()) { <option value="@role">@Labels.For(role)</option> }
+                    <label asp-for="RoleId" class="form-label"></label>
+                    <select asp-for="RoleId" class="form-select">
+                        @foreach (var role in (List<Role>)ViewData["Roles"]!) { <option value="@role.Id">@role.Name</option> }
                     </select>
                     <div class="form-text">Nhân viên chỉ thấy các menu thuộc vai trò được gán. Đổi vai trò sẽ đăng xuất phiên hiện tại của họ.</div>
                 </div>

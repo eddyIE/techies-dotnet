@@ -8,9 +8,12 @@
     @if (locked) { <span class="badge text-bg-danger fs-6">Đã khóa</span> } else { <span class="badge text-bg-success fs-6">Hoạt động</span> }
     <span class="small text-muted">Hồ sơ chỉ xem — nhân viên không được tạo hoặc sửa thông tin khách hàng.</span>
     <span class="flex-grow-1"></span>
+    @if (await Staff.HasAsync(Permissions.CustomersLock))
+    {
     <form asp-action="ToggleLock" asp-route-id="@u.Id" method="post" onsubmit="return confirm('@(locked ? "Mở khóa tài khoản này?" : "Khóa tài khoản này? Khách sẽ bị đăng xuất ngay.")')">
         <button class="btn @(locked ? "btn-outline-success" : "btn-outline-danger")"><i class="bi @(locked ? "bi-unlock" : "bi-lock")"></i> @(locked ? "Mở khóa" : "Khóa tài khoản")</button>
     </form>
+    }
 </div>
 <div class="row g-4 mb-4">
     <div class="col-md-4"><div class="card h-100"><div class="card-body">

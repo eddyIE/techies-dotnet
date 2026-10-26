@@ -9,12 +9,18 @@
     <span class="badge fs-6 @statusBadge">@statusText</span>
     @if (Model.FailureCode is not null) { <span class="badge text-bg-danger">@Model.FailureCode — @Labels.FailureCode(Model.FailureCode)</span> }
     <span class="flex-grow-1"></span>
-    <a asp-action="DeliveryNote" asp-route-id="@Model.Id" target="_blank" class="btn btn-outline-secondary"><i class="bi bi-printer"></i> In phiếu giao hàng</a>
-    @if (Model.Status == OrderStatus.Confirmed)
+    @if (await Staff.HasAsync(Permissions.OrdersPrint))
+    {
+        <a asp-action="DeliveryNote" asp-route-id="@Model.Id" target="_blank" class="btn btn-outline-secondary"><i class="bi bi-printer"></i> In phiếu giao hàng</a>
+    }
+    @if (Model.Status == OrderStatus.Confirmed && await Staff.HasAsync(Permissions.OrdersCancel))
     {
         <form asp-action="Cancel" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Hủy đơn này? Hàng sẽ được trả về kho.')">
             <button class="btn btn-outline-danger"><i class="bi bi-x-circle"></i> Hủy đơn</button>
         </form>
+    }
+    @if (Model.Status == OrderStatus.Confirmed && await Staff.HasAsync(Permissions.OrdersComplete))
+    {
         <form asp-action="Complete" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Xác nhận đã giao hàng thành công và thu đủ tiền?')">
             <button class="btn btn-success"><i class="bi bi-check2-circle"></i> Hoàn tất đơn hàng</button>
         </form>

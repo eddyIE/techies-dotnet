@@ -399,7 +399,8 @@ Objective: BRD §7 "Thiết lập Vai trò & Phân quyền" — Super Admin defi
 instead of three fixed roles.
 
 Acceptance:
-- **Permission catalogue** (in code, synced to `permissions` on startup), grouped by module:
+- **Permission catalogue** (in code, seeded into `permissions` by EF migrations — a new entry means a new
+  migration), grouped by module:
 
   | Module | Permissions |
   |---|---|

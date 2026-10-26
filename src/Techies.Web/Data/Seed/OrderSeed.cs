@@ -35,7 +35,7 @@ internal static class OrderSeed
         var productById = products.ToDictionary(p => p.Id);
         var coupons = await db.Coupons.Where(c => SeedCoupons.Contains(c.Code)).ToListAsync(ct);
         var tiers = await db.MembershipTiers.ToListAsync(ct);
-        var counterStaff = await db.Staff.Where(s => s.Role == StaffRole.OrderStaff).Select(s => s.Id).FirstAsync(ct);
+        var counterStaff = await db.Staff.Where(s => s.RoleId == SeededRoles.OrderStaff).Select(s => s.Id).FirstAsync(ct);
 
         // Skewed so a few customers buy often (high tiers) and most buy rarely.
         var weights = customers.Select((_, i) => 1.0 / (i + 1)).ToArray();

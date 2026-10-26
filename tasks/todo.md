@@ -269,7 +269,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 9 — RBAC
 
-- [ ] **Task 33: Roles/permissions schema, catalogue and migration** (M) · deps: 29
+- [x] **Task 33: Roles/permissions schema, catalogue and migration** (M) · deps: 29
   - Acceptance: `roles`, `permissions`, `role_permissions`, `staff.role_id` + migration that maps
     the old `staff.role` values to seeded roles (system Super Admin, Kho & Sản phẩm, Điều phối &
     Quầy) with the permission sets of the old role table; permission catalogue in code, synced
@@ -277,7 +277,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: migration/seed test — each seeded staff keeps exactly the access they had.
   - Files: `Domain/Rbac.cs`, `Infrastructure/Permissions.cs`, `Data/*`, `Data/Migrations/*`, tests
 
-- [ ] **Task 34: Permission-based authorization** (M) · deps: 33
+- [x] **Task 34: Permission-based authorization** (M) · deps: 33
   - Acceptance: `[RequirePermission("orders.complete")]` style policies via a policy provider;
     permissions loaded once per request; system role = all; staff/roles screens Super Admin
     only; sidebar, buttons and endpoints use permissions; session still ends on role change.

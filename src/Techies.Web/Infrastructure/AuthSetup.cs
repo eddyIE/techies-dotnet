@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Techies.Web.Domain;
 using Techies.Web.Services;
 
@@ -37,13 +38,16 @@ public static class AuthSetup
                 o.Events.OnValidatePrincipal = ValidateCustomerAsync;
             });
 
+        services.AddHttpContextAccessor();
+        services.AddScoped<PermissionService>();
+        services.AddScoped<CurrentStaff>();
+        services.AddScoped<IAuthorizationHandler, PermissionHandler>();
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicies>();
         services.AddAuthorization(options =>
         {
-            foreach (var (name, roles) in Policies.StaffRoles)
-                options.AddPolicy(name, p => p
-                    .AddAuthenticationSchemes(AuthSchemes.Staff)
-                    .RequireAuthenticatedUser()
-                    .RequireRole(roles.Select(r => r.ToString())));
+            options.AddPolicy(Policies.AnyStaff, p => p.AddAuthenticationSchemes(AuthSchemes.Staff).RequireAuthenticatedUser());
+            options.AddPolicy(Policies.SuperAdmin, p => p
+                .AddAuthenticationSchemes(AuthSchemes.Staff).RequireAuthenticatedUser().AddRequirements(new SuperAdminRequirement()));
             options.AddPolicy(Policies.Customer, p => p
                 .AddAuthenticationSchemes(AuthSchemes.Customer)
                 .RequireAuthenticatedUser());
@@ -55,7 +59,7 @@ public static class AuthSetup
         new Claim(ClaimTypes.NameIdentifier, staff.Id.ToString()),
         new Claim(ClaimTypes.Name, staff.FullName),
         new Claim(ClaimTypes.Email, staff.Email),
-        new Claim(ClaimTypes.Role, staff.Role.ToString()),
+        new Claim(RoleIdClaim, staff.RoleId.ToString()),
     ], AuthSchemes.Staff));
 
     public static ClaimsPrincipal CustomerPrincipal(User user) => new(new ClaimsIdentity(
@@ -65,6 +69,8 @@ public static class AuthSetup
         new Claim(ClaimTypes.Email, user.Email),
     ], AuthSchemes.Customer));
 
+    public const string RoleIdClaim = "techies:role_id";
+
     public static Guid UserId(this ClaimsPrincipal user) =>
         Guid.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
@@ -72,9 +78,9 @@ public static class AuthSetup
     {
         var principal = context.Principal!;
         var valid = Guid.TryParse(principal.FindFirstValue(ClaimTypes.NameIdentifier), out var id)
-            && Enum.TryParse<StaffRole>(principal.FindFirstValue(ClaimTypes.Role), out var role)
+            && int.TryParse(principal.FindFirstValue(RoleIdClaim), out var roleId)
             && await context.HttpContext.RequestServices.GetRequiredService<AccountStatusService>()
-                .IsStaffSessionValidAsync(id, role);
+                .IsStaffSessionValidAsync(id, roleId);
         if (!valid) await RejectAsync(context);
     }
 

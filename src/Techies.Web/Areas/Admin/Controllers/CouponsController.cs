@@ -7,7 +7,7 @@ using Techies.Web.ViewModels.Promotions;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.SuperAdmin)]
+[RequirePermission(Permissions.CouponsView)]
 public sealed class CouponsController(CouponService coupons, TimeProvider clock) : AdminController
 {
     public async Task<IActionResult> Index()
@@ -16,10 +16,10 @@ public sealed class CouponsController(CouponService coupons, TimeProvider clock)
         return View(await coupons.ListAsync());
     }
 
-    [HttpGet]
+    [HttpGet, RequirePermission(Permissions.CouponsManage)]
     public IActionResult Create() => FormView(new CouponForm(), null);
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.CouponsManage)]
     public async Task<IActionResult> Create(CouponForm form)
     {
         if (!ModelState.IsValid) return FormView(form, null);
@@ -36,7 +36,7 @@ public sealed class CouponsController(CouponService coupons, TimeProvider clock)
         }
     }
 
-    [HttpGet]
+    [HttpGet, RequirePermission(Permissions.CouponsManage)]
     public async Task<IActionResult> Edit(Guid id)
     {
         var c = await coupons.GetAsync(id);
@@ -47,7 +47,7 @@ public sealed class CouponsController(CouponService coupons, TimeProvider clock)
         }, id);
     }
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.CouponsManage)]
     public async Task<IActionResult> Edit(Guid id, CouponForm form)
     {
         if (!ModelState.IsValid) return FormView(form, id);
@@ -64,7 +64,7 @@ public sealed class CouponsController(CouponService coupons, TimeProvider clock)
         }
     }
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.CouponsManage)]
     public async Task<IActionResult> Toggle(Guid id)
     {
         var active = await coupons.ToggleActiveAsync(id);

@@ -3,7 +3,7 @@
     string? currentSection = null;
 }
 <ul class="nav flex-column">
-    @foreach (var item in AdminMenu.For(User))
+    @foreach (var item in AdminMenu.For(await Staff.AccessAsync()))
     {
         if (item.Section != currentSection)
         {

@@ -14,7 +14,7 @@ public class GiftCounterTests(PostgresFixture fixture)
         await new DbSeeder(db, TimeProvider.System).SeedAsync();
         var customer = await db.Users.FirstAsync();
         var gift = await db.Gifts.FirstAsync();
-        var staff = await db.Staff.FirstAsync(s => s.Role == StaffRole.OrderStaff);
+        var staff = await db.Staff.FirstAsync(s => s.RoleId == SeededRoles.OrderStaff);
         var redemption = new GiftRedemption
         {
             Code = "GIFT-TEST-AB12", GiftId = gift.Id, CustomerId = customer.Id, PointsSpent = gift.PointsCost,

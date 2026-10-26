@@ -6,7 +6,7 @@ using Techies.Web.ViewModels.Orders;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.Orders)]
+[RequirePermission(Permissions.OrdersView)]
 public sealed class OrdersController(OrderQueries queries, OrderService orders) : AdminController
 {
     public async Task<IActionResult> Index([FromQuery] OrderFilter filter)
@@ -18,14 +18,15 @@ public sealed class OrdersController(OrderQueries queries, OrderService orders) 
 
     public async Task<IActionResult> Details(Guid id) => View(await queries.DetailAsync(id));
 
+    [RequirePermission(Permissions.OrdersPrint)]
     public async Task<IActionResult> DeliveryNote(Guid id) => View(await queries.DetailAsync(id));
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.OrdersComplete)]
     public Task<IActionResult> Complete(Guid id) =>
         TryAsync(() => orders.CompleteAsync(id), "Đã hoàn tất đơn hàng và cộng điểm thưởng cho khách.",
             RedirectToAction(nameof(Details), new { id }));
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.OrdersCancel)]
     public Task<IActionResult> Cancel(Guid id) =>
         TryAsync(() => orders.CancelByStaffAsync(id, StaffId), "Đã hủy đơn hàng và hoàn hàng về kho.",
             RedirectToAction(nameof(Details), new { id }));

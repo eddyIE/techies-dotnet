@@ -14,13 +14,6 @@ public static class Labels
         _ => type.ToString(),
     };
 
-    public static string For(StaffRole role) => role switch
-    {
-        StaffRole.SuperAdmin => "Quản trị viên cao cấp",
-        StaffRole.CatalogStaff => "Nhân viên Kho & Sản phẩm",
-        StaffRole.OrderStaff => "Nhân viên Điều phối & Quầy",
-        _ => role.ToString(),
-    };
 
     public static (string Text, string Badge) For(CouponStatus status) => status switch
     {

@@ -13,7 +13,7 @@ public class StaffAuthTests(PostgresFixture fixture)
         var staff = new Staff
         {
             FullName = "Nhân viên A", Email = "a@techies.vn", PasswordHash = Passwords.Hash("Secret@123"),
-            Role = StaffRole.OrderStaff, Status = status,
+            RoleId = SeededRoles.OrderStaff, Status = status,
         };
         db.Staff.Add(staff);
         await db.SaveChangesAsync();
@@ -59,7 +59,7 @@ public class StaffAuthTests(PostgresFixture fixture)
         await using var db = await fixture.CreateContextAsync();
         var staff = await AddStaffAsync(db);
 
-        Assert.True(await new AccountStatusService(db).IsStaffSessionValidAsync(staff.Id, StaffRole.OrderStaff));
+        Assert.True(await new AccountStatusService(db).IsStaffSessionValidAsync(staff.Id, SeededRoles.OrderStaff));
     }
 
     [Fact]
@@ -70,7 +70,7 @@ public class StaffAuthTests(PostgresFixture fixture)
         staff.Status = AccountStatus.Locked;
         await db.SaveChangesAsync();
 
-        Assert.False(await new AccountStatusService(db).IsStaffSessionValidAsync(staff.Id, StaffRole.OrderStaff));
+        Assert.False(await new AccountStatusService(db).IsStaffSessionValidAsync(staff.Id, SeededRoles.OrderStaff));
     }
 
     [Fact]
@@ -78,9 +78,9 @@ public class StaffAuthTests(PostgresFixture fixture)
     {
         await using var db = await fixture.CreateContextAsync();
         var staff = await AddStaffAsync(db);
-        staff.Role = StaffRole.CatalogStaff;
+        staff.RoleId = SeededRoles.CatalogStaff;
         await db.SaveChangesAsync();
 
-        Assert.False(await new AccountStatusService(db).IsStaffSessionValidAsync(staff.Id, StaffRole.OrderStaff));
+        Assert.False(await new AccountStatusService(db).IsStaffSessionValidAsync(staff.Id, SeededRoles.OrderStaff));
     }
 }

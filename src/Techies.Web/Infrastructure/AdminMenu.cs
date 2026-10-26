@@ -1,27 +1,29 @@
-using System.Security.Claims;
+using Techies.Web.Services;
 
 namespace Techies.Web.Infrastructure;
 
-public sealed record AdminMenuItem(string Section, string Title, string Icon, string Controller, string Policy);
+// Permission null = system Super Admin only (staff and role management).
+public sealed record AdminMenuItem(string Section, string Title, string Icon, string Controller, string? Permission);
 
 public static class AdminMenu
 {
-    // Grows as each module lands. Order = sidebar order = landing preference after login.
+    // Order = sidebar order = landing preference after login.
     public static readonly AdminMenuItem[] Items =
     [
-        new("Tổng quan", "Bảng điều khiển", "bi-speedometer2", "Dashboard", Policies.SuperAdmin),
-        new("Sản phẩm & Kho", "Sản phẩm", "bi-phone", "Products", Policies.Catalog),
-        new("Sản phẩm & Kho", "Danh mục", "bi-tags", "Categories", Policies.Catalog),
-        new("Sản phẩm & Kho", "Kiểm kho & Nhập hàng", "bi-box-seam", "Inventory", Policies.Catalog),
-        new("Bán hàng & Khách hàng", "Đơn hàng", "bi-receipt", "Orders", Policies.Orders),
-        new("Bán hàng & Khách hàng", "Khách hàng", "bi-people", "Customers", Policies.Orders),
-        new("Bán hàng & Khách hàng", "Đánh giá", "bi-star-half", "Reviews", Policies.Orders),
-        new("Bán hàng & Khách hàng", "Quầy nhận quà", "bi-upc-scan", "GiftCounter", Policies.Orders),
-        new("Khuyến mãi & Thành viên", "Mã giảm giá", "bi-ticket-perforated", "Coupons", Policies.SuperAdmin),
-        new("Khuyến mãi & Thành viên", "Quà tặng đổi điểm", "bi-gift", "Gifts", Policies.SuperAdmin),
-        new("Khuyến mãi & Thành viên", "Hạng thành viên", "bi-award", "Tiers", Policies.SuperAdmin),
-        new("Hệ thống", "Nhân sự & Phân quyền", "bi-person-badge", "Staff", Policies.SuperAdmin),
+        new("Tổng quan", "Bảng điều khiển", "bi-speedometer2", "Dashboard", Permissions.DashboardView),
+        new("Sản phẩm & Kho", "Sản phẩm", "bi-phone", "Products", Permissions.ProductsView),
+        new("Sản phẩm & Kho", "Danh mục", "bi-tags", "Categories", Permissions.CategoriesManage),
+        new("Sản phẩm & Kho", "Kiểm kho & Nhập hàng", "bi-box-seam", "Inventory", Permissions.InventoryView),
+        new("Bán hàng & Khách hàng", "Đơn hàng", "bi-receipt", "Orders", Permissions.OrdersView),
+        new("Bán hàng & Khách hàng", "Khách hàng", "bi-people", "Customers", Permissions.CustomersView),
+        new("Bán hàng & Khách hàng", "Đánh giá", "bi-star-half", "Reviews", Permissions.ReviewsView),
+        new("Bán hàng & Khách hàng", "Quầy nhận quà", "bi-upc-scan", "GiftCounter", Permissions.GiftCounterLookup),
+        new("Khuyến mãi & Thành viên", "Mã giảm giá", "bi-ticket-perforated", "Coupons", Permissions.CouponsView),
+        new("Khuyến mãi & Thành viên", "Quà tặng đổi điểm", "bi-gift", "Gifts", Permissions.GiftsView),
+        new("Khuyến mãi & Thành viên", "Hạng thành viên", "bi-award", "Tiers", Permissions.TiersManage),
+        new("Hệ thống", "Nhân sự", "bi-person-badge", "Staff", null),
     ];
 
-    public static IEnumerable<AdminMenuItem> For(ClaimsPrincipal user) => Items.Where(i => user.Allows(i.Policy));
+    public static IEnumerable<AdminMenuItem> For(StaffAccess access) =>
+        Items.Where(i => i.Permission is null ? access.IsSuperAdmin : access.Has(i.Permission));
 }

@@ -41,7 +41,7 @@ internal sealed class StaffConfiguration : IEntityTypeConfiguration<Staff>
         b.Property(s => s.Email).HasMaxLength(255);
         b.HasIndex(s => s.Email).IsUnique();
         b.Property(s => s.Phone).HasMaxLength(11);
-        b.Property(s => s.Role).HasMaxLength(32);
+        b.HasOne(s => s.Role).WithMany().HasForeignKey(s => s.RoleId).OnDelete(DeleteBehavior.Restrict);
         b.Property(s => s.Status).HasMaxLength(16);
     }
 }

@@ -10,7 +10,7 @@ internal static class CouponSeed
     public static async Task SeedAsync(AppDbContext db, DateTimeOffset now, CancellationToken ct)
     {
         if (await db.Coupons.AnyAsync(ct)) return;
-        var admin = await db.Staff.Where(s => s.Role == StaffRole.SuperAdmin).Select(s => s.Id).FirstAsync(ct);
+        var admin = await db.Staff.Where(s => s.RoleId == SeededRoles.SuperAdmin).Select(s => s.Id).FirstAsync(ct);
         var created = now.AddDays(-480);
         Coupon Make(string code, string description, decimal discount, decimal min, bool active = true, DateTimeOffset? expires = null) => new()
         {

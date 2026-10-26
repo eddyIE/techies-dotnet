@@ -7,7 +7,7 @@ using Techies.Web.ViewModels.Catalog;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.Catalog)]
+[RequirePermission(Permissions.ProductsView)]
 public sealed class ProductsController(ProductService products, CategoryService categories, ImageStorage images)
     : AdminController
 {
@@ -18,10 +18,10 @@ public sealed class ProductsController(ProductService products, CategoryService 
         return View(await products.SearchAsync(filter));
     }
 
-    [HttpGet]
+    [HttpGet, RequirePermission(Permissions.ProductsEdit)]
     public Task<IActionResult> Create() => FormView(new ProductForm(), id: null);
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.ProductsEdit)]
     public async Task<IActionResult> Create(ProductForm form)
     {
         if (!ModelState.IsValid) return await FormView(form, null);
@@ -39,7 +39,7 @@ public sealed class ProductsController(ProductService products, CategoryService 
         }
     }
 
-    [HttpGet]
+    [HttpGet, RequirePermission(Permissions.ProductsEdit)]
     public async Task<IActionResult> Edit(Guid id)
     {
         var p = await products.GetAsync(id);
@@ -52,7 +52,7 @@ public sealed class ProductsController(ProductService products, CategoryService 
         }, id);
     }
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.ProductsEdit)]
     public async Task<IActionResult> Edit(Guid id, ProductForm form)
     {
         if (!ModelState.IsValid) return await FormView(form, id);

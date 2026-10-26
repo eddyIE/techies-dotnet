@@ -6,7 +6,7 @@ using Techies.Web.ViewModels.Customers;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.Orders)]
+[RequirePermission(Permissions.ReviewsView)]
 public sealed class ReviewsController(ReviewQueries reviews) : AdminController
 {
     public async Task<IActionResult> Index([FromQuery] ReviewFilter filter)

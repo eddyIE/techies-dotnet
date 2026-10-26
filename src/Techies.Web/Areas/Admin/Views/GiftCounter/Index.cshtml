@@ -39,7 +39,7 @@
                 </dl>
             </div>
         </div>
-        @if (!claimed)
+        @if (!claimed && await Staff.HasAsync(Permissions.GiftCounterClaim))
         {
             <div class="card-footer bg-white">
                 <form asp-action="Claim" method="post">

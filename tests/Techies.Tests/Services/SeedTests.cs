@@ -19,7 +19,7 @@ public class SeedTests(PostgresFixture fixture)
         Assert.Equal(3, await db.Staff.CountAsync());
         Assert.Equal(4, await db.MembershipTiers.CountAsync());
         var admin = await db.Staff.SingleAsync(s => s.Email == "admin@techies.vn");
-        Assert.Equal(StaffRole.SuperAdmin, admin.Role);
+        Assert.Equal(SeededRoles.SuperAdmin, admin.RoleId);
         Assert.True(BCrypt.Net.BCrypt.Verify("Admin@123", admin.PasswordHash));
     }
 }

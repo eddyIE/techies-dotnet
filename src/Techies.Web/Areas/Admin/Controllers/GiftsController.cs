@@ -7,7 +7,7 @@ using Techies.Web.ViewModels.Loyalty;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.SuperAdmin)]
+[RequirePermission(Permissions.GiftsView)]
 public sealed class GiftsController(GiftService gifts, LoyaltyService loyalty, ImageStorage images) : AdminController
 {
     public async Task<IActionResult> Index()
@@ -16,10 +16,10 @@ public sealed class GiftsController(GiftService gifts, LoyaltyService loyalty, I
         return View(await gifts.ListAsync());
     }
 
-    [HttpGet]
+    [HttpGet, RequirePermission(Permissions.GiftsManage)]
     public Task<IActionResult> Create() => FormView(new GiftForm(), null);
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.GiftsManage)]
     public async Task<IActionResult> Create(GiftForm form)
     {
         if (!ModelState.IsValid) return await FormView(form, null);
@@ -36,7 +36,7 @@ public sealed class GiftsController(GiftService gifts, LoyaltyService loyalty, I
         }
     }
 
-    [HttpGet]
+    [HttpGet, RequirePermission(Permissions.GiftsManage)]
     public async Task<IActionResult> Edit(Guid id)
     {
         var g = await gifts.GetAsync(id);
@@ -47,7 +47,7 @@ public sealed class GiftsController(GiftService gifts, LoyaltyService loyalty, I
         }, id);
     }
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.GiftsManage)]
     public async Task<IActionResult> Edit(Guid id, GiftForm form)
     {
         if (!ModelState.IsValid) return await FormView(form, id);

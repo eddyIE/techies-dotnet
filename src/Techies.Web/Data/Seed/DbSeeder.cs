@@ -34,16 +34,16 @@ public sealed class DbSeeder(AppDbContext db, TimeProvider clock)
     {
         if (await db.Staff.AnyAsync(ct)) return;
         var now = clock.GetUtcNow();
-        Staff Make(string name, string email, string password, StaffRole role) => new()
+        Staff Make(string name, string email, string password, int roleId) => new()
         {
-            FullName = name, Email = email, PasswordHash = Passwords.Hash(password), Role = role,
+            FullName = name, Email = email, PasswordHash = Passwords.Hash(password), RoleId = roleId,
             CreatedAt = now, UpdatedAt = now,
         };
         // The BRD has no staff sign-up: the first Super Admin must come from seeding.
         db.Staff.AddRange(
-            Make("Quản trị viên", "admin@techies.vn", "Admin@123", StaffRole.SuperAdmin),
-            Make("Nhân viên Kho", "kho@techies.vn", "Staff@123", StaffRole.CatalogStaff),
-            Make("Nhân viên Quầy", "quay@techies.vn", "Staff@123", StaffRole.OrderStaff));
+            Make("Quản trị viên", "admin@techies.vn", "Admin@123", SeededRoles.SuperAdmin),
+            Make("Nhân viên Kho", "kho@techies.vn", "Staff@123", SeededRoles.CatalogStaff),
+            Make("Nhân viên Quầy", "quay@techies.vn", "Staff@123", SeededRoles.OrderStaff));
         await db.SaveChangesAsync(ct);
     }
 }

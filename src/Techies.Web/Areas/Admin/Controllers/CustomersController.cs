@@ -6,7 +6,7 @@ using Techies.Web.Services;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.Orders)]
+[RequirePermission(Permissions.CustomersView)]
 public sealed class CustomersController(CustomerQueries customers, LoyaltyService loyalty) : AdminController
 {
     public async Task<IActionResult> Index(string? q, int page = 1)
@@ -18,7 +18,7 @@ public sealed class CustomersController(CustomerQueries customers, LoyaltyServic
 
     public async Task<IActionResult> Details(Guid id) => View(await customers.ProfileAsync(id));
 
-    [HttpPost]
+    [HttpPost, RequirePermission(Permissions.CustomersLock)]
     public async Task<IActionResult> ToggleLock(Guid id)
     {
         var status = await customers.ToggleLockAsync(id);

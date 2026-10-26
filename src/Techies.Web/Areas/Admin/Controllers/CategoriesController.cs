@@ -7,7 +7,7 @@ using Techies.Web.ViewModels.Catalog;
 
 namespace Techies.Web.Areas.Admin.Controllers;
 
-[Authorize(Policy = Policies.Catalog)]
+[RequirePermission(Permissions.CategoriesManage)]
 public sealed class CategoriesController(CategoryService categories, ImageStorage images) : AdminController
 {
     public async Task<IActionResult> Index() => View(await categories.ListAsync());

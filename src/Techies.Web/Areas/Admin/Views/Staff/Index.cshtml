@@ -17,7 +17,7 @@
                 <td>@s.FullName @if (s.Id == me) { <span class="badge text-bg-light">Bạn</span> }</td>
                 <td class="small">@s.Email</td>
                 <td class="small">@s.Phone</td>
-                <td class="small">@Labels.For(s.Role)</td>
+                <td class="small">@s.Role.Name</td>
                 <td>@if (locked) { <span class="badge text-bg-danger">Đã khóa</span> } else { <span class="badge text-bg-success">Đang hoạt động</span> }</td>
                 <td class="text-end text-nowrap">
                     @if (s.Id != me)
