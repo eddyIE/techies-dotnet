@@ -1,0 +1,41 @@
+@model Techies.Web.ViewModels.Promotions.CouponForm
+@{
+    var id = ViewData["Id"] as Guid?;
+    ViewData["Title"] = id is null ? "Tạo mã giảm giá" : "Sửa mã giảm giá";
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+}
+<form method="post" asp-action="@(id is null ? "Create" : "Edit")" asp-route-id="@id" class="card" style="max-width: 720px">
+    <div class="card-body">
+        <div asp-validation-summary="All" class="alert alert-danger py-2"></div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Code" class="form-label"></label>
+                <input asp-for="Code" class="form-control text-uppercase font-monospace" placeholder="TECHIES50K" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <input asp-for="Description" class="form-control" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="DiscountAmount" class="form-label"></label>
+                <input asp-for="DiscountAmount" type="number" min="1" step="1000" class="form-control" value="@Model.DiscountAmount.ToString("0", inv)" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="MinSubtotal" class="form-label"></label>
+                <input asp-for="MinSubtotal" type="number" min="0" step="1000" class="form-control" value="@Model.MinSubtotal.ToString("0", inv)" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="StartsAt" class="form-label"></label>
+                <input asp-for="StartsAt" type="datetime-local" class="form-control" value="@Model.StartsAt?.ToString("yyyy-MM-ddTHH:mm", inv)" />
+                <div class="form-text">Để trống: có hiệu lực ngay.</div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="ExpiresAt" class="form-label"></label>
+                <input asp-for="ExpiresAt" type="datetime-local" class="form-control" value="@Model.ExpiresAt?.ToString("yyyy-MM-ddTHH:mm", inv)" />
+                <div class="form-text">Để trống: không hết hạn.</div>
+            </div>
+        </div>
+        <button class="btn btn-primary">Lưu</button>
+        <a asp-action="Index" class="btn btn-link">Hủy</a>
+    </div>
+</form>

@@ -1,0 +1,36 @@
+@model List<Coupon>
+@{
+    ViewData["Title"] = "Mã giảm giá";
+    var now = (DateTimeOffset)ViewData["Now"]!;
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <p class="text-muted small mb-0">Mã giảm số tiền cố định trên tạm tính. Giảm theo % là ưu đãi riêng của hạng thành viên.</p>
+    <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Tạo mã</a>
+</div>
+<div class="card">
+    <table class="table mb-0">
+        <thead><tr><th>Mã</th><th>Mô tả</th><th class="text-end">Giảm</th><th class="text-end">Đơn tối thiểu</th><th>Hiệu lực</th><th>Trạng thái</th><th></th></tr></thead>
+        <tbody>
+        @foreach (var c in Model)
+        {
+            var (text, badge) = Labels.For(Techies.Web.Services.CouponService.StatusAt(c, now));
+            <tr>
+                <td class="fw-semibold font-monospace">@c.Code</td>
+                <td class="small">@c.Description</td>
+                <td class="text-end">@Format.Money(c.DiscountAmount)</td>
+                <td class="text-end">@Format.Money(c.MinSubtotal)</td>
+                <td class="small">
+                    @(c.StartsAt is null ? "—" : Format.LocalTime(c.StartsAt.Value)) → @(c.ExpiresAt is null ? "không giới hạn" : Format.LocalTime(c.ExpiresAt.Value))
+                </td>
+                <td><span class="badge @badge">@text</span></td>
+                <td class="text-end text-nowrap">
+                    <form asp-action="Toggle" asp-route-id="@c.Id" method="post" class="d-inline">
+                        <button class="btn btn-sm @(c.Active ? "btn-outline-warning" : "btn-outline-success")">@(c.Active ? "Tạm dừng" : "Kích hoạt")</button>
+                    </form>
+                    <a asp-action="Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary">Sửa</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>

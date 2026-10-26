@@ -21,4 +21,13 @@ public static class Labels
         StaffRole.OrderStaff => "Nhân viên Điều phối & Quầy",
         _ => role.ToString(),
     };
+
+    public static (string Text, string Badge) For(CouponStatus status) => status switch
+    {
+        CouponStatus.Running => ("Đang chạy", "text-bg-success"),
+        CouponStatus.Paused => ("Tạm dừng", "text-bg-secondary"),
+        CouponStatus.NotStarted => ("Chưa bắt đầu", "text-bg-info"),
+        CouponStatus.Expired => ("Hết hạn", "text-bg-dark"),
+        _ => (status.ToString(), "text-bg-light"),
+    };
 }

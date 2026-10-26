@@ -108,7 +108,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 4 — Promotions & Loyalty
 
-- [ ] **Task 13: Coupons** (M) · deps: 6
+- [x] **Task 13: Coupons** (M) · deps: 6
   - Acceptance: entity + migration; `CouponService.StatusAt` and `Evaluate`; admin list with
     status badges, create/edit with validation, pause/activate (policy `SuperAdmin`); seed 5
     coupons from `V8__coupons.sql`.

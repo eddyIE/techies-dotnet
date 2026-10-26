@@ -128,6 +128,71 @@ namespace Techies.Web.Data.Migrations
                     b.ToTable("categories", (string)null);
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.Coupon", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("boolean")
+                        .HasColumnName("active");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("character varying(40)")
+                        .HasColumnName("code");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid?>("CreatedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("created_by");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<decimal>("DiscountAmount")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("discount_amount");
+
+                    b.Property<DateTimeOffset?>("ExpiresAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expires_at");
+
+                    b.Property<decimal>("MinSubtotal")
+                        .HasPrecision(19, 2)
+                        .HasColumnType("numeric(19,2)")
+                        .HasColumnName("min_subtotal");
+
+                    b.Property<DateTimeOffset?>("StartsAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("starts_at");
+
+                    b.HasKey("Id")
+                        .HasName("pk_coupons");
+
+                    b.HasIndex("Code")
+                        .IsUnique()
+                        .HasDatabaseName("ix_coupons_code");
+
+                    b.HasIndex("CreatedBy")
+                        .HasDatabaseName("ix_coupons_created_by");
+
+                    b.ToTable("coupons", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_coupons_discount_amount", "discount_amount > 0");
+
+                            t.HasCheckConstraint("ck_coupons_min_subtotal", "min_subtotal >= 0");
+                        });
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.CustomerLoyalty", b =>
                 {
                     b.Property<Guid>("CustomerId")
@@ -519,6 +584,15 @@ namespace Techies.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_addresses_users_user_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Coupon", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.Staff", null)
+                        .WithMany()
+                        .HasForeignKey("CreatedBy")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("fk_coupons_staff_created_by");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.CustomerLoyalty", b =>

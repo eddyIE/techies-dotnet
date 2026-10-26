@@ -19,4 +19,11 @@ public static class Format
         ToLocal(utc).ToString("dd/MM/yyyy", CultureInfo.InvariantCulture);
 
     public static DateTimeOffset ToLocal(DateTimeOffset utc) => TimeZoneInfo.ConvertTime(utc, VietnamTime);
+
+    // <input type="datetime-local"> value (Vietnam wall-clock time) -> UTC instant.
+    public static DateTimeOffset? FromLocalInput(DateTime? local) =>
+        local is null ? null
+        : new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(local.Value, DateTimeKind.Unspecified), VietnamTime));
+
+    public static DateTime? ToLocalInput(DateTimeOffset? utc) => utc is null ? null : ToLocal(utc.Value).DateTime;
 }
