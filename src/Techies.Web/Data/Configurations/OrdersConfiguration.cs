@@ -69,3 +69,16 @@ internal sealed class PointTransactionConfiguration : IEntityTypeConfiguration<P
         b.HasIndex(t => new { t.CustomerId, t.CreatedAt });
     }
 }
+
+internal sealed class ReviewConfiguration : IEntityTypeConfiguration<Review>
+{
+    public void Configure(EntityTypeBuilder<Review> b)
+    {
+        b.HasOne(r => r.Customer).WithMany().HasForeignKey(r => r.CustomerId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne(r => r.Product).WithMany().HasForeignKey(r => r.ProductId).OnDelete(DeleteBehavior.Restrict);
+        b.HasOne<Order>().WithMany().HasForeignKey(r => r.OrderId).OnDelete(DeleteBehavior.Restrict);
+        b.HasIndex(r => new { r.ProductId, r.CreatedAt });
+        b.HasIndex(r => r.Rating);
+        b.ToTable(t => t.HasCheckConstraint("ck_reviews_rating", "rating BETWEEN 1 AND 5"));
+    }
+}

@@ -322,7 +322,8 @@ Acceptance:
 - Complete/cancel on any other status is rejected with a Vietnamese message. **[test]**
 - **In phiếu giao hàng**: a print-friendly page (order ref, recipient, address, phone, items,
   total, amount to collect) with a Print button; no admin chrome when printed.
-- Seed (generated, deterministic): ~150 orders over the past 15 months from demo customers,
+- Seed (generated, deterministic): ~270 orders over the past 15 months from demo customers (one
+  COMPLETED order per ported review plus ~90 others),
   covering all 5 statuses, COD and MOCK_CARD, every payment status, failure codes
   (`PAYMENT_FAILED`, `OUT_OF_STOCK`, `SERVICE_UNAVAILABLE`), some with coupons (+ redemptions),
   with consistent loyalty points for COMPLETED orders.
@@ -363,8 +364,8 @@ Acceptance:
   on the next request (identity rule).
 - Reviews list: product, customer, rating stars, comment, date; filter by rating, by product,
   and a "1–2 sao" quick filter; newest first. No edit, delete or reply.
-- Seed: ~180 reviews from `../techies/order-service` V7/V12, attached to seeded COMPLETED
-  orders of the same product.
+- Seed: the 182 reviews from `../techies/order-service` V7/V12, attached to seeded COMPLETED
+  orders of the same product (ratings 2–5; the source has no 1★ reviews).
 
 ## Module: staff
 

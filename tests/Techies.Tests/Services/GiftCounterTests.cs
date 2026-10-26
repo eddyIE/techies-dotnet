@@ -17,7 +17,7 @@ public class GiftCounterTests(PostgresFixture fixture)
         var staff = await db.Staff.FirstAsync(s => s.Role == StaffRole.OrderStaff);
         var redemption = new GiftRedemption
         {
-            Code = "GIFT-G53Y-ZDS3", GiftId = gift.Id, CustomerId = customer.Id, PointsSpent = gift.PointsCost,
+            Code = "GIFT-TEST-AB12", GiftId = gift.Id, CustomerId = customer.Id, PointsSpent = gift.PointsCost,
             RedeemedAt = DateTimeOffset.UtcNow.AddDays(-1),
         };
         db.GiftRedemptions.Add(redemption);
@@ -31,7 +31,7 @@ public class GiftCounterTests(PostgresFixture fixture)
         await using var db = await fixture.CreateContextAsync();
         var (redemption, _) = await ArrangeAsync(db);
 
-        var found = await new GiftService(db, TimeProvider.System).FindRedemptionAsync(" gift-g53y-zds3 ");
+        var found = await new GiftService(db, TimeProvider.System).FindRedemptionAsync(" gift-test-ab12 ");
 
         Assert.NotNull(found);
         Assert.Equal(redemption.Id, found.Id);
@@ -58,7 +58,7 @@ public class GiftCounterTests(PostgresFixture fixture)
         await new GiftService(db, TimeProvider.System).ClaimAsync(redemption.Code, staff.Id);
 
         db.ChangeTracker.Clear();
-        var claimed = await db.GiftRedemptions.SingleAsync();
+        var claimed = await db.GiftRedemptions.SingleAsync(r => r.Id == redemption.Id);
         Assert.Equal(GiftRedemptionStatus.Claimed, claimed.Status);
         Assert.Equal(staff.Id, claimed.ClaimedBy);
         Assert.NotNull(claimed.ClaimedAt);

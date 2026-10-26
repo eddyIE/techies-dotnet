@@ -168,7 +168,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: manual print preview.
   - Files: `OrdersController.cs`, `Areas/Admin/Views/Orders/DeliveryNote.cshtml`, `wwwroot/css/print.css`
 
-- [ ] **Task 21: Generated order, redemption and review seed** (M) · deps: 18, 9
+- [x] **Task 21: Generated order, redemption and review seed** (M) · deps: 18, 9
   - Acceptance: `reviews` entity + migration (rating CHECK); deterministic seed of ~150 orders
     over 15 months covering every status/payment/failure case, coupon redemptions, points +
     tiers consistent with COMPLETED orders, gift redemptions (ISSUED and CLAIMED), and ~180
@@ -178,7 +178,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Files: `Domain/Review.cs`, `Data/*`, `Data/Seed/OrderSeed.cs`, `Data/Seed/reviews.json`, tests
 
 ### Checkpoint: Orders
-- [ ] Build + tests green; order staff can run the BRD §3 flow on seeded orders; points update.
+- [x] Build + tests green; order staff can run the BRD §3 flow on seeded orders; points update.
 
 ## Phase 6 — Shop
 

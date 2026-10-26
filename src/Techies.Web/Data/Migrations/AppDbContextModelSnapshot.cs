@@ -866,6 +866,58 @@ namespace Techies.Web.Data.Migrations
                     b.ToTable("product_specs", (string)null);
                 });
 
+            modelBuilder.Entity("Techies.Web.Domain.Review", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text")
+                        .HasColumnName("comment");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<Guid>("CustomerId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("customer_id");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("order_id");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("product_id");
+
+                    b.Property<short>("Rating")
+                        .HasColumnType("smallint")
+                        .HasColumnName("rating");
+
+                    b.HasKey("Id")
+                        .HasName("pk_reviews");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("ix_reviews_customer_id");
+
+                    b.HasIndex("OrderId")
+                        .HasDatabaseName("ix_reviews_order_id");
+
+                    b.HasIndex("Rating")
+                        .HasDatabaseName("ix_reviews_rating");
+
+                    b.HasIndex("ProductId", "CreatedAt")
+                        .HasDatabaseName("ix_reviews_product_id_created_at");
+
+                    b.ToTable("reviews", null, t =>
+                        {
+                            t.HasCheckConstraint("ck_reviews_rating", "rating BETWEEN 1 AND 5");
+                        });
+                });
+
             modelBuilder.Entity("Techies.Web.Domain.Staff", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1207,6 +1259,34 @@ namespace Techies.Web.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_product_specs_products_product_id");
+                });
+
+            modelBuilder.Entity("Techies.Web.Domain.Review", b =>
+                {
+                    b.HasOne("Techies.Web.Domain.User", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_reviews_users_customer_id");
+
+                    b.HasOne("Techies.Web.Domain.Order", null)
+                        .WithMany()
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_reviews_orders_order_id");
+
+                    b.HasOne("Techies.Web.Domain.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("fk_reviews_products_product_id");
+
+                    b.Navigation("Customer");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Techies.Web.Domain.StockItem", b =>
