@@ -146,7 +146,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: unit tests for each `OrderMath` rule; service test — two orders get consecutive refs.
   - Files: `Domain/Order*.cs`, `Domain/PointTransaction.cs`, `Data/*`, `Services/OrderMath.cs`, tests
 
-- [ ] **Task 18: Complete and cancel services** (M) · deps: 17
+- [x] **Task 18: Complete and cancel services** (M) · deps: 17
   - Acceptance: `LoyaltyService.AwardForOrderAsync` (idempotent, tier upgrade);
     `OrderService.CompleteAsync` and `CancelAsync` exactly as in SPEC orders module, each one
     transaction; wrong-status calls rejected.

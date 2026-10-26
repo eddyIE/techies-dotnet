@@ -11,6 +11,30 @@ public sealed class LoyaltyService(AppDbContext db, TimeProvider clock)
     public static short TierFor(long lifetimePoints, IEnumerable<MembershipTier> tiers) =>
         tiers.Where(t => t.ThresholdPoints <= lifetimePoints).Max(t => t.Tier);
 
+    // Called inside OrderService.CompleteAsync's transaction; the caller saves. The filtered
+    // unique index on point_transactions(order_id) backs up the "never twice" check.
+    public async Task AwardForOrderAsync(Order order, CancellationToken ct = default)
+    {
+        if (await db.PointTransactions.AnyAsync(t => t.OrderId == order.Id && t.TransactionType == PointTransactionType.Earn, ct))
+            return;
+        var points = OrderMath.PointsFor(order.Subtotal, order.Discount);
+        if (points <= 0) return;
+
+        var loyalty = await db.CustomerLoyalty
+            .FromSql($"SELECT * FROM customer_loyalty WHERE customer_id = {order.UserId} FOR UPDATE")
+            .SingleAsync(ct);
+        var now = clock.GetUtcNow();
+        loyalty.LifetimePoints += points;
+        loyalty.Balance += points;
+        loyalty.Tier = TierFor(loyalty.LifetimePoints, await db.MembershipTiers.ToListAsync(ct));
+        loyalty.UpdatedAt = now;
+        db.PointTransactions.Add(new PointTransaction
+        {
+            CustomerId = order.UserId, TransactionType = PointTransactionType.Earn, PointsDelta = points,
+            OrderId = order.Id, Note = $"Hoàn tất đơn {order.OrderRef}", CreatedAt = now,
+        });
+    }
+
     public Task<List<MembershipTier>> TiersAsync(CancellationToken ct = default) =>
         db.MembershipTiers.AsNoTracking().OrderBy(t => t.Tier).ToListAsync(ct);
 
