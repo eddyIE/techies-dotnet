@@ -30,4 +30,41 @@ public static class Labels
         CouponStatus.Expired => ("Hết hạn", "text-bg-dark"),
         _ => (status.ToString(), "text-bg-light"),
     };
+
+    public static (string Text, string Badge) For(OrderStatus status) => status switch
+    {
+        OrderStatus.AwaitingPayment => ("Chờ thanh toán", "text-bg-warning"),
+        OrderStatus.Confirmed => ("Đã xác nhận / Chờ giao", "text-bg-primary"),
+        OrderStatus.Completed => ("Đã hoàn tất", "text-bg-success"),
+        OrderStatus.Cancelled => ("Đã hủy", "text-bg-secondary"),
+        OrderStatus.Failed => ("Giao dịch lỗi", "text-bg-danger"),
+        _ => (status.ToString(), "text-bg-light"),
+    };
+
+    public static string For(PaymentMethod method) => method switch
+    {
+        PaymentMethod.Cod => "Thanh toán khi nhận hàng (COD)",
+        PaymentMethod.MockCard => "Thẻ (MOCK_CARD)",
+        _ => method.ToString(),
+    };
+
+    public static string Short(PaymentMethod method) => method == PaymentMethod.Cod ? "COD" : "Thẻ";
+
+    public static (string Text, string Badge) For(PaymentStatus status) => status switch
+    {
+        PaymentStatus.Pending => ("Chưa thanh toán", "text-bg-warning"),
+        PaymentStatus.Paid => ("Đã thanh toán", "text-bg-success"),
+        PaymentStatus.Declined => ("Bị từ chối", "text-bg-danger"),
+        PaymentStatus.Refunded => ("Đã hoàn tiền", "text-bg-info"),
+        _ => (status.ToString(), "text-bg-light"),
+    };
+
+    public static string FailureCode(string? code) => code switch
+    {
+        "PAYMENT_FAILED" => "Thanh toán thất bại",
+        "OUT_OF_STOCK" => "Hết hàng",
+        "SERVICE_UNAVAILABLE" => "Dịch vụ không khả dụng",
+        null => "",
+        _ => code,
+    };
 }

@@ -1,0 +1,70 @@
+@model Order
+@{
+    ViewData["Title"] = "Đơn hàng " + Model.OrderRef;
+    var (statusText, statusBadge) = Labels.For(Model.Status);
+    var (payText, payBadge) = Labels.For(Model.PaymentStatus);
+    var collect = Techies.Web.Services.OrderMath.AmountToCollect(Model);
+}
+<div class="d-flex flex-wrap gap-2 align-items-center mb-4">
+    <span class="badge fs-6 @statusBadge">@statusText</span>
+    @if (Model.FailureCode is not null) { <span class="badge text-bg-danger">@Model.FailureCode — @Labels.FailureCode(Model.FailureCode)</span> }
+    <span class="flex-grow-1"></span>
+    <a asp-action="DeliveryNote" asp-route-id="@Model.Id" target="_blank" class="btn btn-outline-secondary"><i class="bi bi-printer"></i> In phiếu giao hàng</a>
+    @if (Model.Status == OrderStatus.Confirmed)
+    {
+        <form asp-action="Cancel" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Hủy đơn này? Hàng sẽ được trả về kho.')">
+            <button class="btn btn-outline-danger"><i class="bi bi-x-circle"></i> Hủy đơn</button>
+        </form>
+        <form asp-action="Complete" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Xác nhận đã giao hàng thành công và thu đủ tiền?')">
+            <button class="btn btn-success"><i class="bi bi-check2-circle"></i> Hoàn tất đơn hàng</button>
+        </form>
+    }
+</div>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header">Sản phẩm</div>
+            <table class="table mb-0">
+                <thead><tr><th>Sản phẩm</th><th class="text-end">Đơn giá</th><th class="text-end">SL</th><th class="text-end">Thành tiền</th></tr></thead>
+                <tbody>
+                @foreach (var i in Model.Items)
+                {
+                    <tr><td>@i.ProductName</td><td class="text-end">@Format.Money(i.UnitPrice)</td><td class="text-end">@i.Quantity</td><td class="text-end">@Format.Money(i.LineTotal)</td></tr>
+                }
+                </tbody>
+                <tfoot class="table-light">
+                    <tr><td colspan="3" class="text-end">Tạm tính</td><td class="text-end">@Format.Money(Model.Subtotal)</td></tr>
+                    <tr><td colspan="3" class="text-end">Phí vận chuyển</td><td class="text-end">@Format.Money(Model.ShippingFee)</td></tr>
+                    @if (Model.Discount > 0)
+                    {
+                        <tr><td colspan="3" class="text-end">Giảm giá @if (Model.CouponCode is not null) { <span class="badge text-bg-light font-monospace">@Model.CouponCode</span> }</td><td class="text-end">−@Format.Money(Model.Discount)</td></tr>
+                    }
+                    <tr class="fw-bold"><td colspan="3" class="text-end">Tổng cộng</td><td class="text-end">@Format.Money(Model.Total)</td></tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-4 border-@(collect > 0 ? "warning" : "success")">
+            <div class="card-body text-center">
+                <div class="text-muted small">Số tiền cần thu hộ (COD)</div>
+                <div class="fs-3 fw-bold">@Format.Money(collect)</div>
+            </div>
+        </div>
+        <div class="card mb-4"><div class="card-body">
+            <h2 class="h6">Người nhận</h2>
+            <div>@Model.ShipRecipient — @Model.ShipPhone</div>
+            <div class="small text-muted">@Model.ShipLine1, @Model.ShipWard, @Model.ShipDistrict, @Model.ShipProvince</div>
+            <div class="small mt-2">Tài khoản: <a asp-controller="Customers" asp-action="Details" asp-route-id="@Model.UserId">@Model.User.FullName</a> (@Model.User.Email)</div>
+        </div></div>
+        <div class="card"><div class="card-body small">
+            <h2 class="h6">Thanh toán</h2>
+            <div>@Labels.For(Model.PaymentMethod)</div>
+            <div class="mb-2"><span class="badge @payBadge">@payText</span></div>
+            <div>Đặt lúc: @Format.LocalTime(Model.CreatedAt)</div>
+            <div>Cập nhật: @Format.LocalTime(Model.UpdatedAt)</div>
+            @if (Model.CompletedAt is not null) { <div>Hoàn tất: @Format.LocalTime(Model.CompletedAt.Value)</div> }
+        </div></div>
+    </div>
+</div>
+<a asp-action="Index" class="btn btn-link mt-3">Quay lại danh sách đơn</a>

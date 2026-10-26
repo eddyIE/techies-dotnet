@@ -155,7 +155,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     REFUNDED, COD stays PENDING); both reject non-CONFIRMED.
   - Files: `Services/OrderService.cs`, `Services/LoyaltyService.cs`, tests
 
-- [ ] **Task 19: Admin order list and detail** (M) · deps: 18
+- [x] **Task 19: Admin order list and detail** (M) · deps: 18
   - Acceptance: status tabs with counts + "Tất cả" via `?status=`; search by ref or phone;
     paging; detail page with all fields and amount to collect; complete/cancel buttons only
     when CONFIRMED (policy `Orders`).

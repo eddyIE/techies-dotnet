@@ -1,0 +1,22 @@
+@model List<Techies.Web.ViewModels.Orders.OrderRow>
+<div class="card">
+    <table class="table table-hover mb-0">
+        <thead><tr><th>Mã đơn</th><th>Người nhận</th><th>Thời gian đặt</th><th class="text-end">Tổng tiền</th><th>Thanh toán</th><th>Trạng thái</th></tr></thead>
+        <tbody>
+        @foreach (var o in Model)
+        {
+            var (statusText, statusBadge) = Labels.For(o.Status);
+            var (payText, payBadge) = Labels.For(o.PaymentStatus);
+            <tr>
+                <td><a asp-area="Admin" asp-controller="Orders" asp-action="Details" asp-route-id="@o.Id" class="fw-semibold font-monospace">@o.OrderRef</a></td>
+                <td>@o.Recipient<div class="small text-muted">@o.Phone</div></td>
+                <td class="small">@Format.LocalTime(o.CreatedAt)</td>
+                <td class="text-end">@Format.Money(o.Total)</td>
+                <td class="small">@Labels.Short(o.PaymentMethod) <span class="badge @payBadge">@payText</span></td>
+                <td><span class="badge @statusBadge">@statusText</span></td>
+            </tr>
+        }
+        @if (Model.Count == 0) { <tr><td colspan="6" class="text-center text-muted py-4">Không có đơn hàng.</td></tr> }
+        </tbody>
+    </table>
+</div>
