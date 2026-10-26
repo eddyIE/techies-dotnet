@@ -20,11 +20,7 @@ public sealed class InventoryService(AppDbContext db, TimeProvider clock)
     public async Task CountAsync(Guid productId, int countedQuantity, string? reason, Guid staffId, CancellationToken ct = default)
     {
         if (countedQuantity < 0) throw new DomainException("Số lượng kiểm kê không được âm.");
-        await InTransactionAsync(async ledger =>
-        {
-            var current = await ledger.CurrentAsync(productId, ct);
-            return await ledger.ChangeAsync(productId, countedQuantity - current, AdjustmentType.Count, Clean(reason), staffId: staffId, ct: ct);
-        }, ct);
+        await InTransactionAsync(ledger => ledger.SetAsync(productId, countedQuantity, AdjustmentType.Count, Clean(reason), staffId, ct), ct);
     }
 
     public Task<List<AdjustmentRow>> HistoryAsync(Guid productId, CancellationToken ct = default) =>

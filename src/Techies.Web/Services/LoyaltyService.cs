@@ -23,6 +23,7 @@ public sealed class LoyaltyService(AppDbContext db, TimeProvider clock)
         var loyalty = await db.CustomerLoyalty
             .FromSql($"SELECT * FROM customer_loyalty WHERE customer_id = {order.UserId} FOR UPDATE")
             .SingleAsync(ct);
+        await db.Entry(loyalty).ReloadAsync(ct); // a cached tracked instance may predate the lock
         var now = clock.GetUtcNow();
         loyalty.LifetimePoints += points;
         loyalty.Balance += points;

@@ -64,7 +64,11 @@ public sealed class OrderService(AppDbContext db, LoyaltyService loyalty, StockL
         await tx.CommitAsync(ct);
     }
 
-    private async Task<Order> LockAsync(Guid orderId, CancellationToken ct) =>
-        await db.Orders.FromSql($"SELECT * FROM orders WHERE id = {orderId} FOR UPDATE").SingleOrDefaultAsync(ct)
-        ?? throw new DomainException("Không tìm thấy đơn hàng.");
+    private async Task<Order> LockAsync(Guid orderId, CancellationToken ct)
+    {
+        var order = await db.Orders.FromSql($"SELECT * FROM orders WHERE id = {orderId} FOR UPDATE").SingleOrDefaultAsync(ct)
+            ?? throw new DomainException("Không tìm thấy đơn hàng.");
+        await db.Entry(order).ReloadAsync(ct); // a cached tracked instance may predate the lock
+        return order;
+    }
 }

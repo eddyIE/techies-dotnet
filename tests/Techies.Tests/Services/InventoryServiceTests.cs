@@ -81,4 +81,25 @@ public class InventoryServiceTests(PostgresFixture fixture)
 
         Assert.Equal(["lần 2", "lần 1"], history.Select(h => h.Reason));
     }
+
+    [Fact]
+    public async Task Count_applies_the_counted_quantity_even_if_stock_changed_while_waiting_for_the_lock()
+    {
+        await using var db = await fixture.CreateContextAsync();
+        var (product, staff) = await ArrangeAsync(db, available: 10);
+        await using var other = PostgresFixture.CreateSibling(db);
+
+        // Another request holds the stock row and takes 2 units, committing a moment later.
+        await using var tx = await other.Database.BeginTransactionAsync();
+        await other.Database.ExecuteSqlAsync($"UPDATE stock_items SET available = 8 WHERE product_id = {product.Id}");
+        var count = new InventoryService(db, TimeProvider.System).CountAsync(product.Id, 10, "Kiểm kê", staff.Id);
+        await Task.Delay(300);
+        await tx.CommitAsync();
+        await count;
+
+        db.ChangeTracker.Clear();
+        Assert.Equal(10, (await db.StockItems.SingleAsync()).Available);
+        var adj = await db.InventoryAdjustments.SingleAsync();
+        Assert.Equal((8, 10, 2), (adj.QuantityBefore, adj.QuantityAfter, adj.QuantityDelta));
+    }
 }
