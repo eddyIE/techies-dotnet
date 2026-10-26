@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Techies.Web.Data;
 using Techies.Web.Domain;
+using Techies.Web.ViewModels.Shop;
 
 namespace Techies.Web.Services;
 
@@ -8,15 +9,26 @@ public sealed record ShippingAddress(string Recipient, string Phone, string Line
 
 // The shop's "Đặt hàng" (COD only). All or nothing: either every line is reserved and the
 // order exists, or nothing changed and the customer is told which product failed.
-public sealed class CheckoutService(AppDbContext db, StockLedger ledger, TimeProvider clock)
+public sealed class CheckoutService(AppDbContext db, StockLedger ledger, CustomerAccountService accounts, TimeProvider clock)
 {
-    public async Task<Order> PlaceOrderAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines, ShippingAddress address,
-        CancellationToken ct = default)
+    // From the checkout page: a newly entered address is saved in the same transaction, so a
+    // failed checkout leaves the customer's address book untouched.
+    public Task<Order> PlaceOrderAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines, CheckoutForm form,
+        CancellationToken ct = default) =>
+        PlaceAsync(customerId, lines, () => accounts.ResolveShippingAsync(customerId, form, ct), ct);
+
+    public Task<Order> PlaceOrderAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines, ShippingAddress address,
+        CancellationToken ct = default) =>
+        PlaceAsync(customerId, lines, () => Task.FromResult(address), ct);
+
+    private async Task<Order> PlaceAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines,
+        Func<Task<ShippingAddress>> resolveAddress, CancellationToken ct)
     {
         if (lines.Count == 0 || lines.Values.Any(q => q <= 0))
             throw new DomainException("Giỏ hàng trống.");
 
         await using var tx = await db.Database.BeginTransactionAsync(ct);
+        var address = await resolveAddress();
         var ids = lines.Keys.ToList();
         var products = await db.Products.Where(p => ids.Contains(p.Id)).ToDictionaryAsync(p => p.Id, ct);
 

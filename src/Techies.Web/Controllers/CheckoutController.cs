@@ -32,8 +32,7 @@ public sealed class CheckoutController(CartService carts, CheckoutService checko
         Order order;
         try
         {
-            var address = await accounts.ResolveShippingAsync(User.UserId(), form);
-            order = await checkout.PlaceOrderAsync(User.UserId(), cart.Lines, address);
+            order = await checkout.PlaceOrderAsync(User.UserId(), cart.Lines, form);
         }
         catch (DomainException ex)
         {

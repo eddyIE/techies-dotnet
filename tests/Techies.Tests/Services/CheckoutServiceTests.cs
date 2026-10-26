@@ -10,7 +10,8 @@ public class CheckoutServiceTests(PostgresFixture fixture)
 {
     private static readonly ShippingAddress Address = new("Nguyễn Văn A", "0912345678", "12 Lê Lợi", "Bến Nghé", "Quận 1", "TP. Hồ Chí Minh");
 
-    private static CheckoutService Service(AppDbContext db) => new(db, new StockLedger(db, TimeProvider.System), TimeProvider.System);
+    private static CheckoutService Service(AppDbContext db) =>
+        new(db, new StockLedger(db, TimeProvider.System), new CustomerAccountService(db, TimeProvider.System), TimeProvider.System);
 
     [Fact]
     public async Task Places_confirmed_cod_order_with_snapshots_and_reserves_stock()
@@ -89,6 +90,29 @@ public class CheckoutServiceTests(PostgresFixture fixture)
         Assert.Equal(1, results.Count(ok => ok));
         Assert.Equal(0, (await db.StockItems.AsNoTracking().SingleAsync()).Available);
         Assert.Equal(1, await db.Orders.CountAsync());
+    }
+
+    [Fact]
+    public async Task Failed_checkout_does_not_save_the_new_address_or_change_the_default()
+    {
+        await using var db = await fixture.CreateContextAsync();
+        TestData.Tiers(db);
+        var customer = TestData.Customer(db);
+        customer.Addresses.Add(new Address { RecipientName = "Cũ", Phone = "0900000001", Line1 = "1", Ward = "W", District = "D", Province = "P", IsDefault = true });
+        var scarce = TestData.Product(db, TestData.Category(db), "Tai nghe", available: 1);
+        await db.SaveChangesAsync();
+        var form = new Web.ViewModels.Shop.CheckoutForm
+        {
+            RecipientName = "Mới", Phone = "0911111111", Line1 = "2 Lê Lợi", Ward = "W", District = "D", Province = "P", MakeDefault = true,
+        };
+
+        await Assert.ThrowsAsync<DomainException>(() =>
+            Service(db).PlaceOrderAsync(customer.Id, new Dictionary<Guid, int> { [scarce.Id] = 2 }, form));
+
+        db.ChangeTracker.Clear();
+        var addresses = await db.Addresses.ToListAsync();
+        Assert.Equal(["Cũ"], addresses.Select(a => a.RecipientName));
+        Assert.True(addresses[0].IsDefault);
     }
 
     private static async Task<bool> Attempt(Task task)
