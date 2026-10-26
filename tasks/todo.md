@@ -57,7 +57,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     manual: each seeded role sees only its menus.
   - Files: `Program.cs`, `Infrastructure/AuthSetup.cs`, `Services/AccountStatusService.cs`, `Areas/Admin/Controllers/AuthController.cs` + views, tests
 
-- [ ] **Task 7: Customer registration and login** (M) · deps: 5, 6
+- [x] **Task 7: Customer registration and login** (M) · deps: 5, 6
   - Acceptance: `Customer` cookie scheme; register (validation per spec, unique email
     case-insensitive, creates `customer_loyalty` tier 0), login, logout in the shop header;
     customer cookie can't open `/admin` and staff cookie isn't a shop login; seeder adds ~40
@@ -66,7 +66,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Files: `Services/CustomerAccountService.cs`, `Controllers/AccountController.cs` + views, `ViewModels/Account/*`, `Data/Seed/*`, tests
 
 ### Checkpoint: Identity
-- [ ] Build + tests green; all 3 staff roles and a new customer log in correctly; no cross-access.
+- [x] Build + tests green; all 3 staff roles and a new customer log in correctly; no cross-access.
 
 ## Phase 3 — Catalog
 

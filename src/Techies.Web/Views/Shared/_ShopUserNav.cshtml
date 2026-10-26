@@ -1,1 +1,22 @@
-@* Filled in by the identity module (login / register / account links). *@
+@if (User.Identity?.IsAuthenticated == true)
+{
+    <div class="dropdown">
+        <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i> @User.Identity.Name
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <form asp-area="" asp-controller="Account" asp-action="Logout" method="post">
+                    <button class="dropdown-item">Đăng xuất</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-light btn-sm" asp-area="" asp-controller="Account" asp-action="Login">Đăng nhập</a>
+        <a class="btn btn-light btn-sm" asp-area="" asp-controller="Account" asp-action="Register">Đăng ký</a>
+    </div>
+}
