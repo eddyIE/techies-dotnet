@@ -6,3 +6,6 @@ obj/
 .DS_Store
 TestResults/
 src/Techies.Web/wwwroot/uploads/
+
+# Local helper scripts (not part of the project)
+scripts/
