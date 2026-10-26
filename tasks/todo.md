@@ -225,7 +225,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service test — search matches each field; lock then login refused; manual.
   - Files: `Services/CustomerQueries.cs`, `Areas/Admin/Controllers/CustomersController.cs` + views, tests
 
-- [ ] **Task 28: Reviews monitoring** (S) · deps: 21
+- [x] **Task 28: Reviews monitoring** (S) · deps: 21
   - Acceptance: list with rating, product and "1–2 sao" filters, newest first; no edit/delete.
   - Verify: service test for the low-rating filter; manual.
   - Files: `Services/ReviewQueries.cs`, `Areas/Admin/Controllers/ReviewsController.cs` + view, tests
