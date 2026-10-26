@@ -262,3 +262,80 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ### Checkpoint: Complete
 - [x] All SPEC acceptance criteria met; all **[test]** criteria covered; ready for review.
+
+---
+
+# Change set 2026-10-26 — admin feedback (rbac + admin-grid)
+
+## Phase 9 — RBAC
+
+- [ ] **Task 33: Roles/permissions schema, catalogue and migration** (M) · deps: 29
+  - Acceptance: `roles`, `permissions`, `role_permissions`, `staff.role_id` + migration that maps
+    the old `staff.role` values to seeded roles (system Super Admin, Kho & Sản phẩm, Điều phối &
+    Quầy) with the permission sets of the old role table; permission catalogue in code, synced
+    on startup; `staff.role` column dropped.
+  - Verify: migration/seed test — each seeded staff keeps exactly the access they had.
+  - Files: `Domain/Rbac.cs`, `Infrastructure/Permissions.cs`, `Data/*`, `Data/Migrations/*`, tests
+
+- [ ] **Task 34: Permission-based authorization** (M) · deps: 33
+  - Acceptance: `[RequirePermission("orders.complete")]` style policies via a policy provider;
+    permissions loaded once per request; system role = all; staff/roles screens Super Admin
+    only; sidebar, buttons and endpoints use permissions; session still ends on role change.
+  - Verify: service tests for the permission lookup (system role, custom role, permission edit
+    takes effect next request); manual: each seeded role's menus unchanged.
+  - Files: `Infrastructure/AuthSetup.cs`, `Infrastructure/PermissionAuthorization.cs`, `Infrastructure/AdminMenu.cs`, admin controllers/views, tests
+
+- [ ] **Task 35: Role management screen and staff role dropdown** (M) · deps: 34
+  - Acceptance: role list, create/edit with grouped permission checkboxes, delete blocked while
+    assigned; system role read-only; staff form lists roles from the table; Super Admin guards
+    use the system role.
+  - Verify: service tests — unique name, delete blocked with count, system role immutable;
+    manual: create role → assign → staff sees only those menus.
+  - Files: `Services/RoleService.cs`, `Areas/Admin/Controllers/RolesController.cs` + views, `Services/StaffService.cs`, tests
+
+### Checkpoint: RBAC
+- [ ] Build + tests green; seeded staff unchanged; a custom role works end to end.
+
+## Phase 10 — Admin grid
+
+- [ ] **Task 36: Grid framework on the products listing** (L→ split in code, one commit) · deps: 34
+  - Acceptance: `GridRequest` (sort whitelist, page size, typed filters from the query string),
+    grid partial (header sort links, chips, pager, page size, checkboxes, mass-action dropdown,
+    row "Chọn ▾"), `admin-grid.js` (fetch partial, pushState, popstate, filter panel apply/cancel,
+    select-all, confirm + POST mass action), mass-action endpoint pattern with "Đã xử lý N / M".
+    Products grid with its filters, sorts and Bật/Tắt mass actions.
+  - Verify: unit tests for `GridRequest` parsing (unknown sort → default, page size bounds);
+    service test for bulk toggle; manual in browser: sort, filter, chips, back button, mass action.
+  - Files: `Infrastructure/Grid/*`, `Areas/Admin/Views/Shared/_Grid*.cshtml`, `wwwroot/js/admin-grid.js`, products controller/service/views, tests
+
+- [ ] **Task 37: Orders grid** (M) · deps: 36
+  - Acceptance: tabs removed; filters/sorts per SPEC; mass Hoàn tất / Hủy with per-order result;
+    mass In phiếu giao hàng; `?status=` deep links from the dashboard still work.
+  - Verify: service tests for bulk complete/cancel (mixed statuses → partial success report); manual.
+  - Files: `Services/OrderQueries.cs`, `Services/OrderService.cs`, `OrdersController.cs`, views, tests
+
+- [ ] **Task 38: Customers and reviews grids** (M) · deps: 36
+  - Acceptance: customers filters/sorts + mass Khóa/Mở khóa; reviews rating range replaces the
+    checkbox + red button, low ratings highlighted.
+  - Verify: service tests for rating-range filter and bulk lock; manual.
+  - Files: `Services/CustomerQueries.cs`, `Services/ReviewQueries.cs`, controllers, views, tests
+
+- [ ] **Task 39: Inventory and categories grids** (S) · deps: 36
+  - Acceptance: both listings on the grid (filters, sorts, row actions; no mass actions).
+  - Verify: manual.
+  - Files: `InventoryController.cs`, `CategoriesController.cs`, views
+
+- [ ] **Task 40: Coupons, gifts, staff and roles grids** (M) · deps: 35, 36
+  - Acceptance: coupons (status filter computed from dates, mass Tạm dừng/Kích hoạt), gifts (tier,
+    stock, active; mass Mở đổi/Tạm khóa), staff (role, status; mass Khóa/Mở khóa respecting guards),
+    roles (row actions; delete blocked).
+  - Verify: service tests for bulk actions incl. staff guards in bulk; manual.
+  - Files: services, controllers, views for the four grids, tests
+
+- [ ] **Task 41: Change-set verification** (S) · deps: all above
+  - Acceptance: README/SPEC updated; fresh-DB run-through of Success Criteria 1–6; reviewer
+    sub-agent pass on the change set, fixes applied.
+  - Verify: Success Criteria checked off.
+
+### Checkpoint: Change set complete
+- [ ] All new acceptance criteria met; all **[test]** criteria covered.

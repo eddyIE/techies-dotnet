@@ -162,7 +162,10 @@ One PostgreSQL schema (`public`), snake_case, **real foreign keys everywhere**. 
 |---|---|
 | `users` | id, email (unique, lower-cased), password_hash, full_name, phone, **status** (`ACTIVE`/`LOCKED`, added — BRD §6), created_at, updated_at |
 | `addresses` | id, user_id → users, recipient_name, phone, line1, ward, district, province, is_default |
-| `staff` | id, full_name, email (unique), phone, password_hash, **role** (`SUPER_ADMIN`/`CATALOG_STAFF`/`ORDER_STAFF`), status (`ACTIVE`/`LOCKED`), created_at, updated_at |
+| `staff` | id, full_name, email (unique), phone, password_hash, role_id → roles, status (`ACTIVE`/`LOCKED`), created_at, updated_at |
+| `roles` | id, code (unique), name, description, is_system (the built-in Super Admin role) |
+| `permissions` | id, code (unique, e.g. `orders.complete`), name, module — mirrors the permission catalogue in code |
+| `role_permissions` | role_id → roles, permission_id → permissions (PK both) |
 | `categories` | id, name, slug (unique), image_url, display_order |
 | `products` | id, category_id → categories, name, slug (unique), description, price, thumbnail_url, active, created_at |
 | `product_images` | id, product_id → products, url, display_order |
@@ -180,8 +183,7 @@ One PostgreSQL schema (`public`), snake_case, **real foreign keys everywhere**. 
 | `order_items` | id, order_id → orders, product_id → products, product_name + unit_price + thumbnail_url (snapshots), quantity (≥ 1), line_total |
 | `reviews` | id, customer_id → users, product_id → products, order_id → orders, rating (1–5, CHECK), comment, created_at. No update/delete paths in code. |
 
-Dropped from `db-design.docx` (microservice-only or unused): `user_avatars`, `roles`,
-`permissions`, `role_permissions` (3 fixed roles instead), `stock_movements`,
+Dropped from `db-design.docx` (microservice-only or unused): `user_avatars`, `stock_movements`,
 `stock_movement_items`, `stock_items.version`, `carts`/`cart_items` (session cart),
 `saga_steps`, the SQL functions (replaced by tested C# services), the views and `unaccent`.
 
@@ -221,25 +223,12 @@ Acceptance:
 - Login rejects a `LOCKED` account with "Tài khoản đã bị khóa". A session belonging to an
   account locked later is rejected on its next request (cookie `OnValidatePrincipal` checks
   status) — the user is signed out. **[test]** (lock check service)
-- Authorization policies: `SuperAdmin`, `Catalog` (SUPER_ADMIN or CATALOG_STAFF),
-  `Orders` (SUPER_ADMIN or ORDER_STAFF). Admin sidebar shows only the menus the role can use;
-  direct URL access to a forbidden screen returns an "access denied" page.
+- Staff authorization is permission-based — see **Module: rbac**. Admin sidebar shows only the
+  menus the staff member's role grants; direct URL access to a forbidden screen or action returns
+  an "access denied" page.
 - Seeder creates the Super Admin and two demo staff (see Commands).
 
-Role → menu access:
-
-| Menu | SUPER_ADMIN | CATALOG_STAFF | ORDER_STAFF |
-|---|:-:|:-:|:-:|
-| Dashboard (with revenue) | ✓ | | |
-| Products, categories, inventory | ✓ | ✓ | |
-| Orders, delivery notes | ✓ | | ✓ |
-| Gift counter (claim lookup) | ✓ | | ✓ |
-| Customers, reviews | ✓ | | ✓ |
-| Coupons | ✓ | | |
-| Gifts, membership tiers | ✓ | | |
-| Staff | ✓ | | |
-
-Non-Super-Admin staff land on their first allowed menu after login.
+Staff without the dashboard permission land on their first allowed menu after login.
 
 ## Module: catalog
 
@@ -248,8 +237,8 @@ Objective: BRD §2 — staff edit what customers see and keep stock accurate.
 Acceptance:
 - Categories: list, create, edit (name, icon image upload, display order). Slug generated from
   the name with Vietnamese diacritics removed (`Điện thoại` → `dien-thoai`). **[test]** (slug)
-- Products list: search by name (case-insensitive), filter by category, filter "Hết hàng"
-  (available = 0), filter active/inactive, paginated (20/page).
+- Products grid (see **Module: admin-grid**): filters name, category, price range, stock range
+  (incl. "Hết hàng" = 0), active; sort by name, price, stock; mass actions Bật / Tắt kinh doanh.
 - Product create/edit: name, category, price (> 0), description, thumbnail upload, multiple
   gallery image uploads (add, remove, reorder by display order), and a spec table with
   "Thêm dòng thông số" / delete row (name + value pairs, client-side add/remove, saved together).
@@ -308,9 +297,11 @@ Acceptance:
 Objective: BRD §3 — staff run each order to completion or cancellation.
 
 Acceptance:
-- Order list with 5 status tabs (AWAITING_PAYMENT, CONFIRMED, COMPLETED, CANCELLED, FAILED)
-  showing counts, plus "Tất cả"; the tab is a query string (`?status=CONFIRMED`) so other pages
-  can deep-link. Search by order ref (`ORD-100117`) or recipient phone. Paginated, newest first.
+- Orders grid (see **Module: admin-grid**), no status tabs: filters order ref / recipient phone
+  keyword, status, payment method, payment status, total range, order date range; sort by ref,
+  date, total; newest first by default. `?status=CONFIRMED` still deep-links a filtered grid
+  (dashboard cards). Mass actions: Hoàn tất, Hủy (each order checked individually; result
+  reports how many succeeded/failed and why), In phiếu giao hàng (one printable page per order).
 - Detail page: shipping snapshot, items, subtotal, shipping fee, coupon code + discount, total,
   payment method + status, failure code (FAILED), timestamps, and **Số tiền cần thu hộ**:
   `total` when COD and payment PENDING, `0đ` when MOCK_CARD and PAID. **[test]**
@@ -357,13 +348,15 @@ Acceptance:
 Objective: BRD §6 — read-only customer support and review monitoring.
 
 Acceptance:
-- Customer list: search by email, name or phone; shows tier, balance, status; paginated.
+- Customers grid (see **Module: admin-grid**): keyword (email, name, phone), tier, status; sort
+  by name, balance; mass actions Khóa / Mở khóa.
 - Profile page (read-only): contact info, addresses, loyalty (lifetime points, balance, tier),
   point transactions, order history linking to the admin order detail. No create/edit forms.
 - **Khóa / Mở khóa** toggles `users.status`; a locked customer cannot log in and is signed out
   on the next request (identity rule).
-- Reviews list: product, customer, rating stars, comment, date; filter by rating, by product,
-  and a "1–2 sao" quick filter; newest first. No edit, delete or reply.
+- Reviews grid (see **Module: admin-grid**): filters product, rating range (from/to stars — e.g.
+  1→2 for low ratings), date range, comment keyword; sort by date and rating; newest first.
+  Rows with ≤ 2 stars are highlighted. No mass actions; no edit, delete or reply.
 - Seed: the 182 reviews from `../techies/order-service` V7/V12, attached to seeded COMPLETED
   orders of the same product (ratings 2–5; the source has no 1★ reviews).
 
@@ -372,14 +365,15 @@ Acceptance:
 Objective: BRD §7 — Super Admin manages the team.
 
 Acceptance:
-- Staff list (Super Admin only): name, email, phone, role, status.
-- Add staff: full name, work email (unique), phone, initial password (≥ 8), role dropdown —
-  created ACTIVE.
+- Staff grid (Super Admin only; see **Module: admin-grid**): name, email, phone, role, status;
+  filters keyword, role, status; mass actions Khóa / Mở khóa.
+- Add staff: full name, work email (unique), phone, initial password (≥ 8), role dropdown
+  (the roles defined in **Module: rbac**) — created ACTIVE.
 - Edit: change name, phone and role. Reset password: Super Admin sets a new password.
 - Lock / unlock: a locked staff member cannot log in and is signed out on the next request;
   their history (adjustments, claims, coupons created) is kept.
 - A Super Admin cannot lock or demote themselves, and the last active Super Admin cannot be
-  locked or demoted. **[test]**
+  locked or demoted (Super Admin = staff whose role is the system role). **[test]**
 - No hard delete.
 
 ## Module: dashboard
@@ -397,7 +391,70 @@ Acceptance:
   badge); ref links to the order detail. Refreshed on page load (no websockets).
 - Best-sellers: top 10 products by quantity sold in COMPLETED orders for tuần / tháng / quý /
   năm, with revenue and current available stock; red "Sắp hết" badge when available ≤ 5.
-- Visible to Super Admin only.
+- Visible to staff with `dashboard.view` (granted to the Super Admin role by default).
+
+## Module: rbac
+
+Objective: BRD §7 "Thiết lập Vai trò & Phân quyền" — Super Admin defines roles and what each may do,
+instead of three fixed roles.
+
+Acceptance:
+- **Permission catalogue** (in code, synced to `permissions` on startup), grouped by module:
+
+  | Module | Permissions |
+  |---|---|
+  | Tổng quan | `dashboard.view` |
+  | Sản phẩm | `products.view`, `products.edit` (create/edit), `products.toggle` (bật/tắt kinh doanh) |
+  | Danh mục | `categories.manage` |
+  | Kho | `inventory.view`, `inventory.import`, `inventory.count` |
+  | Đơn hàng | `orders.view`, `orders.complete`, `orders.cancel`, `orders.print` |
+  | Khách hàng | `customers.view`, `customers.lock` |
+  | Đánh giá | `reviews.view` |
+  | Quầy nhận quà | `giftcounter.lookup`, `giftcounter.claim` |
+  | Mã giảm giá | `coupons.view`, `coupons.manage` (create/edit/pause) |
+  | Quà tặng | `gifts.view`, `gifts.manage` |
+  | Hạng thành viên | `tiers.manage` |
+
+  Staff and role management are **not** permissions: they belong to the system Super Admin role
+  only (BRD: "Chỉ duy nhất role Super Admin").
+- Every admin menu, screen, button, row/mass action and POST endpoint checks its permission;
+  the server enforces it even if the button is hidden. **[test]** (permission check)
+- Permissions are loaded per request, so editing a role's permissions applies to its staff on
+  their next request. Changing a staff member's role still ends their session.
+- **Roles screen** (Super Admin only, new menu under Hệ thống): grid of roles with name,
+  description, number of staff, number of permissions. Create/edit: name (unique), description,
+  permission checkboxes grouped by module with "chọn cả nhóm". Delete is **blocked** while any
+  staff has the role ("Vai trò đang được gán cho N nhân viên"). **[test]**
+- The system **Super Admin** role always has every permission; it cannot be edited (permissions),
+  renamed to empty or deleted. **[test]**
+- Migration: existing staff keep their access — SUPER_ADMIN → the system role; CATALOG_STAFF and
+  ORDER_STAFF become editable seeded roles "Nhân viên Kho & Sản phẩm" / "Nhân viên Điều phối &
+  Quầy" with the permissions matching the previous role table. **[test]** (seed/migration)
+
+## Module: admin-grid
+
+Objective: Magento-style admin listings — one shared grid behaviour for every admin list
+(products, inventory, categories, orders, customers, reviews, coupons, gifts, staff, roles).
+
+Acceptance:
+- **Sorting**: clicking a sortable column header toggles asc/desc (arrow shown); only whitelisted
+  columns sort. **[test]** (unknown sort keys fall back to the default)
+- **Filters**: a single **Bộ lọc** button opens a panel holding all of the grid's filters (text,
+  select, number range, date range); **Áp dụng** applies, **Hủy** closes without applying. Active
+  filters show as removable chips above the grid with **Xóa tất cả**. A keyword search box stays
+  visible next to the button.
+- **AJAX**: sorting, filtering, paging and page size (20/50/100) reload only the grid via `fetch`
+  (server-rendered partial HTML), update the URL (`history.pushState`) so the state is
+  bookmarkable/shareable and the browser back button works; the full page also renders from the
+  same URL without JavaScript. Total record count shown.
+- **Mass actions**: a checkbox per row, a header checkbox for the page, and an **Thao tác hàng loạt**
+  dropdown listing only the actions the user's permissions allow; disabled until rows are
+  selected; confirmation prompt; POST with antiforgery, then the grid reloads keeping its filters
+  and shows "Đã xử lý N / M" (with reasons for skipped rows).
+- **Row actions**: the last column is a **Chọn ▾** dropdown of the row's actions (Xem, Sửa, Khóa…),
+  filtered by permission and by the row's state (e.g. Hoàn tất only for CONFIRMED orders).
+- Per-grid columns, filters and actions are listed in each module; grids without mass actions
+  (inventory, categories, reviews) omit the checkboxes.
 
 ---
 
@@ -406,7 +463,8 @@ Acceptance:
 1. From a fresh clone with Docker running: `docker compose up -d db` then
    `dotnet run --project src/Techies.Web` gives a working, fully seeded app at
    `http://localhost:5080`.
-2. Each seeded staff role sees exactly its menus (table in identity) and is refused elsewhere.
+2. Each seeded staff role sees exactly the menus/actions its permissions grant (Module: rbac) and
+   is refused elsewhere; a Super Admin can create a role, assign it, and the menus follow.
 3. A customer can register, add to cart, check out COD, see the order in "Đơn hàng của tôi",
    and cancel it; stock goes down then back up accordingly.
 4. A staff member can complete that same flow's order and the customer's points/tier update.
