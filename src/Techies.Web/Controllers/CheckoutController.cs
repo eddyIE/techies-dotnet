@@ -9,7 +9,8 @@ namespace Techies.Web.Controllers;
 
 [Route("thanh-toan")]
 [Authorize(Policy = Policies.Customer)]
-public sealed class CheckoutController(CartService carts, CheckoutService checkout, CustomerAccountService accounts) : Controller
+public sealed class CheckoutController(CartService carts, CheckoutService checkout, CustomerAccountService accounts,
+    CouponService coupons) : Controller
 {
     [HttpGet("")]
     public async Task<IActionResult> Index()
@@ -22,12 +23,22 @@ public sealed class CheckoutController(CartService carts, CheckoutService checko
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> Index(CheckoutForm form)
+    public async Task<IActionResult> Index(CheckoutForm form, bool apply = false)
     {
         var cart = CartService.Load(HttpContext.Session);
         var view = await carts.ViewAsync(cart);
         if (view.Lines.Count == 0) return RedirectToAction("Index", "Cart");
-        if (!ModelState.IsValid) return await FormView(form, view);
+
+        // "Áp dụng" only previews the coupon; it never places the order.
+        var coupon = await coupons.CheckAsync(form.CouponCode, view.Subtotal);
+        if (apply)
+        {
+            ModelState.Clear();
+            return await FormView(form, view, coupon);
+        }
+        if (coupon.Code is not null && !coupon.Applicable)
+            ModelState.AddModelError(nameof(form.CouponCode), coupon.Message!);
+        if (!ModelState.IsValid) return await FormView(form, view, coupon);
 
         Order order;
         try
@@ -46,9 +57,10 @@ public sealed class CheckoutController(CartService carts, CheckoutService checko
     [HttpGet("thanh-cong/{orderRef}")]
     public IActionResult Success(string orderRef) => View((object)orderRef);
 
-    private async Task<IActionResult> FormView(CheckoutForm form, CartView cart)
+    private async Task<IActionResult> FormView(CheckoutForm form, CartView cart, CouponCheck? coupon = null)
     {
         ViewData["Cart"] = cart;
+        ViewData["Coupon"] = coupon;
         ViewData["Addresses"] = await accounts.AddressesAsync(User.UserId());
         return View("Index", form);
     }

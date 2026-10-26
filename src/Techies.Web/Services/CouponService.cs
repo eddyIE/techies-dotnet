@@ -9,6 +9,9 @@ namespace Techies.Web.Services;
 
 public sealed record CouponEvaluation(bool Applicable, decimal Discount, string? Reason);
 
+// What the shop shows for an entered code: the discount, or why it doesn't apply.
+public sealed record CouponCheck(bool Applicable, decimal Discount, string? Code, string? Message, Guid? CouponId);
+
 public sealed class CouponService(AppDbContext db, TimeProvider clock)
 {
     public const string NotApplicable = "COUPON_NOT_APPLICABLE";
@@ -24,6 +27,27 @@ public sealed class CouponService(AppDbContext db, TimeProvider clock)
         StatusAt(coupon, now) == CouponStatus.Running && subtotal >= coupon.MinSubtotal
             ? new CouponEvaluation(true, Math.Min(coupon.DiscountAmount, subtotal), null)
             : new CouponEvaluation(false, 0, NotApplicable);
+
+    // The shop's coupon box and checkout (SPEC shop-extras). Message is safe to show customers.
+    public async Task<CouponCheck> CheckAsync(string? code, decimal subtotal, CancellationToken ct = default)
+    {
+        var normalized = code?.Trim().ToUpperInvariant();
+        if (string.IsNullOrEmpty(normalized)) return new CouponCheck(false, 0, null, null, null);
+        var coupon = await db.Coupons.AsNoTracking().SingleOrDefaultAsync(c => c.Code == normalized, ct);
+        if (coupon is null) return new CouponCheck(false, 0, normalized, "Mã giảm giá không tồn tại.", null);
+
+        var now = clock.GetUtcNow();
+        var evaluation = Evaluate(coupon, subtotal, now);
+        if (evaluation.Applicable) return new CouponCheck(true, evaluation.Discount, coupon.Code, null, coupon.Id);
+        var message = StatusAt(coupon, now) switch
+        {
+            CouponStatus.Paused => "Mã giảm giá đang tạm dừng.",
+            CouponStatus.NotStarted => "Mã giảm giá chưa đến thời gian áp dụng.",
+            CouponStatus.Expired => "Mã giảm giá đã hết hạn.",
+            _ => $"Đơn hàng cần tạm tính tối thiểu {Format.Money(coupon.MinSubtotal)} để dùng mã này.",
+        };
+        return new CouponCheck(false, 0, coupon.Code, message, coupon.Id);
+    }
 
     public static readonly string[] GridSorts = ["code", "discount", "min", "starts", "expires", "created"];
 

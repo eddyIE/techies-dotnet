@@ -15,14 +15,14 @@ public sealed class CheckoutService(AppDbContext db, StockLedger ledger, Custome
     // failed checkout leaves the customer's address book untouched.
     public Task<Order> PlaceOrderAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines, CheckoutForm form,
         CancellationToken ct = default) =>
-        PlaceAsync(customerId, lines, () => accounts.ResolveShippingAsync(customerId, form, ct), ct);
+        PlaceAsync(customerId, lines, () => accounts.ResolveShippingAsync(customerId, form, ct), form.CouponCode, ct);
 
     public Task<Order> PlaceOrderAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines, ShippingAddress address,
-        CancellationToken ct = default) =>
-        PlaceAsync(customerId, lines, () => Task.FromResult(address), ct);
+        string? couponCode = null, CancellationToken ct = default) =>
+        PlaceAsync(customerId, lines, () => Task.FromResult(address), couponCode, ct);
 
     private async Task<Order> PlaceAsync(Guid customerId, IReadOnlyDictionary<Guid, int> lines,
-        Func<Task<ShippingAddress>> resolveAddress, CancellationToken ct)
+        Func<Task<ShippingAddress>> resolveAddress, string? couponCode, CancellationToken ct)
     {
         if (lines.Count == 0 || lines.Values.Any(q => q <= 0))
             throw new DomainException("Giỏ hàng trống.");
@@ -64,8 +64,23 @@ public sealed class CheckoutService(AppDbContext db, StockLedger ledger, Custome
         }
 
         order.Subtotal = order.Items.Sum(i => i.LineTotal);
-        order.ShippingFee = OrderMath.ShippingFee(order.Subtotal);
-        order.Total = OrderMath.Total(order.Subtotal, order.ShippingFee, 0);
+        order.ShippingFee = OrderMath.ShippingFee(order.Subtotal); // decided before any discount
+
+        // Re-checked here, inside the transaction: the coupon may have been paused or expired
+        // since the customer pressed "Áp dụng".
+        var coupon = await new CouponService(db, clock).CheckAsync(couponCode, order.Subtotal, ct);
+        if (coupon.Code is not null && !coupon.Applicable) throw new DomainException(coupon.Message!);
+        if (coupon.Applicable)
+        {
+            order.CouponCode = coupon.Code;
+            order.Discount = coupon.Discount;
+            db.CouponRedemptions.Add(new CouponRedemption
+            {
+                CouponId = coupon.CouponId!.Value, OrderId = order.Id, CustomerId = customerId,
+                DiscountAmount = coupon.Discount, RedeemedAt = now,
+            });
+        }
+        order.Total = OrderMath.Total(order.Subtotal, order.ShippingFee, order.Discount);
         db.Orders.Add(order);
         await db.SaveChangesAsync(ct);
         await tx.CommitAsync(ct);

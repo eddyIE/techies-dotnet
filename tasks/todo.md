@@ -352,7 +352,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     narrows; name match still works.
   - Files: `Data/Migrations/*`, `Data/AppDbContext.cs`, `Infrastructure/ProductSearch.cs`, `Services/ShopQueries.cs`, `Services/ProductService.cs`, tests
 
-- [ ] **Task 43: Coupon at checkout** (M) · deps: 42
+- [x] **Task 43: Coupon at checkout** (M) · deps: 42
   - Acceptance: checkout coupon box with preview; coupon re-evaluated in the checkout transaction;
     order discount/total + APPLIED redemption; unusable coupon creates nothing.
   - Verify: service tests — valid coupon, below minimum, paused, unknown code, discount capped,

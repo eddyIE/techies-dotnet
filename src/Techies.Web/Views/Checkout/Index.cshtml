@@ -3,6 +3,8 @@
     ViewData["Title"] = "Đặt hàng";
     var cart = (Techies.Web.Services.CartView)ViewData["Cart"]!;
     var addresses = (List<Address>)ViewData["Addresses"]!;
+    var coupon = ViewData["Coupon"] as Techies.Web.Services.CouponCheck;
+    var discount = coupon?.Applicable == true ? coupon.Discount : 0;
 }
 <h1 class="h4 mb-4">Đặt hàng</h1>
 <form method="post" class="row g-4">
@@ -54,7 +56,25 @@
             <hr />
             <div class="d-flex justify-content-between"><span>Tạm tính</span><span>@Format.Money(cart.Subtotal)</span></div>
             <div class="d-flex justify-content-between"><span>Phí vận chuyển</span><span>@(cart.ShippingFee == 0 ? "Miễn phí" : Format.Money(cart.ShippingFee))</span></div>
-            <div class="d-flex justify-content-between fw-bold fs-5 mt-2"><span>Tổng cộng</span><span class="text-danger">@Format.Money(cart.Total)</span></div>
+            @if (discount > 0)
+            {
+                <div class="d-flex justify-content-between text-success"><span>Giảm giá (@coupon!.Code)</span><span>−@Format.Money(discount)</span></div>
+            }
+            <div class="d-flex justify-content-between fw-bold fs-5 mt-2"><span>Tổng cộng</span><span class="text-danger">@Format.Money(cart.Total - discount)</span></div>
+            <hr />
+            <label asp-for="CouponCode" class="form-label small mb-1"></label>
+            <div class="input-group">
+                <input asp-for="CouponCode" class="form-control text-uppercase" placeholder="VD: TECHIES50K" />
+                <button class="btn btn-outline-primary" name="apply" value="true" formnovalidate>Áp dụng</button>
+            </div>
+            @if (coupon?.Applicable == true)
+            {
+                <div class="small text-success mt-1"><i class="bi bi-check-circle"></i> Đã áp dụng mã @coupon.Code: giảm @Format.Money(coupon.Discount).</div>
+            }
+            else if (coupon?.Message is not null)
+            {
+                <div class="small text-danger mt-1">@coupon.Message</div>
+            }
             <button class="btn btn-primary w-100 mt-3">Xác nhận đặt hàng</button>
         </div></div>
     </div>

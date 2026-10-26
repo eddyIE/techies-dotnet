@@ -14,6 +14,7 @@ public sealed class CheckoutForm : IValidatableObject
     [Display(Name = "Quận/Huyện")] public string? District { get; set; }
     [Display(Name = "Tỉnh/Thành phố")] public string? Province { get; set; }
     [Display(Name = "Đặt làm địa chỉ mặc định")] public bool MakeDefault { get; set; }
+    [Display(Name = "Mã giảm giá")] public string? CouponCode { get; set; }
 
     public IEnumerable<ValidationResult> Validate(ValidationContext context)
     {
