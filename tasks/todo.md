@@ -116,7 +116,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     discount capped at subtotal); manual.
   - Files: `Domain/Coupon.cs`, `Data/*`, `Services/CouponService.cs`, `Areas/Admin/Controllers/CouponsController.cs` + views, tests
 
-- [ ] **Task 14: Membership tier policy** (S) · deps: 5
+- [x] **Task 14: Membership tier policy** (S) · deps: 5
   - Acceptance: tier screen (SuperAdmin) edits name/threshold/% for tiers 1–3 with validation;
     save recomputes every customer's tier; `Tiers.For(points)` helper.
   - Verify: unit test for `Tiers.For`; service test — raising a threshold downgrades a customer.

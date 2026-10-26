@@ -14,6 +14,7 @@ public static class AdminMenu
         new("Sản phẩm & Kho", "Danh mục", "bi-tags", "Categories", Policies.Catalog),
         new("Sản phẩm & Kho", "Kiểm kho & Nhập hàng", "bi-box-seam", "Inventory", Policies.Catalog),
         new("Khuyến mãi & Thành viên", "Mã giảm giá", "bi-ticket-perforated", "Coupons", Policies.SuperAdmin),
+        new("Khuyến mãi & Thành viên", "Hạng thành viên", "bi-award", "Tiers", Policies.SuperAdmin),
     ];
 
     public static IEnumerable<AdminMenuItem> For(ClaimsPrincipal user) => Items.Where(i => user.Allows(i.Policy));

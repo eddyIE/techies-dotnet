@@ -1,0 +1,33 @@
+@model List<Techies.Web.ViewModels.Loyalty.TierInput>
+@{
+    ViewData["Title"] = "Chính sách hạng thành viên";
+    var inv = System.Globalization.CultureInfo.InvariantCulture;
+}
+<p class="text-muted small">Khách tích 1 điểm cho mỗi 1.000đ (tạm tính − giảm giá) khi đơn hoàn tất. Khi lưu, hạng của mọi khách hàng được tính lại theo tổng điểm tích lũy.</p>
+<form method="post" class="card" style="max-width: 820px">
+    <table class="table mb-0">
+        <thead><tr><th>Hạng</th><th>Tên hạng</th><th>Mốc điểm tích lũy</th><th>Ưu đãi (%)</th></tr></thead>
+        <tbody>
+        @for (var i = 0; i < Model.Count; i++)
+        {
+            var t = Model[i];
+            <tr>
+                <td class="fw-semibold">@t.Tier<input type="hidden" name="tiers[@i].Tier" value="@t.Tier" /></td>
+                @if (t.Tier == 0)
+                {
+                    <td>@t.Name<input type="hidden" name="tiers[@i].Name" value="@t.Name" /></td>
+                    <td class="text-muted">0 (mặc định)</td>
+                    <td class="text-muted">@t.DiscountPercent.ToString("0.##", inv)</td>
+                }
+                else
+                {
+                    <td><input name="tiers[@i].Name" value="@t.Name" required class="form-control form-control-sm" /></td>
+                    <td><input name="tiers[@i].ThresholdPoints" value="@t.ThresholdPoints" type="number" min="1" required class="form-control form-control-sm" /></td>
+                    <td><input name="tiers[@i].DiscountPercent" value="@t.DiscountPercent.ToString("0.##", inv)" type="number" min="0" max="100" step="0.01" required class="form-control form-control-sm" /></td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="card-body border-top"><button class="btn btn-primary">Lưu chính sách</button></div>
+</form>
