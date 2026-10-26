@@ -21,8 +21,7 @@ public sealed class ShopQueries(AppDbContext db)
         var query = db.Products.AsNoTracking().Where(p => p.Active);
         if (!string.IsNullOrWhiteSpace(categorySlug))
             query = query.Where(p => p.Category.Slug == categorySlug);
-        if (!string.IsNullOrWhiteSpace(q))
-            query = query.Where(p => EF.Functions.ILike(p.Name, QueryExtensions.Contains(q)));
+        query = query.MatchKeyword(q);
         return query.OrderBy(p => p.Name).Select(ToCard).ToPagedAsync(page, PageSize, ct);
     }
 

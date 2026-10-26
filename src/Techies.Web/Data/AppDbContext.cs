@@ -28,8 +28,12 @@ public sealed class AppDbContext(DbContextOptions<AppDbContext> options) : DbCon
     public DbSet<PointTransaction> PointTransactions => Set<PointTransaction>();
     public DbSet<Review> Reviews => Set<Review>();
 
+    // immutable_unaccent(text) — created by the Search migration; "Điện thoại" -> "Dien thoai".
+    public static string Unaccent(string text) => throw new NotSupportedException("Only usable in LINQ-to-SQL.");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.HasDbFunction(typeof(AppDbContext).GetMethod(nameof(Unaccent))!).HasName("immutable_unaccent");
         modelBuilder.HasSequence<long>(Configurations.OrderConfiguration.RefSequence).StartsAt(100001);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
 

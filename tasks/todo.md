@@ -344,7 +344,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 # Change set 2026-10-26 #2 — shop gaps (search + shop-extras)
 
-- [ ] **Task 42: Accent- and category-aware search** (M) · deps: 39
+- [x] **Task 42: Accent- and category-aware search** (M) · deps: 39
   - Acceptance: migration enables `unaccent` + `immutable_unaccent()`; shared keyword filter
     (all words, each in name or category name, accent/case-insensitive) used by the shop listing
     and the admin products/inventory grids.

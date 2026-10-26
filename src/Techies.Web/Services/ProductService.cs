@@ -16,7 +16,7 @@ public sealed class ProductService(AppDbContext db)
     public async Task<(List<ProductRow> Rows, int Total)> GridAsync(GridRequest r, CancellationToken ct = default)
     {
         var query = db.Products.AsNoTracking();
-        if (r.Text("q") is { } q) query = query.Where(p => EF.Functions.ILike(p.Name, QueryExtensions.Contains(q)));
+        query = query.MatchKeyword(r.Text("q"));
         if (Guid.TryParse(r.Text("category"), out var categoryId)) query = query.Where(p => p.CategoryId == categoryId);
         if (r.Decimal("price_from") is { } priceFrom) query = query.Where(p => p.Price >= priceFrom);
         if (r.Decimal("price_to") is { } priceTo) query = query.Where(p => p.Price <= priceTo);
