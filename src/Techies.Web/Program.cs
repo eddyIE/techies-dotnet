@@ -48,7 +48,17 @@ builder.Services.AddScoped(sp => new Techies.Web.Infrastructure.ImageStorage(
     sp.GetRequiredService<IWebHostEnvironment>().WebRootPath,
     sp.GetRequiredService<TimeProvider>().GetUtcNow()));
 
+// Behind a reverse proxy (e.g. a tunnel) the request arrives as plain http from localhost; trust the
+// proxy's X-Forwarded-* headers so redirects and absolute URLs use the public https scheme and host.
+// Only loopback proxies are trusted (the default), so a remote client can't spoof these headers.
+builder.Services.Configure<Microsoft.AspNetCore.Builder.ForwardedHeadersOptions>(o =>
+    o.ForwardedHeaders = Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedFor
+        | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedProto
+        | Microsoft.AspNetCore.HttpOverrides.ForwardedHeaders.XForwardedHost);
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 await app.MigrateAndSeedAsync();
 
