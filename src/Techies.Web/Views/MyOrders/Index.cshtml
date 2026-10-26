@@ -1,0 +1,27 @@
+@model Paged<Techies.Web.ViewModels.Orders.OrderRow>
+@{ ViewData["Title"] = "Đơn hàng của tôi"; }
+<h1 class="h4 mb-4">Đơn hàng của tôi</h1>
+@if (Model.Items.Count == 0)
+{
+    <p class="text-muted">Bạn chưa có đơn hàng nào. <a asp-controller="Products" asp-action="Index">Mua sắm ngay</a></p>
+}
+else
+{
+    <div class="list-group">
+    @foreach (var o in Model.Items)
+    {
+        var (text, badge) = Labels.For(o.Status);
+        <a asp-action="Details" asp-route-id="@o.Id" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div>
+                <div class="fw-semibold font-monospace">@o.OrderRef</div>
+                <div class="small text-muted">@Format.LocalTime(o.CreatedAt) · @Labels.Short(o.PaymentMethod)</div>
+            </div>
+            <div class="text-end">
+                <div class="fw-semibold">@Format.Money(o.Total)</div>
+                <span class="badge @badge">@text</span>
+            </div>
+        </a>
+    }
+    </div>
+    <partial name="_Pager" model="Model.TotalPages" />
+}

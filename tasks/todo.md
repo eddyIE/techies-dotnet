@@ -208,14 +208,14 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: manual end-to-end as a seeded customer.
   - Files: `Controllers/CheckoutController.cs` + views, `ViewModels/Shop/CheckoutForm.cs`
 
-- [ ] **Task 26: My orders and customer cancel** (S) · deps: 25, 18
+- [x] **Task 26: My orders and customer cancel** (S) · deps: 25, 18
   - Acceptance: own orders list + detail; another customer's order → 404; cancel button while
     CONFIRMED uses `OrderService.CancelAsync` after an ownership check.
   - Verify: service tests — ownership check; cancel by owner restores stock.
   - Files: `Controllers/MyOrdersController.cs` + views, `Services/OrderService.cs`, tests
 
 ### Checkpoint: Shop
-- [ ] Build + tests green; Success Criteria 3 and 4 pass by hand.
+- [x] Build + tests green; Success Criteria 3 and 4 pass by hand.
 
 ## Phase 7 — Customers & Staff
 

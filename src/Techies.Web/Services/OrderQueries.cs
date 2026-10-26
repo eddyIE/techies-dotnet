@@ -32,6 +32,14 @@ public sealed class OrderQueries(AppDbContext db)
         await db.Orders.AsNoTracking().Include(o => o.Items).Include(o => o.User).SingleOrDefaultAsync(o => o.Id == id, ct)
         ?? throw new DomainException("Không tìm thấy đơn hàng.");
 
+    // Shop "Đơn hàng của tôi": a customer only ever sees their own orders.
+    public Task<Paged<OrderRow>> ForCustomerAsync(Guid customerId, int page, CancellationToken ct = default) =>
+        db.Orders.AsNoTracking().Where(o => o.UserId == customerId).OrderByDescending(o => o.CreatedAt)
+            .Select(ToRow).ToPagedAsync(page, 10, ct);
+
+    public Task<Order?> ForCustomerDetailAsync(Guid customerId, Guid orderId, CancellationToken ct = default) =>
+        db.Orders.AsNoTracking().Include(o => o.Items).SingleOrDefaultAsync(o => o.Id == orderId && o.UserId == customerId, ct);
+
     public static readonly System.Linq.Expressions.Expression<Func<Order, OrderRow>> ToRow = o =>
         new OrderRow(o.Id, o.OrderRef, o.ShipRecipient, o.ShipPhone, o.CreatedAt, o.Total, o.PaymentMethod, o.PaymentStatus, o.Status);
 }

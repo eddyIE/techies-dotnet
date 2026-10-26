@@ -1,0 +1,50 @@
+@model Order
+@{
+    ViewData["Title"] = "Đơn hàng " + Model.OrderRef;
+    var (text, badge) = Labels.For(Model.Status);
+}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h4 mb-0">Đơn hàng <span class="font-monospace">@Model.OrderRef</span> <span class="badge @badge fs-6 align-middle">@text</span></h1>
+    @if (Model.Status == OrderStatus.Confirmed)
+    {
+        <form asp-action="Cancel" asp-route-id="@Model.Id" method="post" onsubmit="return confirm('Bạn chắc chắn muốn hủy đơn hàng này?')">
+            <button class="btn btn-outline-danger">Hủy đơn</button>
+        </form>
+    }
+</div>
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="card">
+            <ul class="list-group list-group-flush">
+            @foreach (var i in Model.Items)
+            {
+                <li class="list-group-item d-flex gap-3 align-items-center">
+                    <img src="@i.ThumbnailUrl" alt="" width="56" height="56" style="object-fit:contain" onerror="this.src='/img/placeholder.svg'" />
+                    <div class="flex-grow-1">@i.ProductName<div class="small text-muted">@Format.Money(i.UnitPrice) × @i.Quantity</div></div>
+                    <div class="fw-semibold">@Format.Money(i.LineTotal)</div>
+                </li>
+            }
+            </ul>
+            <div class="card-body border-top">
+                <div class="d-flex justify-content-between"><span>Tạm tính</span><span>@Format.Money(Model.Subtotal)</span></div>
+                <div class="d-flex justify-content-between"><span>Phí vận chuyển</span><span>@Format.Money(Model.ShippingFee)</span></div>
+                @if (Model.Discount > 0) { <div class="d-flex justify-content-between"><span>Giảm giá (@Model.CouponCode)</span><span>−@Format.Money(Model.Discount)</span></div> }
+                <div class="d-flex justify-content-between fw-bold fs-5 mt-2"><span>Tổng cộng</span><span class="text-danger">@Format.Money(Model.Total)</span></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-3"><div class="card-body small">
+            <h2 class="h6">Giao đến</h2>
+            <div class="fw-semibold">@Model.ShipRecipient — @Model.ShipPhone</div>
+            <div class="text-muted">@Model.ShipLine1, @Model.ShipWard, @Model.ShipDistrict, @Model.ShipProvince</div>
+        </div></div>
+        <div class="card"><div class="card-body small">
+            <h2 class="h6">Thanh toán</h2>
+            <div>@Labels.For(Model.PaymentMethod)</div>
+            <div>@Labels.For(Model.PaymentStatus).Text</div>
+            <div class="text-muted mt-2">Đặt lúc @Format.LocalTime(Model.CreatedAt)</div>
+        </div></div>
+    </div>
+</div>
+<a asp-action="Index" class="btn btn-link mt-3">Tất cả đơn hàng</a>
