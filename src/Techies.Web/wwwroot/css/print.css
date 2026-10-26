@@ -5,3 +5,6 @@
     .note { max-width: none; padding: 0 !important; }
     @page { margin: 12mm; }
 }
+/* Several notes printed together: one per page. */
+.note + .note { margin-top: 2rem; border-top: 1px dashed #adb5bd; }
+@media print { .note + .note { break-before: page; border-top: none; margin-top: 0; } }

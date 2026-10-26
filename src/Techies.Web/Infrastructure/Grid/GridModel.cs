@@ -6,14 +6,15 @@ public sealed record GridColumn(string Label, string? SortKey = null, string? Cs
 
 public enum GridFilterType { Text, Select, NumberRange, DateRange }
 
-public sealed record GridOption(string Value, string Label);
+// ChipLabel: text for the active-filter chip when the option label carries extras (counts).
+public sealed record GridOption(string Value, string Label, string? ChipLabel = null);
 
 // Range filters use the query keys "<Key>_from" and "<Key>_to".
 public sealed record GridFilter(string Key, string Label, GridFilterType Type,
     IReadOnlyList<GridOption>? Options = null, bool Money = false);
 
-// A mass action posts the selected row ids ("ids") to Url.
-public sealed record GridMassAction(string Label, string Url, string? Confirm = null);
+// A mass action posts the selected row ids ("ids") to Url (NewTab: e.g. printing).
+public sealed record GridMassAction(string Label, string Url, string? Confirm = null, bool NewTab = false);
 
 public sealed record GridRowAction(string Label, string Url, bool Post = false, string? Confirm = null,
     bool Danger = false, bool NewTab = false);
@@ -52,7 +53,8 @@ public sealed class GridModel
             }
             else if (Request.Text(f.Key) is { } value)
             {
-                var label = f.Options?.FirstOrDefault(o => o.Value.Equals(value, StringComparison.OrdinalIgnoreCase))?.Label ?? value;
+                var option = f.Options?.FirstOrDefault(o => o.Value.Equals(value, StringComparison.OrdinalIgnoreCase));
+                var label = option?.ChipLabel ?? option?.Label ?? value;
                 yield return new($"{f.Label}: {label}", Request.Without(f.Key));
             }
         }

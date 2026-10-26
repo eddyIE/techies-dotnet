@@ -1,26 +1,3 @@
-@model Paged<Techies.Web.ViewModels.Orders.OrderRow>
-@{
-    ViewData["Title"] = "Đơn hàng";
-    var filter = (Techies.Web.ViewModels.Orders.OrderFilter)ViewData["Filter"]!;
-    var counts = (Dictionary<OrderStatus, int>)ViewData["Counts"]!;
-}
-<ul class="nav nav-tabs mb-3">
-    <li class="nav-item">
-        <a class="nav-link @(filter.Status is null ? "active" : "")" asp-action="Index" asp-route-q="@filter.Q">Tất cả <span class="badge text-bg-light">@counts.Values.Sum()</span></a>
-    </li>
-    @foreach (var status in Enum.GetValues<OrderStatus>())
-    {
-        <li class="nav-item">
-            <a class="nav-link @(filter.Status == status ? "active" : "")" asp-action="Index" asp-route-status="@status" asp-route-q="@filter.Q">
-                @Labels.For(status).Text <span class="badge text-bg-light">@counts[status]</span>
-            </a>
-        </li>
-    }
-</ul>
-<form method="get" class="row g-2 mb-3">
-    @if (filter.Status is not null) { <input type="hidden" name="status" value="@filter.Status" /> }
-    <div class="col-md-5"><input name="q" value="@filter.Q" class="form-control" placeholder="Mã đơn (ORD-100117) hoặc SĐT người nhận" /></div>
-    <div class="col-auto"><button class="btn btn-outline-primary"><i class="bi bi-search"></i> Tìm</button></div>
-</form>
-<partial name="_OrderTable" model="Model.Items" />
-<partial name="_Pager" model="Model.TotalPages" />
+@model Techies.Web.Infrastructure.Grid.GridModel
+@{ ViewData["Title"] = "Đơn hàng"; }
+<div data-grid id="orders-grid"><partial name="_Grid" model="Model" /></div>

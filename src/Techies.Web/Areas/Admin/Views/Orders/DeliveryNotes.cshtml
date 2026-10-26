@@ -1,0 +1,21 @@
+@model List<Order>
+@{ Layout = null; }
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phiếu giao hàng @(Model.Count == 1 ? Model[0].OrderRef : $"({Model.Count} đơn)")</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/print.css" asp-append-version="true" />
+</head>
+<body>
+    @foreach (var order in Model)
+    {
+        <partial name="_DeliveryNote" model="order" />
+    }
+    <div class="text-center my-4 no-print">
+        <button class="btn btn-primary" onclick="window.print()">In phiếu</button>
+    </div>
+</body>
+</html>

@@ -308,7 +308,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
     service test for bulk toggle; manual in browser: sort, filter, chips, back button, mass action.
   - Files: `Infrastructure/Grid/*`, `Areas/Admin/Views/Shared/_Grid*.cshtml`, `wwwroot/js/admin-grid.js`, products controller/service/views, tests
 
-- [ ] **Task 37: Orders grid** (M) · deps: 36
+- [x] **Task 37: Orders grid** (M) · deps: 36
   - Acceptance: tabs removed; filters/sorts per SPEC; mass Hoàn tất / Hủy with per-order result;
     mass In phiếu giao hàng; `?status=` deep links from the dashboard still work.
   - Verify: service tests for bulk complete/cancel (mixed statuses → partial success report); manual.

@@ -29,7 +29,7 @@
             <div class="input-group input-group-sm" style="width: auto">
                 <select class="form-select form-select-sm" data-grid-mass-select aria-label="Thao tác hàng loạt" form="@massFormId">
                     <option value="">Thao tác hàng loạt</option>
-                    @foreach (var a in Model.MassActions) { <option value="@a.Url" data-confirm="@a.Confirm">@a.Label</option> }
+                    @foreach (var a in Model.MassActions) { <option value="@a.Url" data-confirm="@a.Confirm" data-new-tab="@(a.NewTab ? "true" : null)">@a.Label</option> }
                 </select>
                 <button class="btn btn-sm btn-secondary" form="@massFormId" data-grid-mass-submit disabled>Thực hiện <span data-grid-selected-count></span></button>
             </div>

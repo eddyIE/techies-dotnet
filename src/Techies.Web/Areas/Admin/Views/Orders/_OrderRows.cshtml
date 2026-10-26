@@ -1,0 +1,16 @@
+@model List<(Techies.Web.ViewModels.Orders.OrderRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@foreach (var (o, actions) in Model)
+{
+    var (statusText, statusBadge) = Labels.For(o.Status);
+    var (payText, payBadge) = Labels.For(o.PaymentStatus);
+    <tr>
+        <partial name="_GridSelect" model="o.Id.ToString()" view-data="ViewData" />
+        <td><a asp-area="Admin" asp-controller="Orders" asp-action="Details" asp-route-id="@o.Id" class="fw-semibold font-monospace">@o.OrderRef</a></td>
+        <td>@o.Recipient<div class="small text-muted">@o.Phone</div></td>
+        <td class="small">@Format.LocalTime(o.CreatedAt)</td>
+        <td class="text-end">@Format.Money(o.Total)</td>
+        <td class="small">@Labels.Short(o.PaymentMethod) <span class="badge @payBadge">@payText</span></td>
+        <td><span class="badge @statusBadge">@statusText</span></td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

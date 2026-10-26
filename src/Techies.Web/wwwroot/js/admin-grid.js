@@ -63,6 +63,7 @@
                 if (!option.value || count === 0) { e.preventDefault(); return; }
                 if (!confirm(`${option.dataset.confirm || option.textContent} — ${count} dòng đã chọn?`)) { e.preventDefault(); return; }
                 form.action = option.value;
+                form.target = option.dataset.newTab ? "_blank" : "";
             } else if (form.dataset.confirm && !confirm(form.dataset.confirm)) {
                 e.preventDefault();
             }

@@ -26,4 +26,8 @@ public static class Format
         : new DateTimeOffset(TimeZoneInfo.ConvertTimeToUtc(DateTime.SpecifyKind(local.Value, DateTimeKind.Unspecified), VietnamTime));
 
     public static DateTime? ToLocalInput(DateTimeOffset? utc) => utc is null ? null : ToLocal(utc.Value).DateTime;
+
+    // 00:00 of a Vietnam calendar day, as a UTC instant (date filters are in local days).
+    public static DateTimeOffset StartOfLocalDay(DateOnly day) =>
+        new(TimeZoneInfo.ConvertTimeToUtc(day.ToDateTime(TimeOnly.MinValue, DateTimeKind.Unspecified), VietnamTime), TimeSpan.Zero);
 }
