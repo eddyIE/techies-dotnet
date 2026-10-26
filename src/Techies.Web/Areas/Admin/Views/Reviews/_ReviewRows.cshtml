@@ -1,0 +1,12 @@
+@model List<(Techies.Web.ViewModels.Customers.ReviewRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@foreach (var (r, actions) in Model)
+{
+    <tr class="@(r.Rating <= 2 ? "table-danger" : "")">
+        <td class="small text-nowrap">@Format.LocalTime(r.CreatedAt)</td>
+        <td class="small">@r.ProductName</td>
+        <td class="small">@r.CustomerName</td>
+        <td class="text-warning text-nowrap">@for (var i = 1; i <= 5; i++) { <i class="bi @(i <= r.Rating ? "bi-star-fill" : "bi-star")"></i> }</td>
+        <td class="small">@r.Comment</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}

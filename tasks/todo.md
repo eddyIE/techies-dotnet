@@ -314,7 +314,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: service tests for bulk complete/cancel (mixed statuses → partial success report); manual.
   - Files: `Services/OrderQueries.cs`, `Services/OrderService.cs`, `OrdersController.cs`, views, tests
 
-- [ ] **Task 38: Customers and reviews grids** (M) · deps: 36
+- [x] **Task 38: Customers and reviews grids** (M) · deps: 36
   - Acceptance: customers filters/sorts + mass Khóa/Mở khóa; reviews rating range replaces the
     checkbox + red button, low ratings highlighted.
   - Verify: service tests for rating-range filter and bulk lock; manual.

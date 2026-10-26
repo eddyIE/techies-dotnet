@@ -1,14 +1,18 @@
+using Microsoft.AspNetCore.Http;
 using Techies.Web.Domain;
+using Techies.Web.Infrastructure.Grid;
 using Techies.Web.Services;
-using Techies.Web.ViewModels.Customers;
 
 namespace Techies.Tests.Services;
 
 [Collection(PostgresCollection.Name)]
 public class ReviewQueryTests(PostgresFixture fixture)
 {
+    private static GridRequest Request(string query) =>
+        GridRequest.From("/admin/reviews", new QueryString(query), ReviewQueries.GridSorts, "date", true);
+
     [Fact]
-    public async Task Low_rating_filter_returns_only_one_and_two_stars_newest_first()
+    public async Task Rating_range_1_to_2_returns_low_ratings_newest_first()
     {
         await using var db = await fixture.CreateContextAsync();
         TestData.Tiers(db);
@@ -20,13 +24,13 @@ public class ReviewQueryTests(PostgresFixture fixture)
             db.Reviews.Add(new Review { Customer = customer, Product = product, OrderId = order.Id, Rating = rating, Comment = $"{rating} sao", CreatedAt = now.AddDays(-daysAgo) });
         await db.SaveChangesAsync();
 
-        var page = await new ReviewQueries(db).ListAsync(new ReviewFilter { LowOnly = true });
+        var (rows, _) = await new ReviewQueries(db).GridAsync(Request("?rating_from=1&rating_to=2"));
 
-        Assert.Equal(["2 sao", "1 sao"], page.Items.Select(r => r.Comment));
+        Assert.Equal(["2 sao", "1 sao"], rows.Select(r => r.Comment));
     }
 
     [Fact]
-    public async Task Rating_and_product_filters_combine()
+    public async Task Product_filter_and_comment_keyword_combine()
     {
         await using var db = await fixture.CreateContextAsync();
         TestData.Tiers(db);
@@ -36,13 +40,13 @@ public class ReviewQueryTests(PostgresFixture fixture)
         var phone = TestData.Product(db, category, "Điện thoại");
         var order = TestData.Order(db, customer, speaker);
         db.Reviews.AddRange(
-            new Review { Customer = customer, Product = speaker, OrderId = order.Id, Rating = 4, CreatedAt = DateTimeOffset.UtcNow },
-            new Review { Customer = customer, Product = phone, OrderId = order.Id, Rating = 4, CreatedAt = DateTimeOffset.UtcNow },
-            new Review { Customer = customer, Product = speaker, OrderId = order.Id, Rating = 5, CreatedAt = DateTimeOffset.UtcNow });
+            new Review { Customer = customer, Product = speaker, OrderId = order.Id, Rating = 4, Comment = "Pin yếu", CreatedAt = DateTimeOffset.UtcNow },
+            new Review { Customer = customer, Product = phone, OrderId = order.Id, Rating = 4, Comment = "Pin yếu", CreatedAt = DateTimeOffset.UtcNow },
+            new Review { Customer = customer, Product = speaker, OrderId = order.Id, Rating = 5, Comment = "Âm thanh hay", CreatedAt = DateTimeOffset.UtcNow });
         await db.SaveChangesAsync();
 
-        var page = await new ReviewQueries(db).ListAsync(new ReviewFilter { Rating = 4, ProductId = speaker.Id });
+        var (rows, _) = await new ReviewQueries(db).GridAsync(Request($"?product={speaker.Id}&q=pin"));
 
-        Assert.Single(page.Items);
+        Assert.Single(rows);
     }
 }

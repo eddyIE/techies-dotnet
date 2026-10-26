@@ -1,0 +1,15 @@
+@model List<(Techies.Web.ViewModels.Customers.CustomerRow Row, List<Techies.Web.Infrastructure.Grid.GridRowAction> Actions)>
+@{ var tiers = (Dictionary<short, string>)ViewData["Tiers"]!; }
+@foreach (var (c, actions) in Model)
+{
+    <tr>
+        <partial name="_GridSelect" model="c.Id.ToString()" view-data="ViewData" />
+        <td><a asp-area="Admin" asp-controller="Customers" asp-action="Details" asp-route-id="@c.Id">@c.FullName</a></td>
+        <td class="small">@c.Email</td>
+        <td class="small">@c.Phone</td>
+        <td>@tiers.GetValueOrDefault(c.Tier)</td>
+        <td class="text-end">@c.Balance.ToString("#,0", Format.Vietnamese)</td>
+        <td>@if (c.Status == AccountStatus.Locked) { <span class="badge text-bg-danger">Đã khóa</span> } else { <span class="badge text-bg-success">Hoạt động</span> }</td>
+        <partial name="_GridRowActions" model="actions" view-data="ViewData" />
+    </tr>
+}
