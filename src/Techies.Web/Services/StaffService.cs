@@ -36,7 +36,8 @@ public sealed class StaffService(AppDbContext db, TimeProvider clock)
     // Name, phone and role (a role change ends that person's current session).
     public async Task UpdateAsync(Guid id, StaffForm form, Guid actingStaffId, CancellationToken ct = default)
     {
-        var staff = await GetAsync(id, ct);
+        await using var tx = await BeginGuardedAsync(ct);
+        var staff = await LockedAsync(id, ct);
         if (staff.Role == StaffRole.SuperAdmin && form.Role != StaffRole.SuperAdmin)
         {
             if (id == actingStaffId) throw new DomainException("Bạn không thể tự hạ quyền của chính mình.");
@@ -47,6 +48,7 @@ public sealed class StaffService(AppDbContext db, TimeProvider clock)
         staff.Role = form.Role;
         staff.UpdatedAt = clock.GetUtcNow();
         await db.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
     }
 
     public async Task ResetPasswordAsync(Guid id, string newPassword, CancellationToken ct = default)
@@ -61,7 +63,8 @@ public sealed class StaffService(AppDbContext db, TimeProvider clock)
     // Locking takes effect on the person's next request (cookie re-validation).
     public async Task<AccountStatus> ToggleLockAsync(Guid id, Guid actingStaffId, CancellationToken ct = default)
     {
-        var staff = await GetAsync(id, ct);
+        await using var tx = await BeginGuardedAsync(ct);
+        var staff = await LockedAsync(id, ct);
         if (staff.Status == AccountStatus.Active)
         {
             if (id == actingStaffId) throw new DomainException("Bạn không thể tự khóa tài khoản của chính mình.");
@@ -70,7 +73,25 @@ public sealed class StaffService(AppDbContext db, TimeProvider clock)
         staff.Status = staff.Status == AccountStatus.Active ? AccountStatus.Locked : AccountStatus.Active;
         staff.UpdatedAt = clock.GetUtcNow();
         await db.SaveChangesAsync(ct);
+        await tx.CommitAsync(ct);
         return staff.Status;
+    }
+
+    // Lock every Super Admin row first, so two admins locking or demoting each other at the
+    // same time are serialized and the second one sees the first one's change.
+    private async Task<Microsoft.EntityFrameworkCore.Storage.IDbContextTransaction> BeginGuardedAsync(CancellationToken ct)
+    {
+        var tx = await db.Database.BeginTransactionAsync(ct);
+        await db.Database.ExecuteSqlAsync($"SELECT id FROM staff WHERE role = 'SUPER_ADMIN' FOR UPDATE", ct);
+        return tx;
+    }
+
+    private async Task<Staff> LockedAsync(Guid id, CancellationToken ct)
+    {
+        var staff = await db.Staff.FromSql($"SELECT * FROM staff WHERE id = {id} FOR UPDATE").SingleOrDefaultAsync(ct)
+            ?? throw new DomainException("Không tìm thấy nhân viên.");
+        await db.Entry(staff).ReloadAsync(ct);
+        return staff;
     }
 
     // Someone must always be able to manage staff.
