@@ -194,7 +194,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: unit test for cart line rules; manual.
   - Files: `Services/CartService.cs`, `Controllers/CartController.cs` + view, tests
 
-- [ ] **Task 24: Checkout service** (M) · deps: 23
+- [x] **Task 24: Checkout service** (M) · deps: 23
   - Acceptance: `CheckoutService.PlaceOrderAsync` — one transaction: re-check active + stock,
     conditional stock decrement with `ORDER` adjustments, CONFIRMED/PENDING COD order with
     snapshots; failure reports the offending product and creates nothing.
