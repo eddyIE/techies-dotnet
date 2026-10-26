@@ -16,7 +16,7 @@
                 <td><img src="@g.ImageUrl" alt="" width="48" height="48" class="rounded" style="object-fit:cover" onerror="this.style.visibility='hidden'" /></td>
                 <td>@g.Name<div class="small text-muted">@g.Description</div></td>
                 <td class="text-end">@g.PointsCost.ToString("#,0", Format.Vietnamese)</td>
-                <td>@g.MinTier — @tiers.GetValueOrDefault(g.MinTier)</td>
+                <td>@tiers.GetValueOrDefault(g.MinTier)</td>
                 <td class="text-end">@if (g.StockAvailable == 0) { <span class="badge text-bg-danger">Hết quà</span> } else { @g.StockAvailable }</td>
                 <td>@if (g.Active) { <span class="badge text-bg-success">Mở đổi</span> } else { <span class="badge text-bg-secondary">Tạm khóa</span> }</td>
                 <td class="text-end"><a asp-action="Edit" asp-route-id="@g.Id" class="btn btn-sm btn-outline-primary">Sửa</a></td>

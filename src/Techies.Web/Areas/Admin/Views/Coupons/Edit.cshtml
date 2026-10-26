@@ -18,11 +18,11 @@
             </div>
             <div class="col-md-6 mb-3">
                 <label asp-for="DiscountAmount" class="form-label"></label>
-                <input asp-for="DiscountAmount" type="number" min="1" step="1000" class="form-control" value="@Model.DiscountAmount.ToString("0", inv)" />
+                <input asp-for="DiscountAmount" type="number" min="1" step="1" class="form-control" value="@Model.DiscountAmount.ToString("0", inv)" />
             </div>
             <div class="col-md-6 mb-3">
                 <label asp-for="MinSubtotal" class="form-label"></label>
-                <input asp-for="MinSubtotal" type="number" min="0" step="1000" class="form-control" value="@Model.MinSubtotal.ToString("0", inv)" />
+                <input asp-for="MinSubtotal" type="number" min="0" step="1" class="form-control" value="@Model.MinSubtotal.ToString("0", inv)" />
             </div>
             <div class="col-md-6 mb-3">
                 <label asp-for="StartsAt" class="form-label"></label>

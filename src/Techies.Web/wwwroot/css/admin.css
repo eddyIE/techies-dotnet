@@ -3,3 +3,6 @@
 .admin-sidebar .nav-link:hover, .admin-sidebar .nav-link.active { color: #fff; background: rgba(255, 255, 255, .1); }
 .admin-sidebar .nav-section { font-size: .75rem; text-transform: uppercase; color: rgba(255, 255, 255, .45); margin: 1rem 0 .25rem; }
 .table td, .table th { vertical-align: middle; }
+
+/* The validation summary is always rendered; hide it until it has errors. */
+.validation-summary-valid { display: none; }

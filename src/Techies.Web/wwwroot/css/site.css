@@ -31,3 +31,6 @@ body {
 }
 .product-card { transition: box-shadow .15s; }
 .product-card:hover { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .1); }
+
+/* The validation summary is always rendered; hide it until it has errors. */
+.validation-summary-valid { display: none; }

@@ -9,7 +9,7 @@
 </div>
 <div class="card">
     <table class="table mb-0">
-        <thead><tr><th>Mã</th><th>Mô tả</th><th class="text-end">Giảm</th><th class="text-end">Đơn tối thiểu</th><th>Hiệu lực</th><th>Trạng thái</th><th></th></tr></thead>
+        <thead><tr><th>Mã</th><th>Mô tả</th><th class="text-end">Giảm</th><th class="text-end">Đơn tối thiểu</th><th>Bắt đầu</th><th>Hết hạn</th><th>Trạng thái</th><th></th></tr></thead>
         <tbody>
         @foreach (var c in Model)
         {
@@ -19,9 +19,8 @@
                 <td class="small">@c.Description</td>
                 <td class="text-end">@Format.Money(c.DiscountAmount)</td>
                 <td class="text-end">@Format.Money(c.MinSubtotal)</td>
-                <td class="small">
-                    @(c.StartsAt is null ? "—" : Format.LocalTime(c.StartsAt.Value)) → @(c.ExpiresAt is null ? "không giới hạn" : Format.LocalTime(c.ExpiresAt.Value))
-                </td>
+                <td class="small">@(c.StartsAt is null ? "" : Format.LocalTime(c.StartsAt.Value))</td>
+                <td class="small">@(c.ExpiresAt is null ? "" : Format.LocalTime(c.ExpiresAt.Value))</td>
                 <td><span class="badge @badge">@text</span></td>
                 <td class="text-end text-nowrap">
                     <form asp-action="Toggle" asp-route-id="@c.Id" method="post" class="d-inline">
