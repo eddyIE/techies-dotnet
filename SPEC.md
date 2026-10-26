@@ -340,8 +340,48 @@ Acceptance:
 - My orders: the customer's own orders only, newest first, with a detail page. Another
   customer's order id returns 404. **[test]**
 - Cancel own order: allowed only while CONFIRMED; uses the same cancel rule as admin. **[test]**
-- Register / login / logout from the header. No coupons, card payment, reviews, gift
-  redemption or profile editing in the shop.
+- Register / login / logout from the header. No card payment, tier vouchers or profile editing in
+  the shop (coupons, reviews and gift redemption: see **Module: shop-extras**).
+- **Search** (shop listing, header box, and the admin products/inventory keyword): the keyword is
+  split into words; every word must match the product name **or its category name**,
+  case- and accent-insensitively ("điện thoại", "dien thoai" and "Điện Thoại" all list the
+  Điện thoại category; "dien thoai samsung" lists Samsung phones). Uses PostgreSQL `unaccent`.
+  **[test]**
+
+## Module: shop-extras
+
+Objective: let customers create, from the shop, the data the admin modules manage (change set
+2026-10-26 #2): coupons on orders, reviews and gift redemptions.
+
+Acceptance — **coupon at checkout**:
+- Checkout has a "Mã giảm giá" box with **Áp dụng**: the code (case-insensitive) is checked with
+  `CouponService.Evaluate` against the cart subtotal and the summary shows the discount and new
+  total, or the reason it doesn't apply (paused, not started, expired, below minimum, unknown).
+- Placing the order re-evaluates the coupon inside the checkout transaction; if it no longer
+  applies nothing is created and the customer is told why. On success the order stores
+  `coupon_code` + `discount`, `total = subtotal + shipping − discount`, and an `APPLIED`
+  `coupon_redemptions` row is written (cancel already restores it). Shipping is still decided by
+  the subtotal before discount. One coupon per order; coupons are reusable (no per-customer limit,
+  as in ../techies). **[test]**
+
+Acceptance — **reviews**:
+- On "Đơn hàng của tôi" detail of a **COMPLETED** order, each item has a review form: 1–5 stars
+  (required) and a comment (optional, ≤ 1000 characters). One review per order line (unique
+  order + product); after submitting, the line shows the stars instead of the form. Reviews cannot
+  be edited or deleted. Not possible for orders that aren't the customer's or aren't COMPLETED. **[test]**
+- New reviews appear on the product page, in its average, and in the admin reviews grid.
+
+Acceptance — **points & gifts** (`/diem-thuong`, login required, header link):
+- Shows tier name, lifetime points, available balance, progress to the next tier (points still
+  needed), the point history and the active gifts.
+- **Đổi quà**: allowed only when balance ≥ points cost, tier ≥ gift's minimum tier, and stock > 0;
+  otherwise the button is disabled with the reason. Redeeming, in one transaction with the
+  customer's loyalty row and the gift row locked: balance −= cost (lifetime points unchanged, so
+  the tier never drops), gift stock −1, a `gift_redemptions` row `ISSUED` with a new unique code
+  `GIFT-XXXX-XXXX`, and a `REDEEM` point transaction. Concurrent redemptions can't overspend the
+  balance or the stock. **[test]**
+- "Quà đã đổi" lists the customer's redemptions: code (to show at the counter), gift, points,
+  status (Chờ nhận / Đã nhận + time). The counter screen claims them as before.
 
 ## Module: customers
 

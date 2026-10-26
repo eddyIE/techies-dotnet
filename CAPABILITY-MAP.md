@@ -16,6 +16,7 @@ Each module's requirements live in its section of [SPEC.md](SPEC.md) (`## Module
 | `staff` | Super Admin staff management: create with role, lock/unlock, change role, reset password | identity, rbac |
 | `rbac` | Roles + permission catalogue, role management screen, permission-based authorization (replaces fixed roles) | identity |
 | `admin-grid` | Shared Magento-style grid: AJAX sort/filter/paging, filter panel, mass actions, row action dropdown | rbac |
+| `shop-extras` | Coupon at checkout, reviews from completed orders, points page + gift redemption; accent/category-aware search | shop, promotions, loyalty, customers |
 | `dashboard` | Pending counts + quick links, revenue chart + period filter + % change, recent orders, best-sellers + low stock | orders, catalog |
 
 Build order: foundation → identity → catalog → promotions, loyalty → orders → shop, customers, staff → dashboard
@@ -23,3 +24,5 @@ Build order: foundation → identity → catalog → promotions, loyalty → ord
 Change 2026-10-26 (admin feedback): rbac → admin-grid, then each listing moves onto the grid.
 
 Dependencies point one way: `orders` calls `loyalty` and `promotions`; neither calls back.
+
+Change 2026-10-26 #2 (shop gaps): search → shop-extras (coupons, reviews, points & gifts).

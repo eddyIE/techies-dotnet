@@ -339,3 +339,42 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ### Checkpoint: Change set complete
 - [x] All new acceptance criteria met; all **[test]** criteria covered.
+
+---
+
+# Change set 2026-10-26 #2 — shop gaps (search + shop-extras)
+
+- [ ] **Task 42: Accent- and category-aware search** (M) · deps: 39
+  - Acceptance: migration enables `unaccent` + `immutable_unaccent()`; shared keyword filter
+    (all words, each in name or category name, accent/case-insensitive) used by the shop listing
+    and the admin products/inventory grids.
+  - Verify: service tests — "điện thoại", "dien thoai", "DIỆN THOẠI" hit the category; multi-word
+    narrows; name match still works.
+  - Files: `Data/Migrations/*`, `Data/AppDbContext.cs`, `Infrastructure/ProductSearch.cs`, `Services/ShopQueries.cs`, `Services/ProductService.cs`, tests
+
+- [ ] **Task 43: Coupon at checkout** (M) · deps: 42
+  - Acceptance: checkout coupon box with preview; coupon re-evaluated in the checkout transaction;
+    order discount/total + APPLIED redemption; unusable coupon creates nothing.
+  - Verify: service tests — valid coupon, below minimum, paused, unknown code, discount capped,
+    cancel restores redemption; manual checkout with TECHIES50K.
+  - Files: `Services/CheckoutService.cs`, `Controllers/CheckoutController.cs`, `Views/Checkout/Index.cshtml`, `ViewModels/Shop/CheckoutForm.cs`, tests
+
+- [ ] **Task 44: Reviews from completed orders** (M) · deps: 42
+  - Acceptance: unique (order_id, product_id) migration; `ReviewService.AddAsync` with ownership,
+    COMPLETED and once-per-line rules; review forms / stars on my order detail.
+  - Verify: service tests for each rule; manual: review shows on product page and admin grid.
+  - Files: `Services/ReviewService.cs`, `Controllers/MyOrdersController.cs`, `Views/MyOrders/Details.cshtml`, `Data/*`, tests
+
+- [ ] **Task 45: Points page and gift redemption** (M) · deps: 42
+  - Acceptance: `/diem-thuong` with tier progress, history, gifts, "Quà đã đổi"; `RedeemAsync`
+    with locks, eligibility reasons, unique code, REDEEM transaction.
+  - Verify: service tests — success, insufficient points, tier too low, out of stock, concurrent
+    redemptions of the last gift / last points; manual: redeemed code works at the counter.
+  - Files: `Services/LoyaltyService.cs` or `Services/GiftRedemptionService.cs`, `Controllers/PointsController.cs`, `Views/Points/*`, header nav, tests
+
+- [ ] **Task 46: Change-set verification** (S) · deps: 42–45
+  - Acceptance: end-to-end browser run (search → cart → coupon → checkout → staff completes →
+    review → redeem gift → counter claims), README/SPEC updated, format/build/tests green.
+
+### Checkpoint: Shop gaps closed
+- [ ] Every admin module can be driven by real customer actions.
