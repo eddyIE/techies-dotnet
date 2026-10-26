@@ -14,7 +14,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
   - Verify: `dotnet build` passes; `dotnet test` runs (one placeholder test); `/` responds.
   - Files: `.gitignore`, `Techies.slnx`, `docker-compose.yml`, `Properties/launchSettings.json`, `Program.cs`
 
-- [ ] **Task 2: Database plumbing and test fixture** (M) · deps: 1
+- [x] **Task 2: Database plumbing and test fixture** (M) · deps: 1
   - Acceptance: `AppDbContext` with Npgsql + snake_case naming; connection string in
     `appsettings.Development.json`; migrations applied and `DbSeeder` invoked on startup;
     `PostgresFixture` (Testcontainers) applies migrations for service tests.
