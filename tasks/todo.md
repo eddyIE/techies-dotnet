@@ -241,7 +241,7 @@ Standard verification for every task unless noted: **tests green, build 0 errors
 
 ## Phase 8 — Dashboard & Wrap-up
 
-- [ ] **Task 30: Revenue periods and chart** (M) · deps: 21
+- [x] **Task 30: Revenue periods and chart** (M) · deps: 21
   - Acceptance: `RevenuePeriods` (7 days/month/quarter/year ranges, buckets, previous span, %
     change with "—" for zero); revenue query by `completed_at`; Chart.js line chart with filter.
   - Verify: unit tests for each period's range/buckets/% change at a fixed date; service test

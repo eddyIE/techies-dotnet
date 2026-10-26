@@ -323,7 +323,7 @@ Acceptance:
 - **In phiếu giao hàng**: a print-friendly page (order ref, recipient, address, phone, items,
   total, amount to collect) with a Print button; no admin chrome when printed.
 - Seed (generated, deterministic): ~270 orders over the past 15 months from demo customers (one
-  COMPLETED order per ported review plus ~90 others),
+  COMPLETED order per ported review plus ~100 others),
   covering all 5 statuses, COD and MOCK_CARD, every payment status, failure codes
   (`PAYMENT_FAILED`, `OUT_OF_STOCK`, `SERVICE_UNAVAILABLE`), some with coupons (+ redemptions),
   with consistent loyalty points for COMPLETED orders.

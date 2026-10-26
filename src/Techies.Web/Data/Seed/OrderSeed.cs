@@ -16,7 +16,8 @@ namespace Techies.Web.Data.Seed;
 // Seeded orders do not move stock: the ported stock levels are taken as today's levels.
 internal static class OrderSeed
 {
-    private const int ExtraOrders = 90;
+    private const int ExtraOrders = 100;
+    private const int RecentOrders = 35; // in the last 6 days, so "7 ngày qua" has data
     private const int HistoryDays = 450;
     private static readonly string[] FailureCodes = ["PAYMENT_FAILED", "OUT_OF_STOCK", "SERVICE_UNAVAILABLE"];
     private static readonly string[] SeedCoupons = ["TECHIES50K", "TECHIES500K", "FREESHIP30K"];
@@ -50,15 +51,17 @@ internal static class OrderSeed
         }
         for (var i = 0; i < ExtraOrders; i++)
         {
-            var ageDays = i < 25 ? random.Next(0, 6) : random.Next(6, HistoryDays);
+            var ageDays = i < RecentOrders ? random.Next(0, 6) : random.Next(6, HistoryDays);
             var created = Min(today.AddDays(-ageDays).AddMinutes(random.Next(8 * 60, 22 * 60)), now.AddMinutes(-30 - i));
             var order = NewOrder(random, PickCustomer(), created, Products(random, products));
             var method = PaymentMethodFor(random);
             var status = ageDays < 6
-                ? Pick(random, [(OrderStatus.Confirmed, 60), (OrderStatus.AwaitingPayment, 25), (OrderStatus.Failed, 15)])
+                ? Pick(random, [(OrderStatus.Completed, 40), (OrderStatus.Confirmed, 35), (OrderStatus.AwaitingPayment, 15), (OrderStatus.Failed, 10)])
                 : Pick(random, [(OrderStatus.Completed, 70), (OrderStatus.Cancelled, 18), (OrderStatus.Failed, 12)]);
             if (status == OrderStatus.AwaitingPayment) method = PaymentMethod.MockCard; // only card payments wait
             Finish(order, status, random, method);
+            if (order.CompletedAt > now) // a recent order completes between placement and now
+                order.CompletedAt = order.UpdatedAt = order.CreatedAt + (now - order.CreatedAt) / 2;
             plans.Add((order, null));
         }
 

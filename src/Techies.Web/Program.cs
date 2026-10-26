@@ -32,6 +32,7 @@ builder.Services.AddScoped<CheckoutService>();
 builder.Services.AddScoped<CustomerQueries>();
 builder.Services.AddScoped<ReviewQueries>();
 builder.Services.AddScoped<StaffService>();
+builder.Services.AddScoped<DashboardQueries>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(o =>
 {
